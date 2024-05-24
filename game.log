@@ -1,0 +1,62 @@
+máj. 24, 2024 3:43:15 DU. utils.LoggerUtil logWarning
+WARNING: Invalid login attempt: user4
+máj. 24, 2024 3:43:20 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 3:44:35 DU. utils.LoggerUtil logInfo
+INFO: Score saved for user: null, score: 490
+máj. 24, 2024 3:44:35 DU. utils.LoggerUtil logInfo
+INFO: Game over screen displayed
+máj. 24, 2024 3:55:38 DU. utils.LoggerUtil logSevere
+SEVERE: Error during login attempt for user: user4
+máj. 24, 2024 3:55:52 DU. utils.LoggerUtil logSevere
+SEVERE: Error during login attempt for user: user4
+máj. 24, 2024 3:56:53 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 3:57:55 DU. utils.LoggerUtil logInfo
+INFO: Score saved for user: user4, score: 315
+máj. 24, 2024 3:57:55 DU. utils.LoggerUtil logInfo
+INFO: Game over screen displayed
+máj. 24, 2024 4:02:34 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 4:03:36 DU. utils.LoggerUtil logInfo
+INFO: Score saved for user: user4, score: 360
+máj. 24, 2024 4:03:36 DU. utils.LoggerUtil logInfo
+INFO: Game over screen displayed
+máj. 24, 2024 4:05:42 DU. utils.LoggerUtil logInfo
+INFO: Score saved for user: null, score: 110
+máj. 24, 2024 4:05:42 DU. utils.LoggerUtil logInfo
+INFO: Game over screen displayed
+máj. 24, 2024 8:08:42 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 8:10:49 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 8:13:04 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 8:13:55 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 8:17:05 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 8:19:25 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 8:21:06 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 8:21:44 DU. utils.LoggerUtil logInfo
+INFO: Game paused
+máj. 24, 2024 8:21:46 DU. utils.LoggerUtil logInfo
+INFO: Game resumed
+máj. 24, 2024 8:22:10 DU. utils.LoggerUtil logInfo
+INFO: Score saved for user: user4, score: 160
+máj. 24, 2024 8:22:10 DU. utils.LoggerUtil logInfo
+INFO: Game over screen displayed
+máj. 24, 2024 8:29:02 DU. utils.LoggerUtil logInfo
+INFO: User logged in: user4
+máj. 24, 2024 8:29:14 DU. utils.LoggerUtil logInfo
+INFO: Game paused
+máj. 24, 2024 8:29:14 DU. utils.LoggerUtil logInfo
+INFO: Game resumed
+máj. 24, 2024 8:29:18 DU. utils.LoggerUtil logInfo
+INFO: Game paused
+máj. 24, 2024 8:29:19 DU. utils.LoggerUtil logInfo
+INFO: Game resumed
+máj. 24, 2024 8:29:41 DU. utils.LoggerUtil logInfo
+INFO: Navigated back to main menu

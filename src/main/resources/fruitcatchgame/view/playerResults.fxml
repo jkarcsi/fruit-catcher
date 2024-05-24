@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.PlayerResultsController" spacing="10" alignment="CENTER">
+    <TableView fx:id="resultsTable" prefWidth="300">
+        <columns>
+            <TableColumn fx:id="scoreColumn" text="Score" prefWidth="100"/>
+            <TableColumn fx:id="dateColumn" text="Date" prefWidth="200"/>
+        </columns>
+    </TableView>
+    <Button text="Back to Main Menu" onAction="#handleBackToMainMenuButton"/>
+</VBox>
