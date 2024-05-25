@@ -20,6 +20,7 @@ import java.util.List;
 
 import model.database.Database;
 import model.Score;
+import utils.UserSession;
 
 public class PlayerResultsController {
 
@@ -32,7 +33,7 @@ public class PlayerResultsController {
     @FXML
     private TableColumn<Score, String> dateColumn;
 
-    private String username;
+    private String username = UserSession.getInstance().getUsername();
 
     public void setUsername(String username) {
         this.username = username;
@@ -58,8 +59,6 @@ public class PlayerResultsController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
-            MainMenuController controller = loader.getController();
-            controller.setUsername(username);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);

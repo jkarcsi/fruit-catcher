@@ -12,11 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import model.Basket;
 import model.FallingObject;
@@ -25,14 +26,17 @@ import model.Leaf;
 import model.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
+import utils.UserSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.prefs.Preferences;
 
 public class GameController {
     @FXML
@@ -58,8 +62,7 @@ public class GameController {
     private boolean gamePaused;
     private int timeRemaining;
     private Timer countdownTimer;
-    private String username;
-    private boolean isBackgroundMoving = false;
+    private String username = UserSession.getInstance().getUsername();
     private boolean isMusicPlaying = false;
     private ImageView backgroundImageView;
     private TranslateTransition backgroundAnimation;
@@ -91,7 +94,8 @@ public class GameController {
 
     private void setupBackground() {
         // Setup the background image and animation
-        Image backgroundImage = new Image(getClass().getResourceAsStream("/fruitcatchgame/image/bckgr.gif"));
+        Image backgroundImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(
+                "/fruitcatchgame/image/bckgr.gif")));
         backgroundImageView = new ImageView(backgroundImage);
         backgroundImageView.setFitWidth(gameCanvas.getWidth());
         backgroundImageView.setFitHeight(gameCanvas.getHeight());
@@ -108,7 +112,7 @@ public class GameController {
     }
 
     private void setupMusic() {
-        String musicFile = getClass().getResource("/fruitcatchgame/sound/dezert.mp3").toExternalForm();
+        String musicFile = Objects.requireNonNull(getClass().getResource("/fruitcatchgame/sound/dezert.mp3")).toExternalForm();
         Media media = new Media(musicFile);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -294,8 +298,6 @@ public class GameController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
-            MainMenuController controller = loader.getController();
-            controller.setUsername(username);
             Stage stage = (Stage) gameCanvas.getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);

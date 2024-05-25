@@ -15,6 +15,6 @@ public class StartController {
         Scene scene = new Scene(loader.load(), 800, 600);
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
-            stage.setResizable(false);
+        stage.setResizable(false);
     }
 }

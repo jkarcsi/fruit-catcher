@@ -6,13 +6,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.UserDAO;
+import utils.UserSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class MainMenuController {
 
-    private String username;
+    private String username = UserSession.getInstance().getUsername();
 
     @FXML
     private void handleStartGameButton(ActionEvent event) {
@@ -104,9 +105,5 @@ public class MainMenuController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

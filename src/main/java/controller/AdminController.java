@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.User;
 import model.UserDAO;
+import utils.UserSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class AdminController {
     private TableColumn<User, String> statusColumn;
 
     private ObservableList<User> usersList;
-    private String adminUsername;
+    private String adminUsername = UserSession.getInstance().getUsername();
 
     @FXML
     public void initialize() {
@@ -36,10 +37,6 @@ public class AdminController {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         usersList = FXCollections.observableArrayList();
         loadUsers();
-    }
-
-    public void setAdminUsername(String adminUsername) {
-        this.adminUsername = adminUsername;
     }
 
     private void loadUsers() {

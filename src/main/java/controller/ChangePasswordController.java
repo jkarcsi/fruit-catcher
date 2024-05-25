@@ -13,6 +13,8 @@ import java.sql.SQLException;
 
 import model.User;
 import model.UserDAO;
+import utils.LoggerUtil;
+import utils.UserSession;
 
 public class ChangePasswordController {
 
@@ -25,7 +27,7 @@ public class ChangePasswordController {
     @FXML
     private PasswordField confirmPasswordField;
 
-    private String username;
+    private String username = UserSession.getInstance().getUsername();
 
     public void setUsername(String username) {
         this.username = username;
@@ -37,12 +39,12 @@ public class ChangePasswordController {
         String newPassword = newPasswordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
-        System.out.println("Old password: " + oldPassword);
-        System.out.println("New password: " + newPassword);
-        System.out.println("Confirm password: " + confirmPassword);
+        LoggerUtil.logInfo("Old password: " + oldPassword);
+        LoggerUtil.logInfo("New password: " + newPassword);
+        LoggerUtil.logInfo("Confirm password: " + confirmPassword);
 
         if (!newPassword.equals(confirmPassword)) {
-            System.out.println("New passwords do not match");
+            LoggerUtil.logInfo("New passwords do not match");
             return;
         }
 
@@ -51,29 +53,27 @@ public class ChangePasswordController {
             User user = userDAO.getUser(username);
 
             if (user == null) {
-                System.out.println("User not found: " + username);
+                LoggerUtil.logInfo("User not found: " + username);
                 return;
             }
 
             String hashedOldPassword = hashPassword(oldPassword);
-            System.out.println("Hashed old password: " + hashedOldPassword);
+            LoggerUtil.logInfo("Hashed old password: " + hashedOldPassword);
 
             if (user != null && user.getPassword().equals(hashedOldPassword)) {
                 String hashedNewPassword = hashPassword(newPassword);
                 user.setPassword(hashedNewPassword);
                 userDAO.updateUser(user);
-                System.out.println("Password changed successfully");
+                LoggerUtil.logInfo("Password changed successfully");
 
                 // Navigate back to main menu
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
                 Scene scene = new Scene(loader.load(), 800, 600);
-                MainMenuController controller = loader.getController();
-                controller.setUsername(username);
                 Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
             stage.setResizable(false);
             } else {
-                System.out.println("Old password is incorrect");
+                LoggerUtil.logInfo("Old password is incorrect");
             }
         } catch (SQLException | IOException e) {
             e.printStackTrace();
@@ -85,8 +85,6 @@ public class ChangePasswordController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
-            MainMenuController controller = loader.getController();
-            controller.setUsername(username);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);

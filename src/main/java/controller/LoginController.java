@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import model.User;
 import model.UserDAO;
 import utils.LoggerUtil;
+import utils.UserSession;
 
 public class LoginController {
 
@@ -51,6 +52,7 @@ public class LoginController {
                 errorMessage.setText("User is banned.");
                 LoggerUtil.logWarning("Banned user login attempt: " + username);
             } else {
+                UserSession.getInstance().setUsername(username); // Set the username in UserSession
                 FXMLLoader loader;
                 if (user.getRole().equals("admin")) {
                     loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/admin.fxml"));
@@ -59,13 +61,9 @@ public class LoginController {
                 }
                 Scene scene = new Scene(loader.load(), 800, 600);
 
-                // Adjuk át a felhasználónevet a MainMenuController-nek
-                MainMenuController mainMenuController = loader.getController();
-                mainMenuController.setUsername(username);
-
                 Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
-            stage.setResizable(false);
+                stage.setResizable(false);
                 LoggerUtil.logInfo("User logged in: " + username);
             }
         } catch (SQLException | IOException e) {

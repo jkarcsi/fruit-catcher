@@ -17,7 +17,7 @@ public abstract class FallingObject {
     }
 
     public void update() {
-        y += 5; // Falling speed
+        y += 1; // Falling speed
     }
 
     public void render(GraphicsContext gc) {

@@ -59,14 +59,14 @@ public class PlayerRankingsController {
 
     private ObservableList<Ranking> getTopPlayers() throws SQLException {
         List<Ranking> rankingList = new ArrayList<>();
-        String query = "SELECT username, score FROM scores ORDER BY score DESC LIMIT 10";
+        String query = "SELECT username, SUM(score) AS total_score FROM scores GROUP BY username ORDER BY total_score DESC LIMIT 10";
         Connection connection = Database.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String username = resultSet.getString("username");
-                int score = resultSet.getInt("score");
-                rankingList.add(new Ranking(username, score));
+                int totalScore = resultSet.getInt("total_score");
+                rankingList.add(new Ranking(username, totalScore));
             }
         }
         return FXCollections.observableArrayList(rankingList);
