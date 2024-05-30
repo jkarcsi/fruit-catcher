@@ -9,6 +9,6 @@ public class Fruit extends FallingObject {
 
     @Override
     protected Color getColor() {
-        return Color.RED;
+        return Color.PEACHPUFF;
     }
 }

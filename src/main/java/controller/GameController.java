@@ -36,7 +36,6 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.prefs.Preferences;
 
 public class GameController {
     @FXML
@@ -67,8 +66,8 @@ public class GameController {
     private ImageView backgroundImageView;
     private TranslateTransition backgroundAnimation;
     private MediaPlayer mediaPlayer;
-    private String leftKey;
-    private String rightKey;
+    private KeyCode leftKey;
+    private KeyCode rightKey;
 
     @FXML
     public void initialize() {
@@ -83,13 +82,17 @@ public class GameController {
         setupMusic();
 
         Platform.runLater(() -> {
-            leftKey = PreferencesUtil.getPreference(username, "leftKey", "LEFT");
-            rightKey = PreferencesUtil.getPreference(username, "rightKey", "RIGHT");
+            loadControlKeys();
             startGame();
             gameCanvas.getScene().setOnKeyPressed(this::handleKeyPress);
             gameCanvas.requestFocus();
             startCountdown();
         });
+    }
+
+    private void loadControlKeys() {
+        leftKey = KeyCode.valueOf(PreferencesUtil.getPreference(username, "leftKey", "LEFT"));
+        rightKey = KeyCode.valueOf(PreferencesUtil.getPreference(username, "rightKey", "RIGHT"));
     }
 
     private void setupBackground() {
@@ -188,20 +191,10 @@ public class GameController {
     }
 
     private void handleKeyPress(KeyEvent event) {
-        switch (event.getCode().toString()) {
-            case "LEFT":
-                basket.moveLeft();
-                break;
-            case "RIGHT":
-                basket.moveRight();
-                break;
-            default:
-                if (event.getCode().toString().equals(leftKey)) {
-                    basket.moveLeft();
-                } else if (event.getCode().toString().equals(rightKey)) {
-                    basket.moveRight();
-                }
-                break;
+        if (event.getCode() == leftKey) {
+            basket.moveLeft();
+        } else if (event.getCode() == rightKey) {
+            basket.moveRight();
         }
     }
 

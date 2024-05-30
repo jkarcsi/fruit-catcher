@@ -36,3 +36,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Log files ###
+game_*.txt
+
+### IDEA files ###
+.idea
