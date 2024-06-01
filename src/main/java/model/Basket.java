@@ -1,17 +1,24 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+
+import java.util.Objects;
 
 public class Basket {
-    private double x, y;
-    private double width, height;
+    private double x;
+    private double y;
+    private double width;
+    private double height;
+    private Image basketImage;
 
     public Basket(double x, double y, double width, double height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.basketImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(
+                "/fruitcatchgame/image/basket.png")));
     }
 
     public void moveLeft() {
@@ -20,15 +27,14 @@ public class Basket {
         }
     }
 
-    public void moveRight() {
-        if (x + width < 600) { // Feltételezve, hogy a canvas szélessége 600
+    public void moveRight(double canvasWidth) {
+        if (x + width < canvasWidth) {
             x += 20;
         }
     }
 
     public void render(GraphicsContext gc) {
-        gc.setFill(Color.BLUE);
-        gc.fillRect(x, y, width, height);
+        gc.drawImage(basketImage, x, y, width, height);
     }
 
     public double getX() {

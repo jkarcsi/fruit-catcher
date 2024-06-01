@@ -1,20 +1,20 @@
 package utils;
 
+import javafx.application.Platform;
+import javafx.scene.control.TextArea;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 public class LoggerUtil {
-
-    private LoggerUtil(){
+    private LoggerUtil() {
+        // empty constructor
     }
-
     private static Logger logger = Logger.getLogger(LoggerUtil.class.getName());
+    private static TextArea logTextArea;
 
     static {
         try {
@@ -41,19 +41,30 @@ public class LoggerUtil {
         }
     }
 
+    public static void setLogTextArea(TextArea textArea) {
+        logTextArea = textArea;
+    }
+
     public static void logInfo(String message) {
-        logger.info(message);
+        log(message, Level.INFO);
     }
 
     public static void logWarning(String message) {
-        logger.warning(message);
+        log(message, Level.WARNING);
     }
 
     public static void logSevere(String message) {
-        logger.severe(message);
+        log(message, Level.SEVERE);
     }
 
     public static void logDebug(String message) {
-        logger.fine(message);
+        log(message, Level.FINE);
+    }
+
+    private static void log(String message, Level level) {
+        logger.log(level, message);
+        if (logTextArea != null) {
+            Platform.runLater(() -> logTextArea.appendText(level.getLocalizedName() + ": " + message + "\n"));
+        }
     }
 }

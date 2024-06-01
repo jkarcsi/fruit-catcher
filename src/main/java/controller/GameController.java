@@ -1,7 +1,7 @@
 package controller;
 
-import javafx.animation.AnimationTimer;
-import javafx.animation.TranslateTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -19,23 +20,14 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.Basket;
-import model.FallingObject;
-import model.Fruit;
-import model.Leaf;
-import model.UserDAO;
+import model.*;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
 import utils.UserSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class GameController {
     @FXML
@@ -53,8 +45,11 @@ public class GameController {
     @FXML
     private Button toggleMusicButton;
 
+    @FXML
+    private TextArea logTextArea;
+
     private GraphicsContext gc;
-    private AnimationTimer timer;
+    private Timeline gameLoop;
     private int score;
     private List<FallingObject> fallingObjects;
     private Basket basket;
@@ -64,25 +59,33 @@ public class GameController {
     private String username = UserSession.getInstance().getUsername();
     private boolean isMusicPlaying = false;
     private ImageView backgroundImageView;
-    private TranslateTransition backgroundAnimation;
     private MediaPlayer mediaPlayer;
     private KeyCode leftKey;
     private KeyCode rightKey;
+    private int level;
+    private List<GameLevel> levels;
+    private boolean doublePointsActive;
+    private Timeline doublePointsTimer;
 
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
         score = 0;
         timeRemaining = 60;
+        level = 0; // Starting level
         fallingObjects = new ArrayList<>();
         basket = new Basket(300, 350, 50, 50);
         gamePaused = false;
+        doublePointsActive = false;
 
+        setupLevels();
         setupBackground();
         setupMusic();
+        setupLogTextArea();
 
         Platform.runLater(() -> {
             loadControlKeys();
+            adjustCanvasSize();
             startGame();
             gameCanvas.getScene().setOnKeyPressed(this::handleKeyPress);
             gameCanvas.requestFocus();
@@ -95,24 +98,43 @@ public class GameController {
         rightKey = KeyCode.valueOf(PreferencesUtil.getPreference(username, "rightKey", "RIGHT"));
     }
 
+    private void adjustCanvasSize() {
+        Stage stage = (Stage) gameCanvas.getScene().getWindow();
+        gameCanvas.setWidth(stage.getWidth());
+        gameCanvas.setHeight(stage.getHeight());
+        stage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            gameCanvas.setWidth(newVal.doubleValue());
+            backgroundImageView.setFitWidth(newVal.doubleValue());
+        });
+        stage.heightProperty().addListener((obs, oldVal, newVal) -> {
+            gameCanvas.setHeight(newVal.doubleValue());
+            backgroundImageView.setFitHeight(newVal.doubleValue());
+        });
+    }
+
+    private void setupLogTextArea() {
+        LoggerUtil.setLogTextArea(logTextArea);
+        logTextArea.setStyle("-fx-background-color: transparent;");
+    }
+
+    private void setupLevels() {
+        levels = new ArrayList<>();
+        levels.add(new GameLevel(2, 1.5, 30, 10, 0.01, 0.005)); // Easy level
+        levels.add(new GameLevel(3, 2.5, 25, 15, 0.02, 0.01)); // Medium level
+        levels.add(new GameLevel(4, 3.5, 20, 20, 0.03, 0.015)); // Hard level
+        // Add more levels as needed
+    }
+
     private void setupBackground() {
-        // Setup the background image and animation
         Image backgroundImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(
                 "/fruitcatchgame/image/bckgr.gif")));
         backgroundImageView = new ImageView(backgroundImage);
         backgroundImageView.setFitWidth(gameCanvas.getWidth());
         backgroundImageView.setFitHeight(gameCanvas.getHeight());
 
-        // Add the background image to the scene
         ((Pane) gameCanvas.getParent()).getChildren().add(0, backgroundImageView);
-
-        // Setup animation
-        backgroundAnimation = new TranslateTransition(Duration.seconds(3), backgroundImageView);
-        backgroundAnimation.setByX(-gameCanvas.getWidth());
-        backgroundAnimation.setCycleCount(TranslateTransition.INDEFINITE);
-        backgroundAnimation.setAutoReverse(true);
-        backgroundAnimation.play();
     }
+
 
     private void setupMusic() {
         String musicFile = Objects.requireNonNull(getClass().getResource("/fruitcatchgame/sound/dezert.mp3")).toExternalForm();
@@ -130,11 +152,11 @@ public class GameController {
             LoggerUtil.logInfo("Background disabled");
         } else {
             parentPane.getChildren().add(0, backgroundImageView);
-            backgroundAnimation.play(); // Restart the animation when background is re-enabled
+            adjustBackgroundSize();
             toggleBackgroundButton.setText("Disable Background");
             LoggerUtil.logInfo("Background enabled");
         }
-        gameCanvas.requestFocus(); // Ensure the gameCanvas is focused after clicking the button
+        gameCanvas.requestFocus();
     }
 
     @FXML
@@ -152,16 +174,14 @@ public class GameController {
     }
 
     private void startGame() {
-        timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (!gamePaused) {
-                    updateGame();
-                    renderGame();
-                }
+        gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
+            if (!gamePaused) {
+                updateGame();
+                renderGame();
             }
-        };
-        timer.start();
+        }));
+        gameLoop.setCycleCount(Timeline.INDEFINITE);
+        gameLoop.play();
     }
 
     private void updateGame() {
@@ -169,9 +189,13 @@ public class GameController {
             obj.update();
             if (obj.collidesWith(basket)) {
                 if (obj instanceof Fruit) {
-                    score += 10;
+                    score += doublePointsActive ? 20 : 10;
                 } else if (obj instanceof Leaf) {
                     score -= 5;
+                } else if (obj instanceof ScoreMultiplier) {
+                    activateDoublePoints();
+                } else if (obj instanceof BonusTime) {
+                    timeRemaining += 10;
                 }
                 obj.setCaught(true);
             }
@@ -180,6 +204,10 @@ public class GameController {
         fallingObjects.removeIf(FallingObject::isCaught);
         spawnNewFallingObjects();
         scoreLabel.setText("Score: " + score);
+
+        if (score > (level + 1) * 100) {
+            levelUp();
+        }
     }
 
     private void renderGame() {
@@ -194,18 +222,50 @@ public class GameController {
         if (event.getCode() == leftKey) {
             basket.moveLeft();
         } else if (event.getCode() == rightKey) {
-            basket.moveRight();
+            basket.moveRight(gameCanvas.getWidth());
         }
     }
 
     private void spawnNewFallingObjects() {
         Random random = new Random();
-        if (random.nextInt(100) < 5) { // 5% chance to spawn a new object
-            if (random.nextBoolean()) {
-                fallingObjects.add(new Fruit(random.nextInt((int) gameCanvas.getWidth()), 0));
-            } else {
-                fallingObjects.add(new Leaf(random.nextInt((int) gameCanvas.getWidth()), 0));
-            }
+        GameLevel currentLevel = levels.get(level);
+
+        if (random.nextDouble() < currentLevel.getFruitSpawnRate()) {
+            fallingObjects.add(new Fruit(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        }
+
+        if (random.nextDouble() < currentLevel.getLeafSpawnRate()) {
+            fallingObjects.add(new Leaf(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getLeafSpeed(), currentLevel.getLeafSize(), currentLevel.getLeafSize()));
+        }
+
+        if (random.nextDouble() < 0.001) { // Spawn a ScoreMultiplier with a 0.1% chance
+            fallingObjects.add(new ScoreMultiplier(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        }
+
+        if (random.nextDouble() < 0.001) { // Spawn a BonusTime with a 0.1% chance
+            fallingObjects.add(new BonusTime(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        }
+    }
+
+    private void activateDoublePoints() {
+        doublePointsActive = true;
+        LoggerUtil.logInfo("Double points activated!");
+
+        if (doublePointsTimer != null) {
+            doublePointsTimer.stop();
+        }
+
+        doublePointsTimer = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
+            doublePointsActive = false;
+            LoggerUtil.logInfo("Double points deactivated.");
+        }));
+        doublePointsTimer.play();
+    }
+
+    private void levelUp() {
+        if (level < levels.size() - 1) {
+            level++;
+            LoggerUtil.logInfo("Level up! New level: " + level);
         }
     }
 
@@ -226,17 +286,22 @@ public class GameController {
         countdownTimer.scheduleAtFixedRate(task, 1000, 1000);
     }
 
+    private void adjustBackgroundSize() {
+        backgroundImageView.setFitWidth(gameCanvas.getWidth());
+        backgroundImageView.setFitHeight(gameCanvas.getHeight());
+    }
+
     @FXML
     private void handlePauseButton() {
         gamePaused = !gamePaused;
         if (gamePaused) {
-            timer.stop();
+            gameLoop.pause();
             countdownTimer.cancel();
             mediaPlayer.pause();
             LoggerUtil.logInfo("Game paused");
         } else {
             startCountdown();
-            timer.start();
+            gameLoop.play();
             mediaPlayer.play();
             LoggerUtil.logInfo("Game resumed");
         }
@@ -244,7 +309,7 @@ public class GameController {
     }
 
     private void endGame() {
-        timer.stop();
+        gameLoop.stop();
         countdownTimer.cancel();
         mediaPlayer.pause();
         saveScore();
@@ -281,7 +346,7 @@ public class GameController {
 
     @FXML
     private void handleQuitButton() {
-        timer.stop();
+        gameLoop.stop();
         countdownTimer.cancel();
         mediaPlayer.pause();
         navigateToMainMenu();

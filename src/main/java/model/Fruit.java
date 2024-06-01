@@ -1,14 +1,7 @@
 package model;
 
-import javafx.scene.paint.Color;
-
 public class Fruit extends FallingObject {
-    public Fruit(double x, double y) {
-        super(x, y, 20, 20);
-    }
-
-    @Override
-    protected Color getColor() {
-        return Color.PEACHPUFF;
+    public Fruit(double x, double y, double speed, double width, double height) {
+        super(x, y, speed, width, height, "/fruitcatchgame/image/fruit.png");
     }
 }
