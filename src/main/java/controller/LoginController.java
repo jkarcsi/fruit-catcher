@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +34,7 @@ public class LoginController {
     private Label errorMessage;
 
     @FXML
-    private void handleLoginButton(ActionEvent event) {
+    private void handleLoginButton(ActionEvent event) throws HashException {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String hashedPassword = hashPassword(password);
@@ -105,7 +106,7 @@ public class LoginController {
         }
     }
 
-    private String hashPassword(String password) {
+    private String hashPassword(String password) throws HashException {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hash = md.digest(password.getBytes());
@@ -118,7 +119,7 @@ public class LoginController {
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             LoggerUtil.logSevere("Error hashing password");
-            throw new RuntimeException(e);
+            throw new HashException(e.getMessage());
         }
     }
 }

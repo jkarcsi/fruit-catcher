@@ -84,8 +84,8 @@ public class GameController {
         setupLogTextArea();
 
         Platform.runLater(() -> {
-            loadControlKeys();
             adjustCanvasSize();
+            loadControlKeys();
             startGame();
             gameCanvas.getScene().setOnKeyPressed(this::handleKeyPress);
             gameCanvas.getScene().setOnKeyReleased(this::handleKeyRelease);
@@ -116,7 +116,6 @@ public class GameController {
         stage.heightProperty().addListener((obs, oldVal, newVal) -> {
             gameCanvas.setHeight(newVal.doubleValue());
             backgroundImageView.setFitHeight(newVal.doubleValue());
-            basket.setY(newVal.doubleValue() - 150); // Position basket above the TextArea
         });
     }
 
@@ -127,9 +126,10 @@ public class GameController {
 
     private void setupLevels() {
         levels = new ArrayList<>();
-        levels.add(new GameLevel(2, 1.5, 30, 10, 0.01, 0.005)); // Easy level
-        levels.add(new GameLevel(3, 2.5, 25, 20, 0.02, 0.01)); // Medium level
-        levels.add(new GameLevel(4, 3.5, 20, 30, 0.03, 0.015)); // Hard level
+        levels.add(new GameLevel(2, 1.5, 30, 30, 0.01, 0.005)); // Easy level
+        levels.add(new GameLevel(2.5, 2, 26, 26, 0.02, 0.01)); // Medium level
+        levels.add(new GameLevel(3, 2.5, 22, 22, 0.03, 0.015)); // Hard level
+        levels.add(new GameLevel(3.5, 3, 18, 18, 0.04, 0.025)); // Extra hard level
         // Add more levels as needed
     }
 
@@ -193,7 +193,7 @@ public class GameController {
     }
 
     private void updateGame() {
-        basket.update(gameCanvas.getWidth());
+        basket.update(gameCanvas.getWidth(), gameCanvas.getHeight());
 
         for (FallingObject obj : fallingObjects) {
             obj.update();
@@ -215,7 +215,7 @@ public class GameController {
         spawnNewFallingObjects();
         scoreLabel.setText("Score: " + score);
 
-        if (score > (level + 1) * 100) {
+        if (score > (level + 1) * 150) {
             levelUp();
         }
     }
@@ -275,7 +275,7 @@ public class GameController {
     private void levelUp() {
         if (level < levels.size() - 1) {
             level++;
-            LoggerUtil.logInfo("Level up! New level: " + level);
+            LoggerUtil.logInfo("Level up! New level: " + level + 1);
         }
     }
 

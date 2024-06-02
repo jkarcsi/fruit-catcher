@@ -4,9 +4,9 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.LoginController" spacing="10" alignment="CENTER" stylesheets="@styles.css" styleClass="vbox">
-    <TextField fx:id="usernameField" promptText="Username" styleClass="text-field"/>
-    <PasswordField fx:id="passwordField" promptText="Password" styleClass="text-field"/>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.LoginController" spacing="10" alignment="CENTER" stylesheets="@styles.css" styleClass="vbox" maxWidth="300" prefWidth="300">
+    <TextField fx:id="usernameField" promptText="Username" styleClass="text-field" />
+    <PasswordField fx:id="passwordField" promptText="Password" styleClass="text-field" />
     <Button text="Login" onAction="#handleLoginButton" styleClass="button"/>
     <Button text="Register" onAction="#handleRegisterButton" styleClass="button"/>
     <Button text="Forgot Password" onAction="#handleForgotPasswordButton" styleClass="button"/>

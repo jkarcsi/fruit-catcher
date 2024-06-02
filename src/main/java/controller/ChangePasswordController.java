@@ -1,11 +1,14 @@
 package controller;
 
+import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,6 +30,9 @@ public class ChangePasswordController {
     @FXML
     private PasswordField confirmPasswordField;
 
+    @FXML
+    private Label errorMessage;
+
     private String username = UserSession.getInstance().getUsername();
 
     @FXML
@@ -35,12 +41,12 @@ public class ChangePasswordController {
         String newPassword = newPasswordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
-        LoggerUtil.logInfo("Old password: " + oldPassword);
+        LoggerUtil.logInfo("Current password: " + oldPassword);
         LoggerUtil.logInfo("New password: " + newPassword);
         LoggerUtil.logInfo("Confirm password: " + confirmPassword);
 
         if (!newPassword.equals(confirmPassword)) {
-            LoggerUtil.logInfo("New passwords do not match");
+            errorMessage.setText("New passwords do not match");
             return;
         }
 
@@ -54,7 +60,6 @@ public class ChangePasswordController {
             }
 
             String hashedOldPassword = hashPassword(oldPassword);
-            LoggerUtil.logInfo("Hashed old password: " + hashedOldPassword);
 
             if (user.getPassword().equals(hashedOldPassword)) {
                 String hashedNewPassword = hashPassword(newPassword);
@@ -67,11 +72,11 @@ public class ChangePasswordController {
                 Scene scene = new Scene(loader.load(), 800, 600);
                 Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
-            stage.setResizable(false);
+                stage.setResizable(false);
             } else {
-                LoggerUtil.logInfo("Old password is incorrect");
+                errorMessage.setText("Current password is incorrect");
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException | IOException | HashException e) {
             e.printStackTrace();
         }
     }
@@ -89,7 +94,7 @@ public class ChangePasswordController {
         }
     }
 
-    private String hashPassword(String password) {
+    private String hashPassword(String password) throws HashException {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hash = md.digest(password.getBytes());
@@ -101,7 +106,7 @@ public class ChangePasswordController {
             }
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new HashException(e.getMessage());
         }
     }
 }

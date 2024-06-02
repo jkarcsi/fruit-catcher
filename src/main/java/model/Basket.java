@@ -32,7 +32,8 @@ public class Basket {
         velocityX = 0;
     }
 
-    public void update(double canvasWidth) {
+    public void update(double canvasWidth, double canvasHeight) {
+        y = canvasHeight - 180;
         x += velocityX;
         if (x < 0) {
             x = 0;

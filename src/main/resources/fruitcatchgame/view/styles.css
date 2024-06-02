@@ -9,6 +9,7 @@
 }
 
 .button {
+    -fx-pref-width: 150; /* Set preferred width */
     -fx-background-color: #6b8e23; /* Olive green button background */
     -fx-text-fill: #fff; /* White text color */
     -fx-font-size: 14px;
@@ -22,6 +23,7 @@
     -fx-control-inner-background: transparent; /* Transparent inner background */
     -fx-text-fill: #2e8b57; /* Forest green text color */
     -fx-border-color: #6b8e23; /* Olive green border */
+    -fx-progress-color: transparent;
 }
 
 .canvas {
@@ -29,6 +31,8 @@
 }
 
 .vbox {
+    -fx-background-color: #e6ffe6;
+    -fx-padding: 20;
     -fx-spacing: 10;
     -fx-alignment: center;
 }
@@ -40,7 +44,7 @@
 
 .retro-title {
     -fx-font-family: 'Courier New', Courier, monospace;
-    -fx-text-fill: #106f10; /* Deep pink text color */
+    -fx-text-fill: #106f10; /* Deep green text color */
     -fx-font-size: 36px; /* Large font size */
     -fx-font-weight: bold;
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4, 0.0 , 2 , 2 );
@@ -63,15 +67,26 @@
 }
 
 .combo-box {
+    -fx-pref-width: 200px; /* Set preferred width for combo boxes */
+    -fx-font-size: 14px;
     -fx-background-color: #fff;
-    -fx-border-color: #2e8b57;
-    -fx-border-radius: 5px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
 }
 
 .text-field {
+    -fx-pref-width: 100; /* Set preferred width */
+    -fx-alignment: center;
+    -fx-font-size: 14px;
+    -fx-padding: 5;
     -fx-background-color: #fff;
-    -fx-border-color: #2e8b57;
-    -fx-border-radius: 5px;
-    -fx-pref-width: 200px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #7cb342;
 }
 
