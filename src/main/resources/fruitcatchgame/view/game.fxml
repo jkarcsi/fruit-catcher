@@ -4,14 +4,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController" stylesheets="@styles.css">
     <Canvas fx:id="gameCanvas" width="800" height="600" />
-    <Label fx:id="scoreLabel" layoutX="10" layoutY="10" text="Score: 0" />
-    <Label fx:id="timerLabel" layoutX="10" layoutY="30" text="Time: 60" />
-    <Button fx:id="toggleBackgroundButton" layoutX="10" layoutY="50" text="Background" onAction="#handleToggleBackgroundButton" />
-    <Button fx:id="toggleMusicButton" layoutX="10" layoutY="80" text="Music" onAction="#handleToggleMusicButton" />
-    <Button fx:id="pauseButton" layoutX="10" layoutY="110" text="Pause" onAction="#handlePauseButton" />
-    <Button fx:id="quitButton" layoutX="10" layoutY="140" text="Quit" onAction="#handleQuitButton" />
-    <TextArea fx:id="logTextArea" layoutX="10" layoutY="520" prefWidth="780" prefHeight="70" editable="false" wrapText="true"
-              style="-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-text-fill: black; -fx-font-size: 14;" />
+    <Label fx:id="scoreLabel" layoutX="10" layoutY="10" text="Score: 0" styleClass="label" />
+    <Label fx:id="timerLabel" layoutX="10" layoutY="30" text="Time: 60" styleClass="label" />
+    <Button fx:id="toggleBackgroundButton" layoutX="10" layoutY="50" text="Background" onAction="#handleToggleBackgroundButton" styleClass="button" />
+    <Button fx:id="toggleMusicButton" layoutX="10" layoutY="80" text="Music" onAction="#handleToggleMusicButton" styleClass="button" />
+    <Button layoutX="10" layoutY="110" text="Pause" onAction="#handlePauseButton" styleClass="button" />
+    <Button layoutX="10" layoutY="140" text="Quit" onAction="#handleQuitButton" styleClass="button" />
+    <TextArea fx:id="logTextArea" layoutX="10" layoutY="520" prefWidth="780" prefHeight="70" editable="false" wrapText="true" styleClass="text-area" />
 </AnchorPane>

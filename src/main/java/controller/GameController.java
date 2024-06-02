@@ -74,7 +74,7 @@ public class GameController {
         timeRemaining = 60;
         level = 0; // Starting level
         fallingObjects = new ArrayList<>();
-        basket = new Basket(300, 350, 50, 50);
+        basket = new Basket(300, 500, 50, 50); // Position basket at the bottom
         gamePaused = false;
         doublePointsActive = false;
 
@@ -88,9 +88,16 @@ public class GameController {
             adjustCanvasSize();
             startGame();
             gameCanvas.getScene().setOnKeyPressed(this::handleKeyPress);
+            gameCanvas.getScene().setOnKeyReleased(this::handleKeyRelease);
             gameCanvas.requestFocus();
             startCountdown();
         });
+    }
+
+    private void handleKeyRelease(KeyEvent event) {
+        if (event.getCode() == leftKey || event.getCode() == rightKey) {
+            basket.stop();
+        }
     }
 
     private void loadControlKeys() {
@@ -109,12 +116,13 @@ public class GameController {
         stage.heightProperty().addListener((obs, oldVal, newVal) -> {
             gameCanvas.setHeight(newVal.doubleValue());
             backgroundImageView.setFitHeight(newVal.doubleValue());
+            basket.setY(newVal.doubleValue() - 300); // Position basket above the TextArea
         });
     }
 
     private void setupLogTextArea() {
         LoggerUtil.setLogTextArea(logTextArea);
-        logTextArea.setStyle("-fx-background-color: transparent;");
+        logTextArea.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-text-fill: #2e8b57; -fx-border-color: transparent;");
     }
 
     private void setupLevels() {
@@ -185,6 +193,8 @@ public class GameController {
     }
 
     private void updateGame() {
+        basket.update(gameCanvas.getWidth());
+
         for (FallingObject obj : fallingObjects) {
             obj.update();
             if (obj.collidesWith(basket)) {
@@ -222,7 +232,7 @@ public class GameController {
         if (event.getCode() == leftKey) {
             basket.moveLeft();
         } else if (event.getCode() == rightKey) {
-            basket.moveRight(gameCanvas.getWidth());
+            basket.moveRight();
         }
     }
 

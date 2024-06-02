@@ -3,6 +3,8 @@ package model;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.Objects;
+
 public abstract class FallingObject {
     protected double x;
     protected double y;
@@ -19,7 +21,7 @@ public abstract class FallingObject {
         this.width = width;
         this.height = height;
         this.caught = false;
-        this.image = new Image(getClass().getResourceAsStream(imagePath));
+        this.image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
     }
 
     public void update() {

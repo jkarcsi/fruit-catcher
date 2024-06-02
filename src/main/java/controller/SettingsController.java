@@ -6,7 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
@@ -63,6 +66,17 @@ public class SettingsController {
         prefs.put("language", languageComboBox.getValue());
         prefs.put("leftKey", leftKeyComboBox.getValue());
         prefs.put("rightKey", rightKeyComboBox.getValue());
+        handleBackToMainMenuButton(event);
+    }
+
+    @FXML
+    private void handleChooseLogDirectoryButton(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Log File Directory");
+        File selectedDirectory = directoryChooser.showDialog(logFilePathTextField.getScene().getWindow());
+        if (selectedDirectory != null) {
+            logFilePathTextField.setText(selectedDirectory.getAbsolutePath());
+        }
     }
 
     @FXML

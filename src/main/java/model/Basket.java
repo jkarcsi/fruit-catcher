@@ -3,13 +3,12 @@ package model;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-import java.util.Objects;
-
 public class Basket {
     private double x;
     private double y;
     private double width;
     private double height;
+    private double velocityX;
     private Image basketImage;
 
     public Basket(double x, double y, double width, double height) {
@@ -17,20 +16,33 @@ public class Basket {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.basketImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                "/fruitcatchgame/image/basket.png")));
+        this.velocityX = 0;
+        this.basketImage = new Image("/fruitcatchgame/image/basket.png");
     }
 
     public void moveLeft() {
-        if (x > 0) {
-            x -= 20;
+        velocityX = -5; // Adjust the speed as needed
+    }
+
+    public void moveRight() {
+        velocityX = 5; // Adjust the speed as needed
+    }
+
+    public void stop() {
+        velocityX = 0;
+    }
+
+    public void update(double canvasWidth) {
+        x += velocityX;
+        if (x < 0) {
+            x = 0;
+        } else if (x + width > canvasWidth) {
+            x = canvasWidth - width;
         }
     }
 
-    public void moveRight(double canvasWidth) {
-        if (x + width < canvasWidth) {
-            x += 20;
-        }
+    public void setY(double y) {
+        this.y = y;
     }
 
     public void render(GraphicsContext gc) {

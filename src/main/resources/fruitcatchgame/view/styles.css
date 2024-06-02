@@ -1,0 +1,77 @@
+.root {
+    -fx-font-family: 'Arial';
+    -fx-background-color: #e7ffe7; /* Light green background */
+}
+
+.label {
+    -fx-text-fill: #2e8b57; /* Forest green text color */
+    -fx-font-size: 16px;
+}
+
+.button {
+    -fx-background-color: #6b8e23; /* Olive green button background */
+    -fx-text-fill: #fff; /* White text color */
+    -fx-font-size: 14px;
+    -fx-background-radius: 5; /* Rounded corners */
+    -fx-border-radius: 5; /* Rounded border */
+    -fx-border-color: #556b2f; /* Dark olive green border */
+}
+
+.text-area {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-control-inner-background: transparent; /* Transparent inner background */
+    -fx-text-fill: #2e8b57; /* Forest green text color */
+    -fx-border-color: #6b8e23; /* Olive green border */
+}
+
+.canvas {
+    -fx-background-color: transparent; /* Transparent background */
+}
+
+.vbox {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.hbox {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.retro-title {
+    -fx-font-family: 'Courier New', Courier, monospace;
+    -fx-text-fill: #ff1493; /* Deep pink text color */
+    -fx-font-size: 36px; /* Large font size */
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4, 0.0 , 2 , 2 );
+}
+
+.table-view {
+    -fx-background-color: #f5f5dc; /* Beige background for table */
+    -fx-border-color: #556b2f; /* Dark olive green border */
+    -fx-table-cell-border-color: #556b2f; /* Dark olive green border for cells */
+    -fx-control-inner-background: #f5f5dc; /* Beige background for cells */
+    -fx-text-background-color: transparent;
+    -fx-text-inner-color: #2e8b57; /* Forest green text color */
+}
+
+.table-column {
+    -fx-background-color: #8fbc8f; /* Dark sea green background for column headers */
+    -fx-text-fill: #fff; /* White text color for column headers */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.combo-box {
+    -fx-background-color: #fff;
+    -fx-border-color: #2e8b57;
+    -fx-border-radius: 5px;
+}
+
+.text-field {
+    -fx-background-color: #fff;
+    -fx-border-color: #2e8b57;
+    -fx-border-radius: 5px;
+    -fx-pref-width: 200px;
+}
+
