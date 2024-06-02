@@ -86,7 +86,7 @@ public class LoginController {
     }
 
     @FXML
-    private void handleForgotPasswordButton(ActionEvent event) throws SQLException {
+    private void handleForgotPasswordButton() throws SQLException {
         String username = usernameField.getText();
         if (username.isEmpty()) {
             passwordReminderLabel.setText("Please enter your username.");

@@ -42,10 +42,6 @@ public class Basket {
         }
     }
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
     public void render(GraphicsContext gc) {
         gc.drawImage(basketImage, x, y, width, height);
     }

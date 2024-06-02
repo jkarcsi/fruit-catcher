@@ -33,7 +33,7 @@ public class ChangePasswordController {
     @FXML
     private Label errorMessage;
 
-    private String username = UserSession.getInstance().getUsername();
+    private final String username = UserSession.getInstance().getUsername();
 
     @FXML
     private void handleChangePasswordButton(ActionEvent event) {

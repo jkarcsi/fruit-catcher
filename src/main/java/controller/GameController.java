@@ -56,7 +56,7 @@ public class GameController {
     private boolean gamePaused;
     private int timeRemaining;
     private Timer countdownTimer;
-    private String username = UserSession.getInstance().getUsername();
+    private final String username = UserSession.getInstance().getUsername();
     private boolean isMusicPlaying = false;
     private ImageView backgroundImageView;
     private MediaPlayer mediaPlayer;

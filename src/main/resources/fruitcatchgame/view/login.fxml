@@ -10,6 +10,6 @@
     <Button text="Login" onAction="#handleLoginButton" styleClass="button"/>
     <Button text="Register" onAction="#handleRegisterButton" styleClass="button"/>
     <Button text="Forgot Password" onAction="#handleForgotPasswordButton" styleClass="button"/>
-    <Label fx:id="errorMessage" text="" style="-fx-text-fill: red;"/>
-    <Label fx:id="passwordReminderLabel" text="" style="-fx-text-fill: blue;"/>
+    <Label fx:id="errorMessage" style="-fx-text-fill: red;"/>
+    <Label fx:id="passwordReminderLabel" style="-fx-text-fill: blue;"/>
 </VBox>
