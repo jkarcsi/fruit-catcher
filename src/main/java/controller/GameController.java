@@ -312,7 +312,9 @@ public class GameController {
         } else {
             startCountdown();
             gameLoop.play();
-            mediaPlayer.play();
+            if (isMusicPlaying) {
+                mediaPlayer.play();
+            }
             LoggerUtil.logInfo("Game resumed");
         }
         gameCanvas.requestFocus();

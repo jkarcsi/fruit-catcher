@@ -77,6 +77,7 @@
 
 .text-field {
     -fx-pref-width: 100; /* Set preferred width */
+    -fx-max-width: 100;
     -fx-alignment: center;
     -fx-font-size: 14px;
     -fx-padding: 5;
@@ -88,5 +89,11 @@
 
 .button:hover {
     -fx-background-color: #7cb342;
+}
+
+.title {
+    -fx-font-size: 24px; /* Font size for the title */
+    -fx-text-fill: #2e8b57; /* Forest green color for the title */
+    -fx-font-weight: bold; /* Bold font for the title */
 }
 
