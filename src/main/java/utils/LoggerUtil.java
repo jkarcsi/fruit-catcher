@@ -19,7 +19,7 @@ public class LoggerUtil {
         // empty constructor
     }
 
-    private static Logger logger = Logger.getLogger(LoggerUtil.class.getName());
+    private static final Logger logger = Logger.getLogger(LoggerUtil.class.getName());
     private static TextArea logTextArea;
     private static FileHandler fileHandler;
 

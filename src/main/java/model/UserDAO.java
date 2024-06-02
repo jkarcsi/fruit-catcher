@@ -102,22 +102,6 @@ public class UserDAO {
         }
     }
 
-    public List<model.Score> getScores(String username) throws SQLException {
-        List<model.Score> scores = new ArrayList<>();
-        String query = "SELECT * FROM scores WHERE username = ? ORDER BY date DESC";
-        Connection connection = Database.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, username);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int score = resultSet.getInt("score");
-                String timestamp = resultSet.getString("timestamp");
-                scores.add(new model.Score(username, score, timestamp));
-            }
-        }
-        return scores;
-    }
-
     public void saveScore(String username, int score) throws SQLException {
         List<Score> userTopScores = getTopScores(username, 10);
         List<Score> overallTopScores = getTopScores(null, 10);

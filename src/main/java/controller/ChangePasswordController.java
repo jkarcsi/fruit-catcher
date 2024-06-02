@@ -29,10 +29,6 @@ public class ChangePasswordController {
 
     private String username = UserSession.getInstance().getUsername();
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @FXML
     private void handleChangePasswordButton(ActionEvent event) {
         String oldPassword = oldPasswordField.getText();
@@ -60,7 +56,7 @@ public class ChangePasswordController {
             String hashedOldPassword = hashPassword(oldPassword);
             LoggerUtil.logInfo("Hashed old password: " + hashedOldPassword);
 
-            if (user != null && user.getPassword().equals(hashedOldPassword)) {
+            if (user.getPassword().equals(hashedOldPassword)) {
                 String hashedNewPassword = hashPassword(newPassword);
                 user.setPassword(hashedNewPassword);
                 userDAO.updateUser(user);

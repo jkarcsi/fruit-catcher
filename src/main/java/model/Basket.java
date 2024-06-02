@@ -6,10 +6,10 @@ import javafx.scene.image.Image;
 public class Basket {
     private double x;
     private double y;
-    private double width;
-    private double height;
+    private final double width;
+    private final double height;
     private double velocityX;
-    private Image basketImage;
+    private final Image basketImage;
 
     public Basket(double x, double y, double width, double height) {
         this.x = x;

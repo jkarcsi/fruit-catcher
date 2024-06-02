@@ -35,15 +35,11 @@ public class PlayerResultsController {
 
     private String username = UserSession.getInstance().getUsername();
 
-    public void setUsername(String username) {
-        this.username = username;
-        loadScores();
-    }
-
     @FXML
     public void initialize() {
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+        loadScores();
     }
 
     private void loadScores() {

@@ -15,6 +15,8 @@ public class GameOverController {
     @FXML
     private Label scoreLabel;
 
+    private int score;
+
     private String username = UserSession.getInstance().getUsername();
 
     public void setUsername(String username) {
@@ -22,6 +24,7 @@ public class GameOverController {
     }
 
     public void setScore(int score) {
+        this.score = score;
         scoreLabel.setText("Your Score: " + score);
     }
 
@@ -30,8 +33,6 @@ public class GameOverController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/game.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
-            GameController controller = loader.getController();
-            controller.setUsername(username);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);

@@ -42,10 +42,7 @@ public class LoginController {
             UserDAO userDAO = new UserDAO();
             User user = userDAO.getUser(username);
 
-            if (user == null) {
-                errorMessage.setText("Invalid username or password.");
-                LoggerUtil.logWarning("Invalid login attempt: " + username);
-            } else if (!user.getPassword().equals(hashedPassword)) {
+            if (user == null || !user.getPassword().equals(hashedPassword)) {
                 errorMessage.setText("Invalid username or password.");
                 LoggerUtil.logWarning("Invalid login attempt: " + username);
             } else if (user.getStatus().equals("banned")) {

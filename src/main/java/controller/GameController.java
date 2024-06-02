@@ -116,7 +116,7 @@ public class GameController {
         stage.heightProperty().addListener((obs, oldVal, newVal) -> {
             gameCanvas.setHeight(newVal.doubleValue());
             backgroundImageView.setFitHeight(newVal.doubleValue());
-            basket.setY(newVal.doubleValue() - 300); // Position basket above the TextArea
+            basket.setY(newVal.doubleValue() - 150); // Position basket above the TextArea
         });
     }
 
@@ -128,8 +128,8 @@ public class GameController {
     private void setupLevels() {
         levels = new ArrayList<>();
         levels.add(new GameLevel(2, 1.5, 30, 10, 0.01, 0.005)); // Easy level
-        levels.add(new GameLevel(3, 2.5, 25, 15, 0.02, 0.01)); // Medium level
-        levels.add(new GameLevel(4, 3.5, 20, 20, 0.03, 0.015)); // Hard level
+        levels.add(new GameLevel(3, 2.5, 25, 20, 0.02, 0.01)); // Medium level
+        levels.add(new GameLevel(4, 3.5, 20, 30, 0.03, 0.015)); // Hard level
         // Add more levels as needed
     }
 
@@ -342,7 +342,6 @@ public class GameController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/gameOver.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
             GameOverController controller = loader.getController();
-            controller.setUsername(username);
             controller.setScore(score);
             Stage stage = (Stage) gameCanvas.getScene().getWindow();
             stage.setScene(scene);
@@ -376,7 +375,4 @@ public class GameController {
         }
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }

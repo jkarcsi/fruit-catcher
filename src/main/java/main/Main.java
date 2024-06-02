@@ -11,7 +11,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/start.fxml"));
         Scene scene = new Scene(loader.load(), 800, 600);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Fruit Catch Game");
+        primaryStage.setTitle("Fruit Catcher");
         primaryStage.setResizable(false);
         primaryStage.show();
     }

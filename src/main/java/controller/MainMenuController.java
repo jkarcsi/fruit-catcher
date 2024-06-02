@@ -20,10 +20,6 @@ public class MainMenuController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/game.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
-
-            GameController gameController = loader.getController();
-            gameController.setUsername(username); // Beállítja a felhasználónevet a GameController-ben
-
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);
@@ -42,10 +38,6 @@ public class MainMenuController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/playerResults.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
-
-            PlayerResultsController playerResultsController = loader.getController();
-            playerResultsController.setUsername(username);
-
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);
@@ -69,8 +61,6 @@ public class MainMenuController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/changePassword.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
-            ChangePasswordController controller = loader.getController();
-            controller.setUsername(username);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);
