@@ -275,7 +275,7 @@ public class GameController {
     private void levelUp() {
         if (level < levels.size() - 1) {
             level++;
-            LoggerUtil.logInfo("Level up! New level: " + level + 1);
+            LoggerUtil.logInfo("Level up! New level: " + level);
         }
     }
 

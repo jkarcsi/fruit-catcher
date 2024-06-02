@@ -1,6 +1,5 @@
 package controller;
 
-import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -34,7 +35,18 @@ public class LoginController {
     private Label errorMessage;
 
     @FXML
-    private void handleLoginButton(ActionEvent event) throws HashException {
+    public void initialize() {
+        passwordField.setOnKeyPressed(this::handleKeyPressed);
+    }
+
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleLoginButton();
+        }
+    }
+
+    @FXML
+    private void handleLoginButton() {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String hashedPassword = hashPassword(password);
@@ -59,7 +71,7 @@ public class LoginController {
                 }
                 Scene scene = new Scene(loader.load(), 800, 600);
 
-                Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+                Stage stage = (Stage) usernameField.getScene().getWindow();
                 stage.setScene(scene);
                 stage.setResizable(false);
                 LoggerUtil.logInfo("User logged in: " + username);
@@ -69,6 +81,7 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     private void handleRegisterButton(ActionEvent event) {
@@ -106,7 +119,7 @@ public class LoginController {
         }
     }
 
-    private String hashPassword(String password) throws HashException {
+    private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hash = md.digest(password.getBytes());
@@ -119,7 +132,7 @@ public class LoginController {
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             LoggerUtil.logSevere("Error hashing password");
-            throw new HashException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

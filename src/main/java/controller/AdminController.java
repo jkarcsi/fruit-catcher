@@ -81,9 +81,9 @@ public class AdminController {
     }
 
     @FXML
-    private void handleBackToMainMenuButton(ActionEvent event) {
+    private void handleLogoutButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/login.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

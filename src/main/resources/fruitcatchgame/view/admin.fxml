@@ -6,15 +6,18 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AdminController" spacing="10" alignment="CENTER">
-    <Label text="Admin Panel" style="-fx-font-size: 16px;"/>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AdminController" spacing="10" alignment="CENTER" stylesheets="@styles.css" styleClass="vbox" maxWidth="300" prefWidth="300" >
+    <Label text="Admin Panel" styleClass="label"/>
     <TableView fx:id="usersTable">
         <columns>
-            <TableColumn fx:id="usernameColumn" text="Username" prefWidth="150"/>
-            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="usernameColumn" text="Username" prefWidth="150" styleClass="table-column" />
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" styleClass="table-column" />
         </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
     </TableView>
-    <Button text="Ban User" onAction="#handleBanUserButton"/>
-    <Button text="Unban User" onAction="#handleUnbanUserButton"/>
-    <Button text="Back to Main Menu" onAction="#handleBackToMainMenuButton"/>
+    <Button text="Ban User" onAction="#handleBanUserButton" styleClass="button"/>
+    <Button text="Unban User" onAction="#handleUnbanUserButton" styleClass="button"/>
+    <Button text="Logout" onAction="#handleLogoutButton" styleClass="button"/>
 </VBox>

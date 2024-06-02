@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MainMenuController" spacing="10" alignment="CENTER" stylesheets="@styles.css" styleClass="vbox">
-    <HBox spacing="10" alignment="CENTER" styleClass="hbox">
-        <Label text="Logged in as:"/>
-        <Label fx:id="usernameLabel" styleClass="label"/>
-    </HBox>
-    <Button text="Start Game" onAction="#handleStartGameButton" styleClass="button"/>
-    <Button text="Description" onAction="#handleDescriptionButton" styleClass="button"/>
-    <Button text="Player Results" onAction="#handlePlayerResultsButton" styleClass="button"/>
-    <Button text="Player Rankings" onAction="#handlePlayerRankingsButton" styleClass="button"/>
-    <Button text="Settings" onAction="#handleSettingsButton" styleClass="button"/>
-    <Button text="Change Password" onAction="#handleChangePasswordButton" styleClass="button"/>
-    <Button text="Logout" onAction="#handleLogoutButton" styleClass="button"/>
-    <Button text="Delete Account" onAction="#handleDeleteAccountButton" styleClass="button"/>
-</VBox>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MainMenuController" stylesheets="@styles.css" styleClass="vbox">
+    <top>
+        <VBox spacing="10" alignment="TOP_RIGHT" styleClass="vbox">
+            <Label text="Logged in as:"/>
+            <Label fx:id="usernameLabel" styleClass="label"/>
+            <Button text="Change Password" onAction="#handleChangePasswordButton" styleClass="button"/>
+            <Button text="Logout" onAction="#handleLogoutButton" styleClass="button"/>
+            <Button text="Delete Account" onAction="#handleDeleteAccountButton" styleClass="button"/>
+        </VBox>
+    </top>
+    <center>
+        <VBox spacing="10" alignment="CENTER" styleClass="vbox">
+            <Button text="Start Game" onAction="#handleStartGameButton" styleClass="button"/>
+            <Button text="Description" onAction="#handleDescriptionButton" styleClass="button"/>
+            <Button text="Player Results" onAction="#handlePlayerResultsButton" styleClass="button"/>
+            <Button text="Player Rankings" onAction="#handlePlayerRankingsButton" styleClass="button"/>
+            <Button text="Settings" onAction="#handleSettingsButton" styleClass="button"/>
+        </VBox>
+    </center>
+</BorderPane>
