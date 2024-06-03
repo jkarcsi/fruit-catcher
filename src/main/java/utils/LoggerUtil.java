@@ -58,9 +58,9 @@ public class LoggerUtil {
             // Set the logger level to ALL to log all levels of messages
             logger.setLevel(Level.ALL);
         } catch (AccessDeniedException e) {
-            logger.log(Level.SEVERE, "Access denied to log directory.", e.getMessage());
+            LoggerUtil.logSevere("Access denied to log directory." + e.getMessage());
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Error occurred in FileHandler.", e);
+            LoggerUtil.logSevere("Error occurred in FileHandler." + e);
         }
     }
 

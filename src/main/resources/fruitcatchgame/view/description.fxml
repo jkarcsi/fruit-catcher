@@ -2,7 +2,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.DescriptionController" alignment="CENTER" spacing="10" stylesheets="@styles.css" styleClass="vbox">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.DescriptionController" alignment="CENTER" spacing="10" stylesheets="@styles.css" styleClass="vbox-center">
     <Label text="Fruit Catch Game" styleClass="label"/>
     <Label text="A játék célja, hogy a játékos minél több felhőből eső gyümölcsöt kapjon el, falevél elkapása nélkül adott idő alatt." wrapText="true" styleClass="label"/>
     <Label text="A játék több szintből épül fel, melyek az eső objektumok típusukból adódó mérete és aránya, illetve esési magassága, szélessége, sebessége miatt egyre nehezednek." wrapText="true" styleClass="label"/>

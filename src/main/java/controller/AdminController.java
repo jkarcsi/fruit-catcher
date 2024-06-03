@@ -10,7 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.user.User;
 import model.user.UserDAO;
 import utils.LoggerUtil;
-import utils.UserSession;
 
 import java.sql.SQLException;
 
@@ -28,7 +27,6 @@ public class AdminController extends BaseController {
     private TableColumn<User, String> statusColumn;
 
     private ObservableList<User> usersList;
-    private String adminUsername = UserSession.getInstance().getUsername();
 
     @FXML
     public void initialize() {
@@ -51,7 +49,7 @@ public class AdminController extends BaseController {
     @FXML
     private void handleBanUserButton(ActionEvent event) {
         User selectedUser = usersTable.getSelectionModel().getSelectedItem();
-        if (selectedUser != null && !selectedUser.getUsername().equals(adminUsername)) {
+        if (selectedUser != null && !selectedUser.getUsername().equals(getUsername())) {
             try {
                 UserDAO userDAO = new UserDAO();
                 userDAO.banUser(selectedUser.getUsername());

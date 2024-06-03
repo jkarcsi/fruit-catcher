@@ -87,17 +87,7 @@ public class LoginController extends BaseController {
 
     @FXML
     private void handleRegisterButton(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(REGISTER));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
-            LoggerUtil.logInfo("Navigated to registration screen");
-        } catch (IOException e) {
-            LoggerUtil.logSevere("Error navigating to registration screen");
-            e.printStackTrace();
-        }
+        navigateTo(REGISTER, event);
     }
 
     @FXML

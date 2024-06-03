@@ -30,11 +30,17 @@
     -fx-background-color: transparent; /* Transparent background */
 }
 
-.vbox {
+.vbox-center {
     -fx-background-color: #e6ffe6;
     -fx-padding: 20;
     -fx-spacing: 10;
     -fx-alignment: center;
+}
+
+.vbox {
+    -fx-background-color: #e6ffe6;
+    -fx-padding: 20;
+    -fx-spacing: 10;
 }
 
 .hbox {

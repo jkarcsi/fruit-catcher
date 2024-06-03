@@ -4,20 +4,30 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import utils.LoggerUtil;
+import utils.UserSession;
 
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
-public class BaseController {
+public abstract class BaseController {
+
+    private final String username = UserSession.getInstance().getUsername();
+
+    protected String getUsername() {
+        return username;
+    }
 
     protected void navigateTo(String fxmlFile, ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Scene scene = new Scene(loader.load(), 800, 600);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/icon.png"))));
             stage.setScene(scene);
             stage.setResizable(false);
         } catch (IOException e) {

@@ -25,14 +25,12 @@ import static utils.FXMLPaths.SETTINGS;
 
 public class MainMenuController extends BaseController {
 
-    private final String username = UserSession.getInstance().getUsername();
-
     @FXML
     private Label usernameLabel;
 
     @FXML
     public void initialize() {
-        usernameLabel.setText(username);
+        usernameLabel.setText(getUsername());
     }
 
     @FXML
@@ -94,13 +92,13 @@ public class MainMenuController extends BaseController {
     private void deleteUserAccount(ActionEvent event) {
         try {
             UserDAO userDAO = new UserDAO();
-            userDAO.deleteUser(username);
-            LoggerUtil.logInfo("Account deleted for user: " + username);
+            userDAO.deleteUser(getUsername());
+            LoggerUtil.logInfo("Account deleted for user: " + getUsername());
             // Log out and navigate to login screen
             UserSession.getInstance().setUsername(null);
             navigateTo(LOGIN, event);
         } catch (SQLException e) {
-            LoggerUtil.logSevere("Error deleting account for user: " + username);
+            LoggerUtil.logSevere("Error deleting account for user: " + getUsername());
             e.printStackTrace();
         }
     }

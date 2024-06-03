@@ -31,8 +31,6 @@ public class PlayerResultsController extends BaseController {
     @FXML
     private TableColumn<Score, String> dateColumn;
 
-    private String username = UserSession.getInstance().getUsername();
-
     @FXML
     public void initialize() {
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
@@ -42,7 +40,7 @@ public class PlayerResultsController extends BaseController {
 
     private void loadScores() {
         try {
-            resultsTable.setItems(getTopScores(username));
+            resultsTable.setItems(getTopScores(getUsername()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -30,7 +30,6 @@ import model.falling.ScoreMultiplier;
 import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
-import utils.UserSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -66,7 +65,6 @@ public class GameController extends BaseController {
     private boolean gamePaused;
     private int timeRemaining;
     private Timer countdownTimer;
-    private final String username = UserSession.getInstance().getUsername();
     private boolean isMusicPlaying = false;
     private ImageView backgroundImageView;
     private MediaPlayer mediaPlayer;
@@ -111,8 +109,8 @@ public class GameController extends BaseController {
     }
 
     private void loadControlKeys() {
-        leftKey = KeyCode.valueOf(PreferencesUtil.getPreference(username, "leftKey", "LEFT"));
-        rightKey = KeyCode.valueOf(PreferencesUtil.getPreference(username, "rightKey", "RIGHT"));
+        leftKey = KeyCode.valueOf(PreferencesUtil.getPreference(getUsername(), "leftKey", "LEFT"));
+        rightKey = KeyCode.valueOf(PreferencesUtil.getPreference(getUsername(), "rightKey", "RIGHT"));
     }
 
     private void adjustCanvasSize() {
@@ -136,10 +134,13 @@ public class GameController extends BaseController {
 
     private void setupLevels() {
         levels = new ArrayList<>();
-        levels.add(new GameLevel(2, 1.5, 30, 30, 0.01, 0.005)); // Easy level
-        levels.add(new GameLevel(2.5, 2, 26, 34, 0.02, 0.01)); // Medium level
-        levels.add(new GameLevel(3, 2.5, 22, 38, 0.03, 0.015)); // Hard level
-        levels.add(new GameLevel(3.5, 3, 18, 42, 0.04, 0.025)); // Extra hard level
+        levels.add(new GameLevel(2, 1.5, 30, 30, 0.01, 0.005));
+        levels.add(new GameLevel(2.25, 1.25, 28, 32, 0.015, 0.0055));
+        levels.add(new GameLevel(2.5, 2, 26, 34, 0.02, 0.01));
+        levels.add(new GameLevel(2.75, 2.25, 24, 36, 0.025, 0.0125));
+        levels.add(new GameLevel(3, 2.5, 22, 38, 0.03, 0.015));
+        levels.add(new GameLevel(3.25, 2.75, 20, 40, 0.035, 0.02));
+        levels.add(new GameLevel(3.5, 3, 18, 42, 0.04, 0.025));
         // Add more levels as needed
     }
 
@@ -347,10 +348,10 @@ public class GameController extends BaseController {
     private void saveScore() {
         try {
             UserDAO userDAO = new UserDAO();
-            userDAO.saveScore(username, score);
-            LoggerUtil.logInfo("Score saved for user: " + username + ", score: " + score);
+            userDAO.saveScore(getUsername(), score);
+            LoggerUtil.logInfo("Score saved for user: " + getUsername() + ", score: " + score);
         } catch (SQLException e) {
-            LoggerUtil.logSevere("Error saving score for user: " + username);
+            LoggerUtil.logSevere("Error saving score for user: " + getUsername());
             e.printStackTrace();
         }
     }
