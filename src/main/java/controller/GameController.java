@@ -74,6 +74,7 @@ public class GameController extends BaseController {
     private List<GameLevel> levels;
     private boolean doublePointsActive;
     private Timeline doublePointsTimer;
+    private boolean isFreeplayMode;
 
     @FXML
     public void initialize() {
@@ -85,6 +86,12 @@ public class GameController extends BaseController {
         basket = new Basket(300, 500, 50, 50);
         gamePaused = false;
         doublePointsActive = false;
+
+        String gameMode = PreferencesUtil.getPreference(getUsername(), "gameMode", "normal");
+        isFreeplayMode = "freeplay".equals(gameMode);
+        if (isFreeplayMode) {
+            timerLabel.setVisible(false);
+        }
 
         setupLevels();
         setupBackground();
@@ -98,7 +105,9 @@ public class GameController extends BaseController {
             gameCanvas.getScene().setOnKeyPressed(this::handleKeyPress);
             gameCanvas.getScene().setOnKeyReleased(this::handleKeyRelease);
             gameCanvas.requestFocus();
-            startCountdown();
+            if (!isFreeplayMode) {
+                startCountdown();
+            }
         });
     }
 
@@ -265,7 +274,7 @@ public class GameController extends BaseController {
             fallingObjects.add(new ScoreMultiplier(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
 
-        if (random.nextDouble() < 0.001) { // Spawn a BonusTime with a 0.1% chance
+        if (random.nextDouble() < 0.001 && !isFreeplayMode) { // Spawn a BonusTime, in normal mode, with a 0.1% chance
             fallingObjects.add(new BonusTime(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
 
@@ -323,11 +332,15 @@ public class GameController extends BaseController {
         gamePaused = !gamePaused;
         if (gamePaused) {
             gameLoop.pause();
-            countdownTimer.cancel();
+            if (!isFreeplayMode) {
+                countdownTimer.cancel();
+            }
             mediaPlayer.pause();
             LoggerUtil.logInfo("Game paused");
         } else {
-            startCountdown();
+            if (!isFreeplayMode) {
+                startCountdown();
+            }
             gameLoop.play();
             if (isMusicPlaying) {
                 mediaPlayer.play();
@@ -339,9 +352,13 @@ public class GameController extends BaseController {
 
     private void endGame() {
         gameLoop.stop();
-        countdownTimer.cancel();
+        if (!isFreeplayMode) {
+            countdownTimer.cancel();
+        }
         mediaPlayer.pause();
-        saveScore();
+        if (!isFreeplayMode) {
+            saveScore();
+        }
         showGameOverScreen();
     }
 
@@ -373,7 +390,9 @@ public class GameController extends BaseController {
     @FXML
     private void handleQuitButton() {
         gameLoop.stop();
-        countdownTimer.cancel();
+        if (!isFreeplayMode) {
+            countdownTimer.cancel();
+        }
         mediaPlayer.pause();
         navigateTo(MAIN_MENU, gameCanvas);
     }

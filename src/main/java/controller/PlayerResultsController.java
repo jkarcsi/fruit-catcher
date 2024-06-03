@@ -16,7 +16,6 @@ import java.util.List;
 
 import model.database.Database;
 import model.Score;
-import utils.UserSession;
 
 import static utils.FXMLPaths.MAIN_MENU;
 
