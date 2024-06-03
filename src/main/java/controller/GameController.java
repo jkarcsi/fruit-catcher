@@ -29,6 +29,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
+import static utils.FXMLPaths.GAME_OVER;
+import static utils.FXMLPaths.MAIN_MENU;
+
 public class GameController extends BaseController {
     @FXML
     private Canvas gameCanvas;
@@ -341,7 +344,7 @@ public class GameController extends BaseController {
 
     private void showGameOverScreen() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/gameOver.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(GAME_OVER));
             Scene scene = new Scene(loader.load(), 800, 600);
             GameOverController controller = loader.getController();
             controller.setScore(score);
@@ -358,7 +361,7 @@ public class GameController extends BaseController {
         gameLoop.stop();
         countdownTimer.cancel();
         mediaPlayer.pause();
-        navigateTo("/fruitcatchgame/view/mainMenu.fxml", gameCanvas);
+        navigateTo(MAIN_MENU, gameCanvas);
     }
 
 }

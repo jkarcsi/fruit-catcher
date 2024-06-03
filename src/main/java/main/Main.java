@@ -5,10 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import static utils.FXMLPaths.START;
+
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/start.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(START));
         Scene scene = new Scene(loader.load(), 800, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Fruit Catcher");

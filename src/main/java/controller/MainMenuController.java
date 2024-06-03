@@ -14,6 +14,15 @@ import utils.UserSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static utils.FXMLPaths.CHANGE_PASSWORD;
+import static utils.FXMLPaths.DELETE_ACCOUNT_CONFIRMATION;
+import static utils.FXMLPaths.DESCRIPTION;
+import static utils.FXMLPaths.GAME;
+import static utils.FXMLPaths.LOGIN;
+import static utils.FXMLPaths.PLAYER_RANKINGS;
+import static utils.FXMLPaths.PLAYER_RESULTS;
+import static utils.FXMLPaths.SETTINGS;
+
 public class MainMenuController extends BaseController {
 
     private final String username = UserSession.getInstance().getUsername();
@@ -28,43 +37,43 @@ public class MainMenuController extends BaseController {
 
     @FXML
     private void handleStartGameButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/game.fxml", event);
+        navigateTo(GAME, event);
     }
 
     @FXML
     private void handleDescriptionButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/description.fxml", event);
+        navigateTo(DESCRIPTION, event);
     }
 
     @FXML
     private void handlePlayerResultsButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/playerResults.fxml", event);
+        navigateTo(PLAYER_RESULTS, event);
     }
 
     @FXML
     private void handlePlayerRankingsButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/playerRankings.fxml", event);
+        navigateTo(PLAYER_RANKINGS, event);
     }
 
     @FXML
     private void handleSettingsButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/settings.fxml", event);
+        navigateTo(SETTINGS, event);
     }
 
     @FXML
     private void handleChangePasswordButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/changePassword.fxml", event);
+        navigateTo(CHANGE_PASSWORD, event);
     }
 
     @FXML
     private void handleLogoutButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/login.fxml", event);
+        navigateTo(LOGIN, event);
     }
 
     @FXML
     private void handleDeleteAccountButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/confirmationDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(DELETE_ACCOUNT_CONFIRMATION));
             Stage dialogStage = new Stage();
             dialogStage.setScene(new Scene(loader.load()));
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -89,7 +98,7 @@ public class MainMenuController extends BaseController {
             LoggerUtil.logInfo("Account deleted for user: " + username);
             // Log out and navigate to login screen
             UserSession.getInstance().setUsername(null);
-            navigateTo("/fruitcatchgame/view/login.fxml", event);
+            navigateTo(LOGIN, event);
         } catch (SQLException e) {
             LoggerUtil.logSevere("Error deleting account for user: " + username);
             e.printStackTrace();

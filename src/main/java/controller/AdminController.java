@@ -4,19 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import model.User;
 import model.UserDAO;
 import utils.LoggerUtil;
 import utils.UserSession;
 
-import java.io.IOException;
 import java.sql.SQLException;
+
+import static utils.FXMLPaths.LOGIN;
 
 public class AdminController extends BaseController {
 
@@ -83,6 +81,6 @@ public class AdminController extends BaseController {
 
     @FXML
     private void handleLogoutButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/login.fxml", event);
+        navigateTo(LOGIN, event);
     }
 }

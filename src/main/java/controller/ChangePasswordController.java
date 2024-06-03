@@ -1,6 +1,5 @@
 package controller;
 
-import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,14 +9,14 @@ import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import model.User;
 import model.UserDAO;
 import utils.LoggerUtil;
 import utils.UserSession;
+
+import static utils.FXMLPaths.MAIN_MENU;
 
 public class ChangePasswordController extends BaseController {
 
@@ -68,7 +67,7 @@ public class ChangePasswordController extends BaseController {
                 LoggerUtil.logInfo("Password changed successfully");
 
                 // Navigate back to main menu
-                navigateTo("/fruitcatchgame/view/mainMenu.fxml", event);
+                navigateTo(MAIN_MENU, event);
             } else {
                 errorMessage.setText("Current password is incorrect");
             }
@@ -80,7 +79,7 @@ public class ChangePasswordController extends BaseController {
     @FXML
     private void handleBackToMainMenuButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(MAIN_MENU));
             Scene scene = new Scene(loader.load(), 800, 600);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);

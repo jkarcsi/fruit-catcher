@@ -9,6 +9,8 @@ import javafx.stage.DirectoryChooser;
 import java.io.File;
 import java.util.prefs.Preferences;
 
+import static utils.FXMLPaths.MAIN_MENU;
+
 public class SettingsController extends BaseController {
 
     @FXML
@@ -77,6 +79,6 @@ public class SettingsController extends BaseController {
 
     @FXML
     private void handleBackToMainMenuButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/mainMenu.fxml", event);
+        navigateTo(MAIN_MENU, event);
     }
 }

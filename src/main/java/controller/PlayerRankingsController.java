@@ -17,6 +17,8 @@ import java.util.List;
 import model.database.Database;
 import model.ranking.Ranking;
 
+import static utils.FXMLPaths.MAIN_MENU;
+
 public class PlayerRankingsController extends BaseController {
 
     @FXML
@@ -42,7 +44,7 @@ public class PlayerRankingsController extends BaseController {
 
     @FXML
     private void handleBackToMainMenuButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/mainMenu.fxml", event);
+        navigateTo(MAIN_MENU, event);
     }
 
     private ObservableList<Ranking> getTopPlayers() throws SQLException {

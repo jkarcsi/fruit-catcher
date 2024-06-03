@@ -4,6 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+import static utils.FXMLPaths.GAME;
+import static utils.FXMLPaths.MAIN_MENU;
+
 public class GameOverController extends BaseController {
 
     @FXML
@@ -22,11 +25,11 @@ public class GameOverController extends BaseController {
 
     @FXML
     private void handleNewGameButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/game.fxml", event);
+        navigateTo(GAME, event);
     }
 
     @FXML
     private void handleMainMenuButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/mainMenu.fxml", event);
+        navigateTo(MAIN_MENU, event);
     }
 }

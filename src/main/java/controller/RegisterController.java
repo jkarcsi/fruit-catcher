@@ -2,21 +2,17 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import model.User;
 import model.UserDAO;
 import utils.LoggerUtil;
+
+import static utils.FXMLPaths.LOGIN;
 
 public class RegisterController extends BaseController {
 
@@ -71,7 +67,7 @@ public class RegisterController extends BaseController {
             LoggerUtil.logInfo("User registered successfully");
 
             // Navigate back to login screen
-            navigateTo("/fruitcatchgame/view/login.fxml", event);
+            navigateTo(LOGIN, event);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,7 +77,7 @@ public class RegisterController extends BaseController {
 
     @FXML
     private void handleBackToLoginButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/login.fxml", event);
+        navigateTo(LOGIN, event);
     }
 
     @FXML

@@ -18,6 +18,8 @@ import model.database.Database;
 import model.Score;
 import utils.UserSession;
 
+import static utils.FXMLPaths.MAIN_MENU;
+
 public class PlayerResultsController extends BaseController {
 
     @FXML
@@ -48,7 +50,7 @@ public class PlayerResultsController extends BaseController {
 
     @FXML
     private void handleBackToMainMenuButton(ActionEvent event) {
-        navigateTo("/fruitcatchgame/view/mainMenu.fxml", event);
+        navigateTo(MAIN_MENU, event);
     }
 
     private ObservableList<Score> getTopScores(String username) throws SQLException {

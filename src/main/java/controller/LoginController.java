@@ -18,6 +18,10 @@ import model.UserDAO;
 import utils.LoggerUtil;
 import utils.UserSession;
 
+import static utils.FXMLPaths.ADMIN;
+import static utils.FXMLPaths.MAIN_MENU;
+import static utils.FXMLPaths.REGISTER;
+
 public class LoginController extends BaseController {
 
     @FXML
@@ -63,9 +67,9 @@ public class LoginController extends BaseController {
                 UserSession.getInstance().setUsername(username); // Set the username in UserSession
                 FXMLLoader loader;
                 if (user.getRole().equals("admin")) {
-                    loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/admin.fxml"));
+                    loader = new FXMLLoader(getClass().getResource(ADMIN));
                 } else {
-                    loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
+                    loader = new FXMLLoader(getClass().getResource(MAIN_MENU));
                 }
                 Scene scene = new Scene(loader.load(), 800, 600);
 
@@ -84,7 +88,7 @@ public class LoginController extends BaseController {
     @FXML
     private void handleRegisterButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/register.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(REGISTER));
             Scene scene = new Scene(loader.load(), 800, 600);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
