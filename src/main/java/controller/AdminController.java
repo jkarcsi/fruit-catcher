@@ -12,12 +12,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.User;
 import model.UserDAO;
+import utils.LoggerUtil;
 import utils.UserSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class AdminController {
+public class AdminController extends BaseController {
 
     @FXML
     private TableView<User> usersTable;
@@ -62,7 +63,7 @@ public class AdminController {
             }
         } else {
             // Show error message if the admin tries to ban themselves
-            System.out.println("Admin cannot ban themselves.");
+            LoggerUtil.logWarning("Admin cannot ban themselves.");
         }
     }
 
@@ -82,14 +83,6 @@ public class AdminController {
 
     @FXML
     private void handleLogoutButton(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/login.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        navigateTo("/fruitcatchgame/view/login.fxml", event);
     }
 }

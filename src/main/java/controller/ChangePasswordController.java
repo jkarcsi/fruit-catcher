@@ -19,7 +19,7 @@ import model.UserDAO;
 import utils.LoggerUtil;
 import utils.UserSession;
 
-public class ChangePasswordController {
+public class ChangePasswordController extends BaseController {
 
     @FXML
     private PasswordField oldPasswordField;
@@ -68,15 +68,11 @@ public class ChangePasswordController {
                 LoggerUtil.logInfo("Password changed successfully");
 
                 // Navigate back to main menu
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
-                Scene scene = new Scene(loader.load(), 800, 600);
-                Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-                stage.setResizable(false);
+                navigateTo("/fruitcatchgame/view/mainMenu.fxml", event);
             } else {
                 errorMessage.setText("Current password is incorrect");
             }
-        } catch (SQLException | IOException | HashException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -94,19 +90,4 @@ public class ChangePasswordController {
         }
     }
 
-    private String hashPassword(String password) throws HashException {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new HashException(e.getMessage());
-        }
-    }
 }

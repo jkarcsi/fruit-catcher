@@ -1,6 +1,7 @@
 package model;
 
 import model.database.Database;
+import utils.LoggerUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -92,15 +93,32 @@ public class UserDAO {
     }
 
     public void deleteUser(String username) throws SQLException {
-        String query = "DELETE FROM users WHERE username = ?";
-        Connection connection = Database.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, username);
-            statement.executeUpdate();
+        String deleteUserQuery = "DELETE FROM users WHERE username = ?";
+        String deleteResultsQuery = "DELETE FROM scores WHERE username = ?";
+
+        try (Connection connection = Database.getConnection();
+             PreparedStatement deleteUserStmt = connection.prepareStatement(deleteUserQuery);
+             PreparedStatement deleteResultsStmt = connection.prepareStatement(deleteResultsQuery)) {
+
+            // Begin transaction
+            connection.setAutoCommit(false);
+
+            // Delete user
+            deleteUserStmt.setString(1, username);
+            deleteUserStmt.executeUpdate();
+
+            // Delete user results
+            deleteResultsStmt.setString(1, username);
+            deleteResultsStmt.executeUpdate();
+
+            // Commit transaction
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
     }
+
 
     public void saveScore(String username, int score) throws SQLException {
         List<Score> userTopScores = getTopScores(username, 10);
@@ -113,9 +131,9 @@ public class UserDAO {
     }
 
     private void insertScore(String username, int score) throws SQLException {
-        System.out.println(username);
+        LoggerUtil.logDebug(username);
         String query = "INSERT INTO scores (username, score) VALUES (?, ?)";
-        System.out.println(query);
+        LoggerUtil.logDebug(query);
         Connection connection = Database.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);

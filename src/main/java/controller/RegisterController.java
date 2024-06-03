@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,8 +16,9 @@ import java.sql.SQLException;
 
 import model.User;
 import model.UserDAO;
+import utils.LoggerUtil;
 
-public class RegisterController {
+public class RegisterController extends BaseController {
 
     @FXML
     private TextField usernameField;
@@ -61,17 +63,17 @@ public class RegisterController {
         try {
             UserDAO userDAO = new UserDAO();
             String hashedPassword = hashPassword(password);
-            userDAO.saveUser(new User(username, hashedPassword, passwordReminder, "admin".equals(username) ? "admin" : "user", "active"));
-            System.out.println("User registered successfully");
+            userDAO.saveUser(new User(username,
+                    hashedPassword,
+                    passwordReminder,
+                    "admin".equals(username) ? "admin" : "user",
+                    "active"));
+            LoggerUtil.logInfo("User registered successfully");
 
             // Navigate back to login screen
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/login.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
+            navigateTo("/fruitcatchgame/view/login.fxml", event);
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             errorLabel.setText("An error occurred. Please try again.");
         }
@@ -79,15 +81,7 @@ public class RegisterController {
 
     @FXML
     private void handleBackToLoginButton(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/login.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        navigateTo("/fruitcatchgame/view/login.fxml", event);
     }
 
     @FXML
@@ -112,19 +106,4 @@ public class RegisterController {
         }
     }
 
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

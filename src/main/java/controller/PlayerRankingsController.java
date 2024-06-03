@@ -4,13 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +17,7 @@ import java.util.List;
 import model.database.Database;
 import model.ranking.Ranking;
 
-public class PlayerRankingsController {
+public class PlayerRankingsController extends BaseController {
 
     @FXML
     private TableView<Ranking> rankingsTable;
@@ -46,15 +42,7 @@ public class PlayerRankingsController {
 
     @FXML
     private void handleBackToMainMenuButton(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        navigateTo("/fruitcatchgame/view/mainMenu.fxml", event);
     }
 
     private ObservableList<Ranking> getTopPlayers() throws SQLException {

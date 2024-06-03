@@ -2,18 +2,14 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.prefs.Preferences;
 
-public class SettingsController {
+public class SettingsController extends BaseController {
 
     @FXML
     private ComboBox<String> gameModeComboBox;
@@ -81,14 +77,6 @@ public class SettingsController {
 
     @FXML
     private void handleBackToMainMenuButton(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        navigateTo("/fruitcatchgame/view/mainMenu.fxml", event);
     }
 }

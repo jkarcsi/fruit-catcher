@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-public class GameController {
+public class GameController extends BaseController {
     @FXML
     private Canvas gameCanvas;
 
@@ -127,9 +127,9 @@ public class GameController {
     private void setupLevels() {
         levels = new ArrayList<>();
         levels.add(new GameLevel(2, 1.5, 30, 30, 0.01, 0.005)); // Easy level
-        levels.add(new GameLevel(2.5, 2, 26, 26, 0.02, 0.01)); // Medium level
-        levels.add(new GameLevel(3, 2.5, 22, 22, 0.03, 0.015)); // Hard level
-        levels.add(new GameLevel(3.5, 3, 18, 18, 0.04, 0.025)); // Extra hard level
+        levels.add(new GameLevel(2.5, 2, 26, 34, 0.02, 0.01)); // Medium level
+        levels.add(new GameLevel(3, 2.5, 22, 38, 0.03, 0.015)); // Hard level
+        levels.add(new GameLevel(3.5, 3, 18, 42, 0.04, 0.025)); // Extra hard level
         // Add more levels as needed
     }
 
@@ -275,7 +275,7 @@ public class GameController {
     private void levelUp() {
         if (level < levels.size() - 1) {
             level++;
-            LoggerUtil.logInfo("Level up! New level: " + level);
+            LoggerUtil.logInfo("Level up! New level: " + (level + 1));
         }
     }
 
@@ -348,9 +348,7 @@ public class GameController {
             Stage stage = (Stage) gameCanvas.getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);
-            LoggerUtil.logInfo("Game over screen displayed");
         } catch (IOException e) {
-            LoggerUtil.logSevere("Error loading game over screen");
             e.printStackTrace();
         }
     }
@@ -360,21 +358,7 @@ public class GameController {
         gameLoop.stop();
         countdownTimer.cancel();
         mediaPlayer.pause();
-        navigateToMainMenu();
-    }
-
-    private void navigateToMainMenu() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/mainMenu.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            Stage stage = (Stage) gameCanvas.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
-            LoggerUtil.logInfo("Navigated back to main menu");
-        } catch (IOException e) {
-            LoggerUtil.logSevere("Error navigating back to main menu");
-            e.printStackTrace();
-        }
+        navigateTo("/fruitcatchgame/view/mainMenu.fxml", gameCanvas);
     }
 
 }

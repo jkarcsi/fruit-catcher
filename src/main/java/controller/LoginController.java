@@ -11,8 +11,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import model.User;
@@ -20,7 +18,7 @@ import model.UserDAO;
 import utils.LoggerUtil;
 import utils.UserSession;
 
-public class LoginController {
+public class LoginController extends BaseController {
 
     @FXML
     private TextField usernameField;
@@ -119,20 +117,4 @@ public class LoginController {
         }
     }
 
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            LoggerUtil.logSevere("Error hashing password");
-            throw new RuntimeException(e.getMessage());
-        }
-    }
 }

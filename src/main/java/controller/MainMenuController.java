@@ -5,14 +5,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.UserDAO;
+import utils.LoggerUtil;
 import utils.UserSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class MainMenuController {
+public class MainMenuController extends BaseController {
 
     private final String username = UserSession.getInstance().getUsername();
 
@@ -62,23 +64,36 @@ public class MainMenuController {
     @FXML
     private void handleDeleteAccountButton(ActionEvent event) {
         try {
-            UserDAO userDAO = new UserDAO();
-            userDAO.deleteUser(username);
-            navigateTo("/fruitcatchgame/view/login.fxml", event);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fruitcatchgame/view/confirmationDialog.fxml"));
+            Stage dialogStage = new Stage();
+            dialogStage.setScene(new Scene(loader.load()));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(((javafx.scene.Node) event.getSource()).getScene().getWindow());
+            dialogStage.setResizable(false);
+            dialogStage.showAndWait();
 
-    private void navigateTo(String fxmlFile, ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
+            ConfirmationDialogController controller = loader.getController();
+            if (controller.isConfirmed()) {
+                deleteUserAccount(event);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+    private void deleteUserAccount(ActionEvent event) {
+        try {
+            UserDAO userDAO = new UserDAO();
+            userDAO.deleteUser(username);
+            LoggerUtil.logInfo("Account deleted for user: " + username);
+            // Log out and navigate to login screen
+            UserSession.getInstance().setUsername(null);
+            navigateTo("/fruitcatchgame/view/login.fxml", event);
+        } catch (SQLException e) {
+            LoggerUtil.logSevere("Error deleting account for user: " + username);
+            e.printStackTrace();
+        }
+    }
+
 }
