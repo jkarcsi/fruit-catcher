@@ -21,6 +21,13 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
+import model.falling.BlackFruit;
+import model.falling.BonusTime;
+import model.falling.FallingObject;
+import model.falling.Fruit;
+import model.falling.Leaf;
+import model.falling.ScoreMultiplier;
+import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
 import utils.UserSession;
@@ -75,9 +82,9 @@ public class GameController extends BaseController {
         gc = gameCanvas.getGraphicsContext2D();
         score = 0;
         timeRemaining = 60;
-        level = 0; // Starting level
+        level = 0;
         fallingObjects = new ArrayList<>();
-        basket = new Basket(300, 500, 50, 50); // Position basket at the bottom
+        basket = new Basket(300, 500, 50, 50);
         gamePaused = false;
         doublePointsActive = false;
 
@@ -209,6 +216,8 @@ public class GameController extends BaseController {
                     activateDoublePoints();
                 } else if (obj instanceof BonusTime) {
                     timeRemaining += 10;
+                } else if (obj instanceof BlackFruit) {
+                    endGame();
                 }
                 obj.setCaught(true);
             }
@@ -257,6 +266,10 @@ public class GameController extends BaseController {
 
         if (random.nextDouble() < 0.001) { // Spawn a BonusTime with a 0.1% chance
             fallingObjects.add(new BonusTime(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        }
+
+        if (random.nextDouble() < 0.002) { // Spawn a BlackFruit with a 0.2% chance
+            fallingObjects.add(new BlackFruit(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
     }
 

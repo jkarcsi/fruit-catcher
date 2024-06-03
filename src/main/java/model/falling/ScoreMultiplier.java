@@ -1,4 +1,4 @@
-package model;
+package model.falling;
 
 public class ScoreMultiplier extends FallingObject {
     public ScoreMultiplier(double x, double y, double speed, double width, double height) {

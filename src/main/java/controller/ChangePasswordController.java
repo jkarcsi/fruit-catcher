@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import model.User;
-import model.UserDAO;
+import model.user.User;
+import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.UserSession;
 

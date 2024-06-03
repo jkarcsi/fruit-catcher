@@ -1,4 +1,4 @@
-package model;
+package model.falling;
 
 public class Leaf extends FallingObject {
     public Leaf(double x, double y, double speed, double width, double height) {

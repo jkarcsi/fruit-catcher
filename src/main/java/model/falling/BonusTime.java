@@ -1,4 +1,4 @@
-package model;
+package model.falling;
 
 public class BonusTime extends FallingObject {
     public BonusTime(double x, double y, double speed, double width, double height) {

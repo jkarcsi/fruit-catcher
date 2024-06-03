@@ -1,7 +1,8 @@
-package model;
+package model.falling;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import model.Basket;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package model;
+package model.falling;
 
 public class Fruit extends FallingObject {
     public Fruit(double x, double y, double speed, double width, double height) {

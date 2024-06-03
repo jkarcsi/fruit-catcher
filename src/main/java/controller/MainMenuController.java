@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.UserDAO;
+import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.UserSession;
 
