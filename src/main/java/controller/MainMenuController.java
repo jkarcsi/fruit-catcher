@@ -59,6 +59,9 @@ public class MainMenuController extends BaseController implements Initializable 
     private Button logoutButton;
 
     @FXML
+    private Button quitButton;
+
+    @FXML
     private Button deleteAccountButton;
 
     private ResourceBundle bundle;
@@ -81,6 +84,7 @@ public class MainMenuController extends BaseController implements Initializable 
         settingsButton.setText(bundle.getString("settings"));
         changePasswordButton.setText(bundle.getString("changePassword"));
         logoutButton.setText(bundle.getString("logout"));
+        quitButton.setText(bundle.getString("quit"));
         deleteAccountButton.setText(bundle.getString("deleteAccount"));
         usernameLabel.setText(getUsername());
     }
@@ -108,6 +112,12 @@ public class MainMenuController extends BaseController implements Initializable 
     @FXML
     private void handleSettingsButton(ActionEvent event) {
         navigateTo(SETTINGS, event);
+    }
+
+    @FXML
+    private void handleQuitButton(ActionEvent event) {
+        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     @FXML

@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -30,15 +31,17 @@ import model.falling.ScoreMultiplier;
 import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
+import utils.UserSession;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
 
 import static utils.FXMLPaths.GAME_OVER;
 import static utils.FXMLPaths.MAIN_MENU;
 
-public class GameController extends BaseController {
+public class GameController extends BaseController implements Initializable {
     @FXML
     private Canvas gameCanvas;
 
@@ -53,6 +56,12 @@ public class GameController extends BaseController {
 
     @FXML
     private Button toggleMusicButton;
+
+    @FXML
+    private Button pauseButton;
+
+    @FXML
+    private Button quitButton;
 
     @FXML
     private TextArea logTextArea;
@@ -76,8 +85,16 @@ public class GameController extends BaseController {
     private Timeline doublePointsTimer;
     private boolean isFreeplayMode;
 
+    private ResourceBundle bundle;
+
     @FXML
-    public void initialize() {
+    public void initialize(URL location, ResourceBundle resources) {
+
+        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), "language", "en");
+        Locale locale = new Locale(language);
+        bundle = ResourceBundle.getBundle("messages", locale);
+        updateTexts();
+
         gc = gameCanvas.getGraphicsContext2D();
         score = 0;
         timeRemaining = 60;
@@ -93,7 +110,7 @@ public class GameController extends BaseController {
             timerLabel.setVisible(false);
         }
 
-        setupLevels();
+        setupInitialLevels();
         setupBackground();
         setupMusic();
         setupLogTextArea();
@@ -109,6 +126,15 @@ public class GameController extends BaseController {
                 startCountdown();
             }
         });
+    }
+
+    private void updateTexts() {
+        scoreLabel.setText(bundle.getString("score"));
+        timerLabel.setText(bundle.getString("timer"));
+        toggleBackgroundButton.setText(bundle.getString("background"));
+        toggleMusicButton.setText(bundle.getString("music"));
+        pauseButton.setText(bundle.getString("pause"));
+        quitButton.setText(bundle.getString("quit"));
     }
 
     private void handleKeyRelease(KeyEvent event) {
@@ -141,16 +167,34 @@ public class GameController extends BaseController {
         logTextArea.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-text-fill: #2e8b57; -fx-border-color: transparent;");
     }
 
-    private void setupLevels() {
+    private void setupInitialLevels() {
         levels = new ArrayList<>();
-        levels.add(new GameLevel(2, 1.5, 30, 30, 0.01, 0.005));
-        levels.add(new GameLevel(2.25, 1.25, 28, 32, 0.015, 0.0055));
-        levels.add(new GameLevel(2.5, 2, 26, 34, 0.02, 0.01));
-        levels.add(new GameLevel(2.75, 2.25, 24, 36, 0.025, 0.0125));
-        levels.add(new GameLevel(3, 2.5, 22, 38, 0.03, 0.015));
-        levels.add(new GameLevel(3.25, 2.75, 20, 40, 0.035, 0.02));
-        levels.add(new GameLevel(3.5, 3, 18, 42, 0.04, 0.025));
-        // Add more levels as needed
+        double fruitSpeed = 2.0;
+        double leafSpeed = 1.5;
+        double fruitSize = 30;
+        double leafSize = 30;
+        double fruitSpawnRate = 0.01;
+        double leafSpawnRate = 0.005;
+
+        for (int i = 0; i < 3; i++) {
+            levels.add(new GameLevel(fruitSpeed, leafSpeed, fruitSize, leafSize, fruitSpawnRate, leafSpawnRate));
+            fruitSpeed += 0.25;
+            leafSpeed += 0.25;
+            fruitSize -= 1;
+            leafSize += 1;
+            fruitSpawnRate += 0.005;
+            leafSpawnRate += 0.005;
+        }
+    }
+
+    private void addLevel() {
+        double fruitSpeed = levels.get(levels.size() - 1).getFruitSpeed() + 0.25;
+        double leafSpeed = levels.get(levels.size() - 1).getLeafSpeed() + 0.25;
+        double fruitSize = levels.get(levels.size()-1).getFruitSize() == 1 ? levels.get(levels.size()-1).getFruitSize() : levels.get(levels.size()-1).getFruitSize() - 1;
+        double leafSize = levels.get(levels.size()-1).getLeafSize() + 1;
+        double fruitSpawnRate = levels.get(levels.size()-1).getFruitSpawnRate() + 0.005;
+        double leafSpawnRate = levels.get(levels.size()-1).getLeafSpawnRate() + 0.005;
+        levels.add(new GameLevel(fruitSpeed, leafSpeed, fruitSize, leafSize, fruitSpawnRate, leafSpawnRate));
     }
 
     private void setupBackground() {
@@ -162,7 +206,6 @@ public class GameController extends BaseController {
 
         ((Pane) gameCanvas.getParent()).getChildren().add(0, backgroundImageView);
     }
-
 
     private void setupMusic() {
         String musicFile = Objects.requireNonNull(getClass().getResource("/fruitcatchgame/sound/dezert.mp3")).toExternalForm();
@@ -176,12 +219,12 @@ public class GameController extends BaseController {
         Pane parentPane = (Pane) gameCanvas.getParent();
         if (parentPane.getChildren().contains(backgroundImageView)) {
             parentPane.getChildren().remove(backgroundImageView);
-            toggleBackgroundButton.setText("Enable Background");
+            toggleBackgroundButton.setText(bundle.getString("enableBackground"));
             LoggerUtil.logInfo("Background disabled");
         } else {
             parentPane.getChildren().add(0, backgroundImageView);
             adjustBackgroundSize();
-            toggleBackgroundButton.setText("Disable Background");
+            toggleBackgroundButton.setText(bundle.getString("disableBackground"));
             LoggerUtil.logInfo("Background enabled");
         }
         gameCanvas.requestFocus();
@@ -192,11 +235,11 @@ public class GameController extends BaseController {
         if (isMusicPlaying) {
             mediaPlayer.pause();
             isMusicPlaying = false;
-            toggleMusicButton.setText("Play Music");
+            toggleMusicButton.setText(bundle.getString("playMusic"));
         } else {
             mediaPlayer.play();
             isMusicPlaying = true;
-            toggleMusicButton.setText("Pause Music");
+            toggleMusicButton.setText(bundle.getString("pauseMusic"));
         }
         gameCanvas.requestFocus();
     }
@@ -261,6 +304,9 @@ public class GameController extends BaseController {
     private void spawnNewFallingObjects() {
         Random random = new Random();
         GameLevel currentLevel = levels.get(level);
+        if (level == levels.size() - 2) {
+            addLevel();
+        }
 
         if (random.nextDouble() < currentLevel.getFruitSpawnRate()) {
             fallingObjects.add(new Fruit(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
@@ -312,7 +358,7 @@ public class GameController extends BaseController {
             public void run() {
                 Platform.runLater(() -> {
                     timeRemaining--;
-                    timerLabel.setText("Time: " + timeRemaining);
+                    timerLabel.setText(bundle.getString("timer") + ": " + timeRemaining);
                     if (timeRemaining <= 0) {
                         endGame();
                     }

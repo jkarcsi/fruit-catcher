@@ -10,7 +10,7 @@
     <Label fx:id="timerLabel" layoutX="10" layoutY="30" text="Time: 60" styleClass="label" />
     <Button fx:id="toggleBackgroundButton" layoutX="10" layoutY="50" text="Background" onAction="#handleToggleBackgroundButton" styleClass="button" />
     <Button fx:id="toggleMusicButton" layoutX="10" layoutY="80" text="Music" onAction="#handleToggleMusicButton" styleClass="button" />
-    <Button layoutX="10" layoutY="110" text="Pause" onAction="#handlePauseButton" styleClass="button" />
-    <Button layoutX="10" layoutY="140" text="Quit" onAction="#handleQuitButton" styleClass="button" />
+    <Button fx:id="pauseButton" layoutX="10" layoutY="110" text="Pause" onAction="#handlePauseButton" styleClass="button" />
+    <Button fx:id="quitButton" layoutX="10" layoutY="140" text="Quit" onAction="#handleQuitButton" styleClass="button" />
     <TextArea fx:id="logTextArea" layoutX="10" layoutY="520" prefWidth="780" prefHeight="70" editable="false" wrapText="true" styleClass="text-area" />
 </AnchorPane>
