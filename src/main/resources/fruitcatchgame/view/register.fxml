@@ -12,5 +12,5 @@
     <TextField fx:id="passwordReminderField" promptText="Password Reminder" styleClass="text-field" />
     <Button text="Register" onAction="#handleRegisterButton" styleClass="button"/>
     <Button text="Back to Login" onAction="#handleBackToLoginButton" styleClass="button"/>
-    <Label fx:id="errorLabel" text="" style="-fx-text-fill: red;"/>
+    <Label fx:id="errorLabel" text="" styleClass="error"/>
 </VBox>

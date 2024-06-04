@@ -82,11 +82,9 @@ public class SettingsController extends BaseController implements Initializable 
     private Button chooseDirectoryButton;
 
     private ResourceBundle bundle;
-    private Preferences prefs;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        prefs = Preferences.userNodeForPackage(SettingsController.class);
 
         String language = PreferencesUtil.getPreference(getUsername(), LANGUAGE, "English");
         Locale locale = new Locale(language);

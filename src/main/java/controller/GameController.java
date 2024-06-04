@@ -92,7 +92,6 @@ public class GameController extends BaseController implements Initializable {
     private int timeRemaining;
     private Timer countdownTimer;
     private boolean isMusicPlaying = false;
-    private ImageView backgroundImageView;
     private MediaPlayer mediaPlayer;
     private KeyCode leftKey;
     private KeyCode rightKey;
@@ -102,6 +101,7 @@ public class GameController extends BaseController implements Initializable {
     private Timeline doublePointsTimer;
     private boolean isFreeplayMode;
     private ResourceBundle bundle;
+    private List<MovingCloud> clouds;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -117,6 +117,7 @@ public class GameController extends BaseController implements Initializable {
         basket = new Basket(300, 500, 50, 50);
         gamePaused = false;
         doublePointsActive = false;
+        clouds = new ArrayList<>();
 
         String gameMode = PreferencesUtil.getPreference(getUsername(), GAME_MODE, "normal");
         isFreeplayMode = "Freeplay".equals(gameMode);
@@ -176,14 +177,8 @@ public class GameController extends BaseController implements Initializable {
         Stage stage = (Stage) gameCanvas.getScene().getWindow();
         gameCanvas.setWidth(stage.getWidth()-20);
         gameCanvas.setHeight(stage.getHeight());
-        stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            gameCanvas.setWidth(newVal.doubleValue());
-            backgroundImageView.setFitWidth(newVal.doubleValue());
-        });
-        stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-            gameCanvas.setHeight(newVal.doubleValue());
-            backgroundImageView.setFitHeight(newVal.doubleValue());
-        });
+        stage.widthProperty().addListener((obs, oldVal, newVal) -> gameCanvas.setWidth(newVal.doubleValue()));
+        stage.heightProperty().addListener((obs, oldVal, newVal) -> gameCanvas.setHeight(newVal.doubleValue()));
     }
 
     private void setupLogTextArea() {
@@ -222,13 +217,23 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupBackground() {
-        Image backgroundImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(
-                "/fruitcatchgame/image/bckgr.gif")));
-        backgroundImageView = new ImageView(backgroundImage);
-        backgroundImageView.setFitWidth(gameCanvas.getWidth());
-        backgroundImageView.setFitHeight(gameCanvas.getHeight());
+        Image cloud1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/cloud1.png")));
+        Image cloud2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/cloud2.png")));
+        Image cloud3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/cloud3.png")));
 
-        ((Pane) gameCanvas.getParent()).getChildren().add(0, backgroundImageView);
+        Random random = new Random();
+        double scaleFactor = 0.1; // A felhők méretének 10%-a
+        for (int i = 0; i < 20; i++) {
+            Image selectedCloud = switch (random.nextInt(3)) {
+                case 0 -> cloud1;
+                case 1 -> cloud2;
+                default -> cloud3;
+            };
+            double y = random.nextDouble() * gameCanvas.getHeight() * 0.6;
+            double speed = 0.5 + random.nextDouble() * 0.5;
+            boolean moveRight = random.nextBoolean();
+            clouds.add(new MovingCloud(random.nextDouble() * gameCanvas.getWidth(), y, speed, moveRight, selectedCloud, scaleFactor));
+        }
     }
 
     private void setupMusic() {
@@ -240,16 +245,14 @@ public class GameController extends BaseController implements Initializable {
 
     @FXML
     private void handleToggleBackgroundButton() {
-        Pane parentPane = (Pane) gameCanvas.getParent();
-        if (parentPane.getChildren().contains(backgroundImageView)) {
-            parentPane.getChildren().remove(backgroundImageView);
-            toggleBackgroundButton.setText(bundle.getString("enableBackground"));
-            LoggerUtil.logInfo("Background disabled");
-        } else {
-            parentPane.getChildren().add(0, backgroundImageView);
-            adjustBackgroundSize();
+        if (clouds.isEmpty()) {
+            setupBackground();
             toggleBackgroundButton.setText(bundle.getString("disableBackground"));
             LoggerUtil.logInfo("Background enabled");
+        } else {
+            clouds.clear();
+            toggleBackgroundButton.setText(bundle.getString("enableBackground"));
+            LoggerUtil.logInfo("Background disabled");
         }
         gameCanvas.requestFocus();
     }
@@ -298,6 +301,10 @@ public class GameController extends BaseController implements Initializable {
                 }
                 obj.setCaught(true);
             }
+
+            if (obj.getY() > basket.getY() + basket.getHeight()) {
+                obj.setCaught(true);
+            }
         }
 
         fallingObjects.removeIf(FallingObject::isCaught);
@@ -308,10 +315,21 @@ public class GameController extends BaseController implements Initializable {
         if (score > (level + 1) * 150) {
             levelUp();
         }
+
+        for (MovingCloud cloud : clouds) {
+            cloud.update(gameCanvas.getWidth());
+        }
     }
+
+
 
     private void renderGame() {
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+
+        for (MovingCloud cloud : clouds) {
+            cloud.render(gc);
+        }
+
         basket.render(gc);
         for (FallingObject obj : fallingObjects) {
             obj.render(gc);
@@ -391,11 +409,6 @@ public class GameController extends BaseController implements Initializable {
             }
         };
         countdownTimer.scheduleAtFixedRate(task, 1000, 1000);
-    }
-
-    private void adjustBackgroundSize() {
-        backgroundImageView.setFitWidth(gameCanvas.getWidth());
-        backgroundImageView.setFitHeight(gameCanvas.getHeight());
     }
 
     @FXML

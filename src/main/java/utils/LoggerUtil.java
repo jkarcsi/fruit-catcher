@@ -1,6 +1,5 @@
 package utils;
 
-import controller.SettingsController;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
@@ -12,7 +11,6 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
-import java.util.prefs.Preferences;
 
 public class LoggerUtil {
     private LoggerUtil() {
@@ -65,8 +63,8 @@ public class LoggerUtil {
     }
 
     public static String getLogDirectory() {
-        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
-        String logDirectoryPath = prefs.get("logFilePath", "log");
+        String username = UserSession.getInstance().getUsername();
+        String logDirectoryPath = PreferencesUtil.getPreference(username, "logFilePath", "default.log");
         File logDirectory = new File(logDirectoryPath);
         if (!logDirectory.exists()) {
             logDirectory.mkdir();

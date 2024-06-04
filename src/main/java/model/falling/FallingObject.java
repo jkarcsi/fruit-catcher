@@ -45,4 +45,8 @@ public abstract class FallingObject {
     public boolean isCaught() {
         return caught;
     }
+
+    public double getY() {
+        return y;
+    }
 }

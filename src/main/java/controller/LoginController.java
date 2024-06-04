@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import model.user.User;
 import model.user.UserDAO;
 import utils.LoggerUtil;
+import utils.PreferencesUtil;
 import utils.UserSession;
 
 import static utils.FXMLPaths.ADMIN;
@@ -65,6 +66,7 @@ public class LoginController extends BaseController {
                 LoggerUtil.logWarning("Banned user login attempt: " + username);
             } else {
                 UserSession.getInstance().setUsername(username); // Set the username in UserSession
+                PreferencesUtil.setDefaultPreferences(username); // Set default settings for new users
                 FXMLLoader loader;
                 if (user.getRole().equals("admin")) {
                     loader = new FXMLLoader(getClass().getResource(ADMIN));
