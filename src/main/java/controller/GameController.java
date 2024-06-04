@@ -39,10 +39,26 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
 
+import static utils.SceneConstants.BACKGROUND;
+import static utils.SceneConstants.DIFFICULTY;
+import static utils.SceneConstants.GAME_MODE;
+import static utils.SceneConstants.LEFT;
+import static utils.SceneConstants.LEFT_ARROW;
+import static utils.SceneConstants.LEFT_KEY;
+import static utils.SceneConstants.MESSAGES;
+import static utils.SceneConstants.MUSIC;
+import static utils.SceneConstants.PAUSE;
+import static utils.SceneConstants.QUIT;
+import static utils.SceneConstants.RIGHT;
+import static utils.SceneConstants.RIGHT_ARROW;
+import static utils.SceneConstants.RIGHT_KEY;
+import static utils.SceneConstants.SCORE;
+import static utils.SceneConstants.TIMER;
 import static utils.FXMLPaths.GAME_OVER;
 import static utils.FXMLPaths.MAIN_MENU;
 
 public class GameController extends BaseController implements Initializable {
+
     @FXML
     private Canvas gameCanvas;
 
@@ -91,7 +107,7 @@ public class GameController extends BaseController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), "language", "en");
         Locale locale = new Locale(language);
-        bundle = ResourceBundle.getBundle("messages", locale);
+        bundle = ResourceBundle.getBundle(MESSAGES, locale);
         updateTexts();
 
         gc = gameCanvas.getGraphicsContext2D();
@@ -102,7 +118,7 @@ public class GameController extends BaseController implements Initializable {
         gamePaused = false;
         doublePointsActive = false;
 
-        String gameMode = PreferencesUtil.getPreference(getUsername(), "gameMode", "normal");
+        String gameMode = PreferencesUtil.getPreference(getUsername(), GAME_MODE, "normal");
         isFreeplayMode = "Freeplay".equals(gameMode);
         if (isFreeplayMode) {
             timerLabel.setVisible(false);
@@ -110,16 +126,11 @@ public class GameController extends BaseController implements Initializable {
 
         setupInitialLevels();
 
-        String difficulty = PreferencesUtil.getPreference(getUsername(), "difficulty", "Easy");
+        String difficulty = PreferencesUtil.getPreference(getUsername(), DIFFICULTY, "Easy");
         switch (difficulty) {
-            case "Medium":
-                level = 5;
-                break;
-            case "Hard":
-                level = 10;
-                break;
-            default:
-                level = 0;
+            case "Medium" -> level = 5;
+            case "Hard" -> level = 10;
+            default -> level = 0;
         }
 
         setupBackground();
@@ -140,12 +151,12 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void updateTexts() {
-        scoreLabel.setText(bundle.getString("score"));
-        timerLabel.setText(bundle.getString("timer"));
-        toggleBackgroundButton.setText(bundle.getString("background"));
-        toggleMusicButton.setText(bundle.getString("music"));
-        pauseButton.setText(bundle.getString("pause"));
-        quitButton.setText(bundle.getString("quit"));
+        scoreLabel.setText(bundle.getString(SCORE));
+        timerLabel.setText(bundle.getString(TIMER));
+        toggleBackgroundButton.setText(bundle.getString(BACKGROUND));
+        toggleMusicButton.setText(bundle.getString(MUSIC));
+        pauseButton.setText(bundle.getString(PAUSE));
+        quitButton.setText(bundle.getString(QUIT));
     }
 
     private void handleKeyRelease(KeyEvent event) {
@@ -155,13 +166,15 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void loadControlKeys() {
-        leftKey = KeyCode.valueOf(PreferencesUtil.getPreference(getUsername(), "leftKey", "LEFT"));
-        rightKey = KeyCode.valueOf(PreferencesUtil.getPreference(getUsername(), "rightKey", "RIGHT"));
+        leftKey = KeyCode.valueOf( LEFT_ARROW.equals(PreferencesUtil.getPreference(getUsername(), LEFT_KEY, LEFT_ARROW)) ? LEFT : PreferencesUtil.getPreference(getUsername(),
+                LEFT_KEY, LEFT_ARROW));
+        rightKey = KeyCode.valueOf( RIGHT_ARROW.equals(PreferencesUtil.getPreference(getUsername(), RIGHT_KEY, RIGHT_ARROW)) ? RIGHT : PreferencesUtil.getPreference(getUsername(),
+                LEFT_KEY, RIGHT_ARROW));
     }
 
     private void adjustCanvasSize() {
         Stage stage = (Stage) gameCanvas.getScene().getWindow();
-        gameCanvas.setWidth(stage.getWidth());
+        gameCanvas.setWidth(stage.getWidth()-20);
         gameCanvas.setHeight(stage.getHeight());
         stage.widthProperty().addListener((obs, oldVal, newVal) -> {
             gameCanvas.setWidth(newVal.doubleValue());
@@ -174,8 +187,8 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupLogTextArea() {
+        logTextArea.setStyle("text-area-background: #e7ffe7;");
         LoggerUtil.setLogTextArea(logTextArea);
-        logTextArea.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent; -fx-text-fill: #2e8b57; -fx-border-color: transparent;");
     }
 
     private void setupInitialLevels() {
@@ -289,7 +302,8 @@ public class GameController extends BaseController implements Initializable {
 
         fallingObjects.removeIf(FallingObject::isCaught);
         spawnNewFallingObjects();
-        scoreLabel.setText("Score: " + score);
+        score = Math.max(score, 0);
+        scoreLabel.setText(bundle.getString(SCORE) + ": " + score);
 
         if (score > (level + 1) * 150) {
             levelUp();
@@ -320,23 +334,23 @@ public class GameController extends BaseController implements Initializable {
         }
 
         if (random.nextDouble() < currentLevel.getFruitSpawnRate()) {
-            fallingObjects.add(new Fruit(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+            fallingObjects.add(new Fruit(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
 
         if (random.nextDouble() < currentLevel.getLeafSpawnRate()) {
-            fallingObjects.add(new Leaf(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getLeafSpeed(), currentLevel.getLeafSize(), currentLevel.getLeafSize()));
+            fallingObjects.add(new Leaf(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getLeafSpeed(), currentLevel.getLeafSize(), currentLevel.getLeafSize()));
         }
 
         if (random.nextDouble() < 0.001) { // Spawn a ScoreMultiplier with a 0.1% chance
-            fallingObjects.add(new ScoreMultiplier(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+            fallingObjects.add(new ScoreMultiplier(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
 
         if (random.nextDouble() < 0.001 && !isFreeplayMode) { // Spawn a BonusTime, in normal mode, with a 0.1% chance
-            fallingObjects.add(new BonusTime(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+            fallingObjects.add(new BonusTime(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
 
         if (random.nextDouble() < 0.002) { // Spawn a BlackFruit with a 0.2% chance
-            fallingObjects.add(new BlackFruit(random.nextInt((int) gameCanvas.getWidth()), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+            fallingObjects.add(new BlackFruit(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
     }
 
@@ -369,7 +383,7 @@ public class GameController extends BaseController implements Initializable {
             public void run() {
                 Platform.runLater(() -> {
                     timeRemaining--;
-                    timerLabel.setText(bundle.getString("timer") + ": " + timeRemaining);
+                    timerLabel.setText(bundle.getString(TIMER) + ": " + timeRemaining);
                     if (timeRemaining <= 0) {
                         endGame();
                     }
