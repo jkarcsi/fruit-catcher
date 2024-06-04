@@ -97,7 +97,6 @@ public class GameController extends BaseController implements Initializable {
         gc = gameCanvas.getGraphicsContext2D();
         score = 0;
         timeRemaining = 60;
-        level = 0;
         fallingObjects = new ArrayList<>();
         basket = new Basket(300, 500, 50, 50);
         gamePaused = false;
@@ -110,6 +109,19 @@ public class GameController extends BaseController implements Initializable {
         }
 
         setupInitialLevels();
+
+        String difficulty = PreferencesUtil.getPreference(getUsername(), "difficulty", "Easy");
+        switch (difficulty) {
+            case "Medium":
+                level = 5;
+                break;
+            case "Hard":
+                level = 10;
+                break;
+            default:
+                level = 0;
+        }
+
         setupBackground();
         setupMusic();
         setupLogTextArea();
@@ -434,7 +446,11 @@ public class GameController extends BaseController implements Initializable {
 
     @FXML
     private void handleQuitButton() {
-        Platform.exit();
-        System.exit(0);
+        gameLoop.stop();
+        if (!isFreeplayMode) {
+            countdownTimer.cancel();
+        }
+        mediaPlayer.pause();
+        navigateTo(MAIN_MENU, gameCanvas);
     }
 }

@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.DescriptionController" alignment="CENTER" spacing="10" stylesheets="@styles.css" styleClass="vbox-center">
     <Label text="Fruit Catch Game" styleClass="label"/>
-    <Label text="A játék célja, hogy a játékos minél több felhőből eső gyümölcsöt kapjon el, falevél elkapása nélkül adott idő alatt." wrapText="true" styleClass="label"/>
-    <Label text="A játék több szintből épül fel, melyek az eső objektumok típusukból adódó mérete és aránya, illetve esési magassága, szélessége, sebessége miatt egyre nehezednek." wrapText="true" styleClass="label"/>
-    <Label text="A játék több módban is játszható, extra nehézségek megjelenésével. Előny lehet a játékos számára a pont-szorzó, illetve a bónusz idő." wrapText="true" styleClass="label"/>
-    <Button text="Back to Main Menu" onAction="#handleBackToMainMenuButton" styleClass="button"/>
+    <Label fx:id="descFirst" text="The goal of the game is for the player to catch as many falling fruits as possible without catching any leaves or black fruits." wrapText="true" styleClass="label"/>
+    <Label fx:id="descSecond" text="The game is made up of several levels, which become increasingly difficult due to the size and proportion of the falling objects and their falling speed." wrapText="true" styleClass="label"/>
+    <Label fx:id="descThird" text="The game can be played in several modes, and the point multiplier and bonus time can be an advantage for the player." wrapText="true" styleClass="label"/>
+    <Button fx:id="backToMainMenu" text="Back to Main Menu" onAction="#handleBackToMainMenuButton" styleClass="button"/>
 </VBox>
