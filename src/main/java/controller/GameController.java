@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -84,12 +85,10 @@ public class GameController extends BaseController implements Initializable {
     private boolean doublePointsActive;
     private Timeline doublePointsTimer;
     private boolean isFreeplayMode;
-
     private ResourceBundle bundle;
 
-    @FXML
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), "language", "en");
         Locale locale = new Locale(language);
         bundle = ResourceBundle.getBundle("messages", locale);
@@ -176,11 +175,11 @@ public class GameController extends BaseController implements Initializable {
         double fruitSpawnRate = 0.01;
         double leafSpawnRate = 0.005;
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 15; i++) { // Pre-define levels up to 15
             levels.add(new GameLevel(fruitSpeed, leafSpeed, fruitSize, leafSize, fruitSpawnRate, leafSpawnRate));
             fruitSpeed += 0.25;
             leafSpeed += 0.25;
-            fruitSize -= 1;
+            fruitSize = Math.max(fruitSize - 1, 1); // Ensure fruit size doesn't go below 1
             leafSize += 1;
             fruitSpawnRate += 0.005;
             leafSpawnRate += 0.005;
@@ -190,10 +189,10 @@ public class GameController extends BaseController implements Initializable {
     private void addLevel() {
         double fruitSpeed = levels.get(levels.size() - 1).getFruitSpeed() + 0.25;
         double leafSpeed = levels.get(levels.size() - 1).getLeafSpeed() + 0.25;
-        double fruitSize = levels.get(levels.size()-1).getFruitSize() == 1 ? levels.get(levels.size()-1).getFruitSize() : levels.get(levels.size()-1).getFruitSize() - 1;
-        double leafSize = levels.get(levels.size()-1).getLeafSize() + 1;
-        double fruitSpawnRate = levels.get(levels.size()-1).getFruitSpawnRate() + 0.005;
-        double leafSpawnRate = levels.get(levels.size()-1).getLeafSpawnRate() + 0.005;
+        double fruitSize = Math.max(levels.get(levels.size() - 1).getFruitSize() - 1, 1);
+        double leafSize = levels.get(levels.size() - 1).getLeafSize() + 1;
+        double fruitSpawnRate = levels.get(levels.size() - 1).getFruitSpawnRate() + 0.005;
+        double leafSpawnRate = levels.get(levels.size() - 1).getLeafSpawnRate() + 0.005;
         levels.add(new GameLevel(fruitSpeed, leafSpeed, fruitSize, leafSize, fruitSpawnRate, leafSpawnRate));
     }
 
@@ -251,7 +250,7 @@ public class GameController extends BaseController implements Initializable {
                 renderGame();
             }
         }));
-        gameLoop.setCycleCount(Timeline.INDEFINITE);
+        gameLoop.setCycleCount(Animation.INDEFINITE);
         gameLoop.play();
     }
 
@@ -435,12 +434,7 @@ public class GameController extends BaseController implements Initializable {
 
     @FXML
     private void handleQuitButton() {
-        gameLoop.stop();
-        if (!isFreeplayMode) {
-            countdownTimer.cancel();
-        }
-        mediaPlayer.pause();
-        navigateTo(MAIN_MENU, gameCanvas);
+        Platform.exit();
+        System.exit(0);
     }
-
 }
