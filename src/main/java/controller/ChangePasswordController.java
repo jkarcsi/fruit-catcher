@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -64,7 +65,7 @@ public class ChangePasswordController extends BaseController {
             } else {
                 errorMessage.setText("Current password is incorrect");
             }
-        } catch (SQLException e) {
+        } catch (SQLException | HashException e) {
             e.printStackTrace();
         }
     }

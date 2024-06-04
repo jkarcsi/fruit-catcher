@@ -25,5 +25,6 @@ public class SceneConstants {
     public static final String RIGHT_ARROW = ">";
     public static final String LEFT = "LEFT";
     public static final String RIGHT = "RIGHT";
+    public static final String ENGLISH = "English";
 
 }

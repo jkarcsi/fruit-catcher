@@ -13,6 +13,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static utils.FXMLPaths.MAIN_MENU;
+import static utils.SceneConstants.ENGLISH;
+import static utils.SceneConstants.LANGUAGE;
 
 public class DescriptionController extends BaseController implements Initializable {
 
@@ -32,7 +34,7 @@ public class DescriptionController extends BaseController implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), "language", "en");
+        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), LANGUAGE, ENGLISH);
         Locale locale = new Locale(language);
         bundle = ResourceBundle.getBundle("messages", locale);
         updateTexts();

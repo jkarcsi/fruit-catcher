@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,9 +53,9 @@ public class LoginController extends BaseController {
     private void handleLoginButton() {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        String hashedPassword = hashPassword(password);
 
         try {
+            String hashedPassword = hashPassword(password);
             UserDAO userDAO = new UserDAO();
             User user = userDAO.getUser(username);
 
@@ -80,7 +81,7 @@ public class LoginController extends BaseController {
                 stage.setResizable(false);
                 LoggerUtil.logInfo("User logged in: " + username);
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException | IOException | HashException e) {
             LoggerUtil.logSevere("Error during login attempt for user: " + username);
             e.printStackTrace();
         }

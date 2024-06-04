@@ -14,11 +14,11 @@ import java.io.File;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
 import static utils.SceneConstants.BACK_TO_MAIN_MENU;
 import static utils.SceneConstants.CHOOSE_DIRECTORY;
 import static utils.SceneConstants.DIFFICULTY;
+import static utils.SceneConstants.ENGLISH;
 import static utils.SceneConstants.GAME_MODE;
 import static utils.SceneConstants.LANGUAGE;
 import static utils.SceneConstants.LEFT_KEY;
@@ -86,7 +86,7 @@ public class SettingsController extends BaseController implements Initializable 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        String language = PreferencesUtil.getPreference(getUsername(), LANGUAGE, "English");
+        String language = PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH);
         Locale locale = new Locale(language);
         bundle = ResourceBundle.getBundle("messages", locale);
 
@@ -106,7 +106,7 @@ public class SettingsController extends BaseController implements Initializable 
         difficultyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), DIFFICULTY, "Easy"));
         textureComboBox.setValue(PreferencesUtil.getPreference(getUsername(), TEXTURE, "Classic"));
         logFilePathTextField.setText(PreferencesUtil.getPreference(getUsername(), LOG_FILE_PATH, ""));
-        languageComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LANGUAGE, "English"));
+        languageComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH));
         leftKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LEFT_KEY, "<"));
         rightKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), RIGHT_KEY, ">"));
     }
@@ -137,7 +137,7 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     @FXML
-    private void handleChooseLogDirectoryButton(ActionEvent event) {
+    private void handleChooseLogDirectoryButton() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle(bundle.getString(CHOOSE_DIRECTORY));
         File selectedDirectory = directoryChooser.showDialog(logFilePathTextField.getScene().getWindow());

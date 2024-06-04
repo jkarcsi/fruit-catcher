@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -69,7 +70,7 @@ public class RegisterController extends BaseController {
             // Navigate back to login screen
             navigateTo(LOGIN, event);
 
-        } catch (SQLException e) {
+        } catch (SQLException | HashException e) {
             e.printStackTrace();
             errorLabel.setText("An error occurred. Please try again.");
         }

@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Properties;
 
 import static utils.SceneConstants.DIFFICULTY;
+import static utils.SceneConstants.ENGLISH;
 import static utils.SceneConstants.GAME_MODE;
 import static utils.SceneConstants.LANGUAGE;
 import static utils.SceneConstants.LEFT_KEY;
@@ -51,12 +52,12 @@ public class PreferencesUtil {
         return properties.getProperty(username + "." + key, defaultValue);
     }
 
-    public static synchronized void setDefaultPreferences(String username) {
-        if (null == getPreference(username, GAME_MODE, "Normal")) {
+    public static void setDefaultPreferences(String username) {
+        if (!properties.containsKey(username)) {
             setPreference(username, GAME_MODE, "Normal");
             setPreference(username, DIFFICULTY, "Easy");
             setPreference(username, LOG_FILE_PATH, "");
-            setPreference(username, LANGUAGE, "English");
+            setPreference(username, LANGUAGE, ENGLISH);
             setPreference(username, LEFT_KEY, "<");
             setPreference(username, RIGHT_KEY, ">");
         }

@@ -14,10 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -41,7 +39,9 @@ import java.util.*;
 
 import static utils.SceneConstants.BACKGROUND;
 import static utils.SceneConstants.DIFFICULTY;
+import static utils.SceneConstants.ENGLISH;
 import static utils.SceneConstants.GAME_MODE;
+import static utils.SceneConstants.LANGUAGE;
 import static utils.SceneConstants.LEFT;
 import static utils.SceneConstants.LEFT_ARROW;
 import static utils.SceneConstants.LEFT_KEY;
@@ -105,7 +105,7 @@ public class GameController extends BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), "language", "en");
+        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), LANGUAGE, ENGLISH);
         Locale locale = new Locale(language);
         bundle = ResourceBundle.getBundle(MESSAGES, locale);
         updateTexts();
@@ -119,7 +119,7 @@ public class GameController extends BaseController implements Initializable {
         doublePointsActive = false;
         clouds = new ArrayList<>();
 
-        String gameMode = PreferencesUtil.getPreference(getUsername(), GAME_MODE, "normal");
+        String gameMode = PreferencesUtil.getPreference(getUsername(), GAME_MODE, "Normal");
         isFreeplayMode = "Freeplay".equals(gameMode);
         if (isFreeplayMode) {
             timerLabel.setVisible(false);
@@ -222,7 +222,7 @@ public class GameController extends BaseController implements Initializable {
         Image cloud3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/cloud3.png")));
 
         Random random = new Random();
-        double scaleFactor = 0.1; // A felhők méretének 10%-a
+        double scaleFactor = 0.1;
         for (int i = 0; i < 20; i++) {
             Image selectedCloud = switch (random.nextInt(3)) {
                 case 0 -> cloud1;

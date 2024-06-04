@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -47,7 +48,7 @@ public abstract class BaseController {
         }
     }
 
-    protected String hashPassword(String password) {
+    protected String hashPassword(String password) throws HashException {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hash = md.digest(password.getBytes());
@@ -60,7 +61,7 @@ public abstract class BaseController {
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             LoggerUtil.logSevere("Error hashing password");
-            throw new RuntimeException(e.getMessage());
+            throw new HashException(e.getMessage());
         }
     }
 }

@@ -28,6 +28,8 @@ import static utils.FXMLPaths.LOGIN;
 import static utils.FXMLPaths.PLAYER_RANKINGS;
 import static utils.FXMLPaths.PLAYER_RESULTS;
 import static utils.FXMLPaths.SETTINGS;
+import static utils.SceneConstants.ENGLISH;
+import static utils.SceneConstants.LANGUAGE;
 
 public class MainMenuController extends BaseController implements Initializable {
 
@@ -68,7 +70,7 @@ public class MainMenuController extends BaseController implements Initializable 
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), "language", "en");
+        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), LANGUAGE, ENGLISH);
         Locale locale = new Locale(language);
         bundle = ResourceBundle.getBundle("messages", locale);
 
