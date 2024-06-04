@@ -3,16 +3,22 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.user.UserDAO;
 import utils.LoggerUtil;
+import utils.PreferencesUtil;
 import utils.UserSession;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import static utils.FXMLPaths.CHANGE_PASSWORD;
 import static utils.FXMLPaths.DELETE_ACCOUNT_CONFIRMATION;
@@ -23,13 +29,59 @@ import static utils.FXMLPaths.PLAYER_RANKINGS;
 import static utils.FXMLPaths.PLAYER_RESULTS;
 import static utils.FXMLPaths.SETTINGS;
 
-public class MainMenuController extends BaseController {
+public class MainMenuController extends BaseController implements Initializable {
+
+    @FXML
+    private Label loggedInAsLabel;
 
     @FXML
     private Label usernameLabel;
 
     @FXML
-    public void initialize() {
+    private Button startGameButton;
+
+    @FXML
+    private Button descriptionButton;
+
+    @FXML
+    private Button playerResultsButton;
+
+    @FXML
+    private Button playerRankingsButton;
+
+    @FXML
+    private Button settingsButton;
+
+    @FXML
+    private Button changePasswordButton;
+
+    @FXML
+    private Button logoutButton;
+
+    @FXML
+    private Button deleteAccountButton;
+
+    private ResourceBundle bundle;
+
+    @FXML
+    public void initialize(URL location, ResourceBundle resources) {
+        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), "language", "en");
+        Locale locale = new Locale(language);
+        bundle = ResourceBundle.getBundle("messages", locale);
+
+        updateTexts();
+    }
+
+    private void updateTexts() {
+        loggedInAsLabel.setText(bundle.getString("loggedInAs"));
+        startGameButton.setText(bundle.getString("startGame"));
+        descriptionButton.setText(bundle.getString("description"));
+        playerResultsButton.setText(bundle.getString("playerResults"));
+        playerRankingsButton.setText(bundle.getString("playerRankings"));
+        settingsButton.setText(bundle.getString("settings"));
+        changePasswordButton.setText(bundle.getString("changePassword"));
+        logoutButton.setText(bundle.getString("logout"));
+        deleteAccountButton.setText(bundle.getString("deleteAccount"));
         usernameLabel.setText(getUsername());
     }
 

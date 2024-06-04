@@ -88,7 +88,7 @@ public class GameController extends BaseController {
         doublePointsActive = false;
 
         String gameMode = PreferencesUtil.getPreference(getUsername(), "gameMode", "normal");
-        isFreeplayMode = "freeplay".equals(gameMode);
+        isFreeplayMode = "Freeplay".equals(gameMode);
         if (isFreeplayMode) {
             timerLabel.setVisible(false);
         }

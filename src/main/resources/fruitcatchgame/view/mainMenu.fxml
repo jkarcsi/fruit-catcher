@@ -13,20 +13,22 @@
     </top>
     <right>
         <VBox spacing="10" alignment="TOP_RIGHT" styleClass="vbox">
-            <Label text="Logged in as:"/>
-            <Label fx:id="usernameLabel" styleClass="label"/>
-            <Button text="Change Password" onAction="#handleChangePasswordButton" styleClass="button"/>
-            <Button text="Logout" onAction="#handleLogoutButton" styleClass="button"/>
-            <Button text="Delete Account" onAction="#handleDeleteAccountButton" styleClass="button"/>
+            <VBox spacing="10" alignment="TOP_CENTER" styleClass="vbox">
+                <Label fx:id="loggedInAsLabel"  text="Logged in as:"/>
+                <Label fx:id="usernameLabel" styleClass="label"/>
+            </VBox>
+            <Button fx:id="changePasswordButton" text="Change Password" onAction="#handleChangePasswordButton" styleClass="button"/>
+            <Button fx:id="logoutButton" text="Logout" onAction="#handleLogoutButton" styleClass="button"/>
+            <Button fx:id="deleteAccountButton" text="Delete Account" onAction="#handleDeleteAccountButton" styleClass="button"/>
         </VBox>
     </right>
     <bottom>
         <VBox spacing="10" alignment="TOP_CENTER" styleClass="vbox">
-            <Button text="Start Game" onAction="#handleStartGameButton" styleClass="button"/>
-            <Button text="Description" onAction="#handleDescriptionButton" styleClass="button"/>
-            <Button text="Player Results" onAction="#handlePlayerResultsButton" styleClass="button"/>
-            <Button text="Player Rankings" onAction="#handlePlayerRankingsButton" styleClass="button"/>
-            <Button text="Settings" onAction="#handleSettingsButton" styleClass="button"/>
+            <Button fx:id="startGameButton" text="Start Game" onAction="#handleStartGameButton" styleClass="button"/>
+            <Button fx:id="descriptionButton" text="Description" onAction="#handleDescriptionButton" styleClass="button"/>
+            <Button fx:id="playerResultsButton" text="Player Results" onAction="#handlePlayerResultsButton" styleClass="button"/>
+            <Button fx:id="playerRankingsButton" text="Player Rankings" onAction="#handlePlayerRankingsButton" styleClass="button"/>
+            <Button fx:id="settingsButton" text="Settings" onAction="#handleSettingsButton" styleClass="button"/>
         </VBox>
     </bottom>
 </BorderPane>
