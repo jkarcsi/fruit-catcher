@@ -199,7 +199,7 @@ public class GameController extends BaseController implements Initializable {
             levels.add(new GameLevel(fruitSpeed, leafSpeed, fruitSize, leafSize, fruitSpawnRate, leafSpawnRate));
             fruitSpeed += 0.25;
             leafSpeed += 0.25;
-            fruitSize = Math.max(fruitSize - 1, 1); // Ensure fruit size doesn't go below 1
+            fruitSize = Math.max(fruitSize - 1, 4); // Ensure fruit size doesn't go below a visible barrier
             leafSize += 1;
             fruitSpawnRate += 0.005;
             leafSpawnRate += 0.005;
@@ -209,7 +209,7 @@ public class GameController extends BaseController implements Initializable {
     private void addLevel() {
         double fruitSpeed = levels.get(levels.size() - 1).getFruitSpeed() + 0.25;
         double leafSpeed = levels.get(levels.size() - 1).getLeafSpeed() + 0.25;
-        double fruitSize = Math.max(levels.get(levels.size() - 1).getFruitSize() - 1, 1);
+        double fruitSize = Math.max(levels.get(levels.size() - 1).getFruitSize() - 1, 4);
         double leafSize = levels.get(levels.size() - 1).getLeafSize() + 1;
         double fruitSpawnRate = levels.get(levels.size() - 1).getFruitSpawnRate() + 0.005;
         double leafSpawnRate = levels.get(levels.size() - 1).getLeafSpawnRate() + 0.005;
@@ -217,9 +217,9 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupBackground() {
-        Image cloud1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/cloud1.png")));
-        Image cloud2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/cloud2.png")));
-        Image cloud3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/cloud3.png")));
+        Image cloud1 = loadImage("/fruitcatchgame/image/cloud1.png");
+        Image cloud2 = loadImage("/fruitcatchgame/image/cloud2.png");
+        Image cloud3 = loadImage("/fruitcatchgame/image/cloud3.png");
 
         Random random = new Random();
         double scaleFactor = 0.1;
@@ -287,20 +287,7 @@ public class GameController extends BaseController implements Initializable {
 
         for (FallingObject obj : fallingObjects) {
             obj.update();
-            if (obj.collidesWith(basket)) {
-                if (obj instanceof Fruit) {
-                    score += doublePointsActive ? 20 : 10;
-                } else if (obj instanceof Leaf) {
-                    score -= 5;
-                } else if (obj instanceof ScoreMultiplier) {
-                    activateDoublePoints();
-                } else if (obj instanceof BonusTime) {
-                    timeRemaining += 10;
-                } else if (obj instanceof BlackFruit) {
-                    endGame();
-                }
-                obj.setCaught(true);
-            }
+            manageColliding(obj);
 
             if (obj.getY() > basket.getY() + basket.getHeight()) {
                 obj.setCaught(true);
@@ -321,6 +308,22 @@ public class GameController extends BaseController implements Initializable {
         }
     }
 
+    private void manageColliding(FallingObject obj) {
+        if (obj.collidesWith(basket)) {
+            if (obj instanceof Fruit) {
+                score += doublePointsActive ? 20 : 10;
+            } else if (obj instanceof Leaf) {
+                score -= 5;
+            } else if (obj instanceof ScoreMultiplier) {
+                activateDoublePoints();
+            } else if (obj instanceof BonusTime) {
+                timeRemaining += 10;
+            } else if (obj instanceof BlackFruit) {
+                endGame();
+            }
+            obj.setCaught(true);
+        }
+    }
 
 
     private void renderGame() {

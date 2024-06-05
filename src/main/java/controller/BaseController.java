@@ -1,6 +1,7 @@
 package controller;
 
 import exceptions.HashException;
+import exceptions.ResourceNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,9 +12,9 @@ import utils.LoggerUtil;
 import utils.UserSession;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 
 public abstract class BaseController {
 
@@ -28,7 +29,7 @@ public abstract class BaseController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Scene scene = new Scene(loader.load(), 800, 600);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/fruitcatchgame/image/icon.png"))));
+            stage.getIcons().add(loadImage("/fruitcatchgame/image/icon.png"));
             stage.setScene(scene);
             stage.setResizable(false);
         } catch (IOException e) {
@@ -63,5 +64,13 @@ public abstract class BaseController {
             LoggerUtil.logSevere("Error hashing password");
             throw new HashException(e.getMessage());
         }
+    }
+
+    protected Image loadImage(String path) {
+        InputStream inputStream = getClass().getResourceAsStream(path);
+        if (inputStream == null) {
+            throw new ResourceNotFoundException("Resource not found: " + path + " in classpath: " + System.getProperty("java.class.path"));
+        }
+        return new Image(inputStream);
     }
 }
