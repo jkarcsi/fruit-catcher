@@ -5,7 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import model.database.DatabaseInitializer;
 
+import java.sql.SQLException;
 import java.util.Objects;
 
 import static utils.FXMLPaths.START;
@@ -23,6 +25,11 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        try {
+            DatabaseInitializer.initializeDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         launch(args);
     }
 }

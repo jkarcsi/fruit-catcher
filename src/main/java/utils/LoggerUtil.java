@@ -42,10 +42,13 @@ public class LoggerUtil {
             String logFileName = logDirectoryPath + File.separator + "game_" + timeStamp + ".txt";
 
             // Check if the directory is writable
-            if (!Files.isWritable(Paths.get(logDirectoryPath))) {
-                logDirectoryPath = System.getProperty("user.home") + File.separator + "logs";
-                Files.createDirectories(Paths.get(logDirectoryPath));
-                logFileName = logDirectoryPath + File.separator + "game_" + timeStamp + ".txt";
+            File logDirectory = new File(logDirectoryPath);
+            if (!logDirectory.exists() && !logDirectory.mkdirs()) {
+                throw new AccessDeniedException("Cannot create log directory: " + logDirectoryPath);
+            }
+
+            if (!Files.isWritable(logDirectory.toPath())) {
+                throw new AccessDeniedException("Log directory is not writable: " + logDirectoryPath);
             }
 
             // Configure the logger with handler and formatter
@@ -56,20 +59,38 @@ public class LoggerUtil {
             // Set the logger level to ALL to log all levels of messages
             logger.setLevel(Level.ALL);
         } catch (AccessDeniedException e) {
-            LoggerUtil.logSevere("Access denied to log directory." + e.getMessage());
+            String fallbackLogDirectory = System.getProperty("user.home") + File.separator + "logs";
+            configureFallbackLogger(fallbackLogDirectory);
+            logSevere("Access denied to log directory: " + e.getMessage() + ". Using fallback directory: " + fallbackLogDirectory);
         } catch (IOException e) {
-            LoggerUtil.logSevere("Error occurred in FileHandler." + e);
+            logSevere("Error occurred in FileHandler: " + e.getMessage());
+        }
+    }
+
+    private static void configureFallbackLogger(String fallbackLogDirectory) {
+        try {
+            // Get current date and time for unique log file name
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+            String logFileName = fallbackLogDirectory + File.separator + "game_" + timeStamp + ".txt";
+
+            // Create fallback directory if it does not exist
+            Files.createDirectories(Paths.get(fallbackLogDirectory));
+
+            // Configure the logger with handler and formatter
+            fileHandler = new FileHandler(logFileName, true);
+            fileHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(fileHandler);
+
+            // Set the logger level to ALL to log all levels of messages
+            logger.setLevel(Level.ALL);
+        } catch (IOException e) {
+            logSevere("Error occurred in FileHandler with fallback directory: " + e.getMessage());
         }
     }
 
     public static String getLogDirectory() {
         String username = UserSession.getInstance().getUsername();
-        String logDirectoryPath = PreferencesUtil.getPreference(username, "logFilePath", "log");
-        File logDirectory = new File(logDirectoryPath);
-        if (!logDirectory.exists()) {
-            logDirectory.mkdir();
-        }
-        return logDirectoryPath;
+        return PreferencesUtil.getPreference(username, "logFilePath", "log");
     }
 
     public static void logInfo(String message) {
