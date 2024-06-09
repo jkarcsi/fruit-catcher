@@ -26,13 +26,4 @@ public class ConfigUtil {
     public static String getConfig(String key) {
         return properties.getProperty(key);
     }
-
-    public static void setConfig(String key, String value) {
-        properties.setProperty(key, value);
-        try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
-            properties.store(output, null);
-        } catch (IOException e) {
-            throw new ConfigException("Failed to save configuration to file: " + CONFIG_FILE, e);
-        }
-    }
 }
