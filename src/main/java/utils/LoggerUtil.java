@@ -64,7 +64,7 @@ public class LoggerUtil {
 
     public static String getLogDirectory() {
         String username = UserSession.getInstance().getUsername();
-        String logDirectoryPath = PreferencesUtil.getPreference(username, "logFilePath", "default.log");
+        String logDirectoryPath = PreferencesUtil.getPreference(username, "logFilePath", "log");
         File logDirectory = new File(logDirectoryPath);
         if (!logDirectory.exists()) {
             logDirectory.mkdir();
