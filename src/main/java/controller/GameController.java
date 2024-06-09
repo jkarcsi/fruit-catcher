@@ -59,6 +59,7 @@ import static utils.FXMLPaths.MAIN_MENU;
 
 public class GameController extends BaseController implements Initializable {
 
+    public static final Random RANDOM = new Random();
     @FXML
     private Canvas gameCanvas;
 
@@ -221,18 +222,17 @@ public class GameController extends BaseController implements Initializable {
         Image cloud2 = loadImage("/fruitcatchgame/image/cloud2.png");
         Image cloud3 = loadImage("/fruitcatchgame/image/cloud3.png");
 
-        Random random = new Random();
         double scaleFactor = 0.1;
         for (int i = 0; i < 20; i++) {
-            Image selectedCloud = switch (random.nextInt(3)) {
+            Image selectedCloud = switch (RANDOM.nextInt(3)) {
                 case 0 -> cloud1;
                 case 1 -> cloud2;
                 default -> cloud3;
             };
-            double y = random.nextDouble() * gameCanvas.getHeight() * 0.6;
-            double speed = 0.5 + random.nextDouble() * 0.5;
-            boolean moveRight = random.nextBoolean();
-            clouds.add(new MovingCloud(random.nextDouble() * gameCanvas.getWidth(), y, speed, moveRight, selectedCloud, scaleFactor));
+            double y = RANDOM.nextDouble() * gameCanvas.getHeight() * 0.6;
+            double speed = 0.5 + RANDOM.nextDouble() * 0.5;
+            boolean moveRight = RANDOM.nextBoolean();
+            clouds.add(new MovingCloud(RANDOM.nextDouble() * gameCanvas.getWidth(), y, speed, moveRight, selectedCloud, scaleFactor));
         }
     }
 
@@ -348,30 +348,29 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void spawnNewFallingObjects() {
-        Random random = new Random();
         GameLevel currentLevel = levels.get(level);
         if (level == levels.size() - 2) {
             addLevel();
         }
 
-        if (random.nextDouble() < currentLevel.getFruitSpawnRate()) {
-            fallingObjects.add(new Fruit(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        if (RANDOM.nextDouble() < currentLevel.getFruitSpawnRate()) {
+            fallingObjects.add(new Fruit(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
 
-        if (random.nextDouble() < currentLevel.getLeafSpawnRate()) {
-            fallingObjects.add(new Leaf(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getLeafSpeed(), currentLevel.getLeafSize(), currentLevel.getLeafSize()));
+        if (RANDOM.nextDouble() < currentLevel.getLeafSpawnRate()) {
+            fallingObjects.add(new Leaf(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getLeafSpeed(), currentLevel.getLeafSize(), currentLevel.getLeafSize()));
         }
 
-        if (random.nextDouble() < 0.001) { // Spawn a ScoreMultiplier with a 0.1% chance
-            fallingObjects.add(new ScoreMultiplier(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        if (RANDOM.nextDouble() < 0.001) { // Spawn a ScoreMultiplier with a 0.1% chance
+            fallingObjects.add(new ScoreMultiplier(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
 
-        if (random.nextDouble() < 0.001 && !isFreeplayMode) { // Spawn a BonusTime, in normal mode, with a 0.1% chance
-            fallingObjects.add(new BonusTime(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        if (RANDOM.nextDouble() < 0.001 && !isFreeplayMode) { // Spawn a BonusTime, in normal mode, with a 0.1% chance
+            fallingObjects.add(new BonusTime(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
 
-        if (random.nextDouble() < 0.002) { // Spawn a BlackFruit with a 0.2% chance
-            fallingObjects.add(new BlackFruit(random.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        if (RANDOM.nextDouble() < 0.002) { // Spawn a BlackFruit with a 0.2% chance
+            fallingObjects.add(new BlackFruit(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
         }
     }
 
