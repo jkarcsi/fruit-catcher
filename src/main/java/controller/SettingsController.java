@@ -12,7 +12,6 @@ import utils.PreferencesUtil;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static utils.SceneConstants.BACK_TO_MAIN_MENU;
@@ -81,14 +80,9 @@ public class SettingsController extends BaseController implements Initializable 
     @FXML
     private Button chooseDirectoryButton;
 
-    private ResourceBundle bundle;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        String language = PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH);
-        Locale locale = new Locale(language);
-        bundle = ResourceBundle.getBundle("messages", locale);
 
         gameModeComboBox.getItems().addAll("Normal", "Freeplay");
         leftKeyComboBox.getItems().addAll("<", "A", "J");
@@ -112,16 +106,16 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     private void updateTexts() {
-        gameModeLabel.setText(bundle.getString(GAME_MODE));
-        difficultyLabel.setText(bundle.getString(DIFFICULTY));
-        textureLabel.setText(bundle.getString(TEXTURE));
-        logFilePathLabel.setText(bundle.getString(LOG_FILE_PATH));
-        languageLabel.setText(bundle.getString(LANGUAGE));
-        leftKeyLabel.setText(bundle.getString(LEFT_KEY));
-        rightKeyLabel.setText(bundle.getString(RIGHT_KEY));
-        saveButton.setText(bundle.getString(SAVE));
-        backToMainMenuButton.setText(bundle.getString(BACK_TO_MAIN_MENU));
-        chooseDirectoryButton.setText(bundle.getString(CHOOSE_DIRECTORY));
+        setMultilingualElement(gameModeLabel, GAME_MODE);
+        setMultilingualElement(difficultyLabel, DIFFICULTY);
+        setMultilingualElement(textureLabel, TEXTURE);
+        setMultilingualElement(logFilePathLabel, LOG_FILE_PATH);
+        setMultilingualElement(languageLabel, LANGUAGE);
+        setMultilingualElement(leftKeyLabel, LEFT_KEY);
+        setMultilingualElement(rightKeyLabel, RIGHT_KEY);
+        setMultilingualElement(saveButton, SAVE);
+        setMultilingualElement(backToMainMenuButton, BACK_TO_MAIN_MENU);
+        setMultilingualElement(chooseDirectoryButton, CHOOSE_DIRECTORY);
     }
 
     @FXML
@@ -139,7 +133,7 @@ public class SettingsController extends BaseController implements Initializable 
     @FXML
     private void handleChooseLogDirectoryButton() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle(bundle.getString(CHOOSE_DIRECTORY));
+        setMultilingualElement(directoryChooser, CHOOSE_DIRECTORY);
         File selectedDirectory = directoryChooser.showDialog(logFilePathTextField.getScene().getWindow());
         if (selectedDirectory != null) {
             logFilePathTextField.setText(selectedDirectory.getAbsolutePath());

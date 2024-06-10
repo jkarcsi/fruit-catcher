@@ -106,6 +106,10 @@
     -fx-text-fill: red;
 }
 
+.reminder {
+    -fx-text-fill: blue;
+}
+
 .title {
     -fx-font-size: 24px; /* Font size for the title */
     -fx-text-fill: #2e8b57; /* Forest green color for the title */

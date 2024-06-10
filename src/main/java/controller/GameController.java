@@ -30,7 +30,6 @@ import model.falling.ScoreMultiplier;
 import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
-import utils.UserSession;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,13 +38,10 @@ import java.util.*;
 
 import static utils.SceneConstants.BACKGROUND;
 import static utils.SceneConstants.DIFFICULTY;
-import static utils.SceneConstants.ENGLISH;
 import static utils.SceneConstants.GAME_MODE;
-import static utils.SceneConstants.LANGUAGE;
 import static utils.SceneConstants.LEFT;
 import static utils.SceneConstants.LEFT_ARROW;
 import static utils.SceneConstants.LEFT_KEY;
-import static utils.SceneConstants.MESSAGES;
 import static utils.SceneConstants.MUSIC;
 import static utils.SceneConstants.PAUSE;
 import static utils.SceneConstants.QUIT;
@@ -101,14 +97,10 @@ public class GameController extends BaseController implements Initializable {
     private boolean doublePointsActive;
     private Timeline doublePointsTimer;
     private boolean isFreeplayMode;
-    private ResourceBundle bundle;
     private List<MovingCloud> clouds;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), LANGUAGE, ENGLISH);
-        Locale locale = new Locale(language);
-        bundle = ResourceBundle.getBundle(MESSAGES, locale);
         updateTexts();
 
         gc = gameCanvas.getGraphicsContext2D();
@@ -153,12 +145,12 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void updateTexts() {
-        scoreLabel.setText(bundle.getString(SCORE));
-        timerLabel.setText(bundle.getString(TIMER));
-        toggleBackgroundButton.setText(bundle.getString(BACKGROUND));
-        toggleMusicButton.setText(bundle.getString(MUSIC));
-        pauseButton.setText(bundle.getString(PAUSE));
-        quitButton.setText(bundle.getString(QUIT));
+        setMultilingualElement(scoreLabel, SCORE);
+        setMultilingualElement(timerLabel, TIMER);
+        setMultilingualElement(toggleBackgroundButton, BACKGROUND);
+        setMultilingualElement(toggleMusicButton, MUSIC);
+        setMultilingualElement(pauseButton, PAUSE);
+        setMultilingualElement(quitButton, QUIT);
     }
 
     private void handleKeyRelease(KeyEvent event) {
@@ -218,9 +210,9 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupBackground() {
-        Image cloud1 = loadImage("/fruitcatchgame/image/cloud1.png");
-        Image cloud2 = loadImage("/fruitcatchgame/image/cloud2.png");
-        Image cloud3 = loadImage("/fruitcatchgame/image/cloud3.png");
+        Image cloud1 = loadImage("/image/cloud1.png");
+        Image cloud2 = loadImage("/image/cloud2.png");
+        Image cloud3 = loadImage("/image/cloud3.png");
 
         double scaleFactor = 0.1;
         for (int i = 0; i < 20; i++) {
@@ -237,7 +229,7 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupMusic() {
-        String musicFile = Objects.requireNonNull(getClass().getResource("/fruitcatchgame/sound/dezert.mp3")).toExternalForm();
+        String musicFile = Objects.requireNonNull(getClass().getResource("/sound/dezert.mp3")).toExternalForm();
         Media media = new Media(musicFile);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -247,11 +239,11 @@ public class GameController extends BaseController implements Initializable {
     private void handleToggleBackgroundButton() {
         if (clouds.isEmpty()) {
             setupBackground();
-            toggleBackgroundButton.setText(bundle.getString("disableBackground"));
+            setMultilingualElement(toggleBackgroundButton, "disableBackground");
             LoggerUtil.logInfo("Background enabled");
         } else {
             clouds.clear();
-            toggleBackgroundButton.setText(bundle.getString("enableBackground"));
+            setMultilingualElement(toggleBackgroundButton, "enableBackground");
             LoggerUtil.logInfo("Background disabled");
         }
         gameCanvas.requestFocus();
@@ -262,11 +254,11 @@ public class GameController extends BaseController implements Initializable {
         if (isMusicPlaying) {
             mediaPlayer.pause();
             isMusicPlaying = false;
-            toggleMusicButton.setText(bundle.getString("playMusic"));
+            setMultilingualElement(toggleMusicButton, "playMusic");
         } else {
             mediaPlayer.play();
             isMusicPlaying = true;
-            toggleMusicButton.setText(bundle.getString("pauseMusic"));
+            setMultilingualElement(toggleMusicButton, "pauseMusic");
         }
         gameCanvas.requestFocus();
     }
@@ -297,7 +289,7 @@ public class GameController extends BaseController implements Initializable {
         fallingObjects.removeIf(FallingObject::isCaught);
         spawnNewFallingObjects();
         score = Math.max(score, 0);
-        scoreLabel.setText(bundle.getString(SCORE) + ": " + score);
+        setMultilingualElement(scoreLabel, SCORE, ": " + score);
 
         if (score > (level + 1) * 150) {
             levelUp();
@@ -403,7 +395,7 @@ public class GameController extends BaseController implements Initializable {
             public void run() {
                 Platform.runLater(() -> {
                     timeRemaining--;
-                    timerLabel.setText(bundle.getString(TIMER) + ": " + timeRemaining);
+                    setMultilingualElement(timerLabel, TIMER, ": " + timeRemaining);
                     if (timeRemaining <= 0) {
                         endGame();
                     }

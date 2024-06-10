@@ -4,22 +4,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import model.database.Database;
 import model.Score;
 
 import static utils.FXMLPaths.MAIN_MENU;
+import static utils.SceneConstants.SCORE;
+import static utils.SceneConstants.TIMESTAMP;
 
-public class PlayerResultsController extends BaseController {
+public class PlayerResultsController extends BaseController implements Initializable {
+
 
     @FXML
     private TableView<Score> resultsTable;
@@ -31,9 +38,11 @@ public class PlayerResultsController extends BaseController {
     private TableColumn<Score, String> dateColumn;
 
     @FXML
-    public void initialize() {
-        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+    public void initialize(URL location, ResourceBundle resources) {
+        scoreColumn.setCellValueFactory(new PropertyValueFactory<>(SCORE));
+//        setMultilingualElement(scoreColumn, SCORE);
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>(TIMESTAMP));
+//        setMultilingualElement(dateColumn, TIMESTAMP);
         loadScores();
     }
 
@@ -58,8 +67,8 @@ public class PlayerResultsController extends BaseController {
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                int score = resultSet.getInt("score");
-                String date = resultSet.getString("timestamp");
+                int score = resultSet.getInt(SCORE);
+                String date = resultSet.getString(TIMESTAMP);
                 scoreList.add(new Score(username, score, date));
             }
         }

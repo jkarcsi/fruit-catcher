@@ -17,7 +17,7 @@ public class Basket {
         this.width = width;
         this.height = height;
         this.velocityX = 0;
-        this.basketImage = new Image("/fruitcatchgame/image/basket.png");
+        this.basketImage = new Image("/image/basket.png");
     }
 
     public void moveLeft() {

@@ -26,5 +26,21 @@ public class SceneConstants {
     public static final String LEFT = "LEFT";
     public static final String RIGHT = "RIGHT";
     public static final String ENGLISH = "English";
+    public static final String LOGGED_IN_AS = "loggedInAs";
+    public static final String START_GAME = "startGame";
+    public static final String DESCRIPTION = "description";
+    public static final String PLAYER_RESULTS = "playerResults";
+    public static final String PLAYER_RANKINGS = "playerRankings";
+    public static final String SETTINGS = "settings";
+    public static final String CHANGE_PASSWORD = "changePassword";
+    public static final String LOGOUT = "logout";
+    public static final String DELETE_ACCOUNT = "deleteAccount";
+    public static final String TIMESTAMP = "timestamp";
+    public static final String YES = "Yes";
+    public static final String NO = "No";
+    public static final String USERNAME = "username";
+    public static final String CURRENT_PASSWORD = "currentPassword";
+    public static final String NEW_PASSWORD = "newPassword";
+    public static final String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
 
 }

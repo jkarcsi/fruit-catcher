@@ -59,6 +59,12 @@ public class RegisterController extends BaseController {
 
         try {
             UserDAO userDAO = new UserDAO();
+
+            if (null != userDAO.getUser(username)) {
+                errorLabel.setText("Username already exists.");
+                return;
+            }
+
             String hashedPassword = hashPassword(password);
             userDAO.saveUser(new User(username,
                     hashedPassword,

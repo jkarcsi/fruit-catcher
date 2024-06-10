@@ -4,22 +4,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import model.database.Database;
 import model.ranking.Ranking;
 
 import static utils.FXMLPaths.MAIN_MENU;
+import static utils.SceneConstants.SCORE;
+import static utils.SceneConstants.USERNAME;
 
-public class PlayerRankingsController extends BaseController {
+public class PlayerRankingsController extends BaseController implements Initializable {
+
 
     @FXML
     private TableView<Ranking> rankingsTable;
@@ -31,9 +38,9 @@ public class PlayerRankingsController extends BaseController {
     private TableColumn<Ranking, Integer> scoreColumn;
 
     @FXML
-    public void initialize() {
-        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
+    public void initialize(URL location, ResourceBundle resources) {
+        usernameColumn.setCellValueFactory(new PropertyValueFactory<>(setMultilingualElement(USERNAME)));
+        scoreColumn.setCellValueFactory(new PropertyValueFactory<>(setMultilingualElement(SCORE)));
 
         try {
             rankingsTable.setItems(getTopPlayers());
@@ -54,7 +61,7 @@ public class PlayerRankingsController extends BaseController {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String username = resultSet.getString("username");
+                String username = resultSet.getString(USERNAME);
                 int totalScore = resultSet.getInt("total_score");
                 rankingList.add(new Ranking(username, totalScore));
             }

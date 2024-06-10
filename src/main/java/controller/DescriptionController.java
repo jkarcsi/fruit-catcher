@@ -30,23 +30,14 @@ public class DescriptionController extends BaseController implements Initializab
     @FXML
     private Button backToMainMenu;
 
-    private ResourceBundle bundle;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), LANGUAGE, ENGLISH);
-        Locale locale = new Locale(language);
-        bundle = ResourceBundle.getBundle("messages", locale);
-        updateTexts();
+        setMultilingualElement(descFirst, "descFirst");
+        setMultilingualElement(descSecond, "descSecond");
+        setMultilingualElement(descThird, "descThird");
+        setMultilingualElement(backToMainMenu, "backToMainMenu");
     }
-
-    private void updateTexts() {
-        descFirst.setText(bundle.getString("descFirst"));
-        descSecond.setText(bundle.getString("descSecond"));
-        descThird.setText(bundle.getString("descThird"));
-        backToMainMenu.setText(bundle.getString("backToMainMenu"));
-    }
-
 
     @FXML
     private void handleBackToMainMenuButton(ActionEvent event) {

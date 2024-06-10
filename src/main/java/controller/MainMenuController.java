@@ -10,28 +10,31 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.user.UserDAO;
+import utils.FXMLPaths;
 import utils.LoggerUtil;
-import utils.PreferencesUtil;
 import utils.UserSession;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static utils.FXMLPaths.CHANGE_PASSWORD;
+import static utils.SceneConstants.CHANGE_PASSWORD;
 import static utils.FXMLPaths.DELETE_ACCOUNT_CONFIRMATION;
-import static utils.FXMLPaths.DESCRIPTION;
 import static utils.FXMLPaths.GAME;
 import static utils.FXMLPaths.LOGIN;
-import static utils.FXMLPaths.PLAYER_RANKINGS;
-import static utils.FXMLPaths.PLAYER_RESULTS;
-import static utils.FXMLPaths.SETTINGS;
-import static utils.SceneConstants.ENGLISH;
-import static utils.SceneConstants.LANGUAGE;
+import static utils.SceneConstants.SETTINGS;
+import static utils.SceneConstants.DELETE_ACCOUNT;
+import static utils.SceneConstants.DESCRIPTION;
+import static utils.SceneConstants.LOGGED_IN_AS;
+import static utils.SceneConstants.LOGOUT;
+import static utils.SceneConstants.PLAYER_RANKINGS;
+import static utils.SceneConstants.PLAYER_RESULTS;
+import static utils.SceneConstants.QUIT;
+import static utils.SceneConstants.START_GAME;
 
 public class MainMenuController extends BaseController implements Initializable {
+
 
     @FXML
     private Label loggedInAsLabel;
@@ -66,28 +69,18 @@ public class MainMenuController extends BaseController implements Initializable 
     @FXML
     private Button deleteAccountButton;
 
-    private ResourceBundle bundle;
-
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        String language = PreferencesUtil.getPreference(UserSession.getInstance().getUsername(), LANGUAGE, ENGLISH);
-        Locale locale = new Locale(language);
-        bundle = ResourceBundle.getBundle("messages", locale);
-
-        updateTexts();
-    }
-
-    private void updateTexts() {
-        loggedInAsLabel.setText(bundle.getString("loggedInAs"));
-        startGameButton.setText(bundle.getString("startGame"));
-        descriptionButton.setText(bundle.getString("description"));
-        playerResultsButton.setText(bundle.getString("playerResults"));
-        playerRankingsButton.setText(bundle.getString("playerRankings"));
-        settingsButton.setText(bundle.getString("settings"));
-        changePasswordButton.setText(bundle.getString("changePassword"));
-        logoutButton.setText(bundle.getString("logout"));
-        quitButton.setText(bundle.getString("quit"));
-        deleteAccountButton.setText(bundle.getString("deleteAccount"));
+        setMultilingualElement(loggedInAsLabel, LOGGED_IN_AS);
+        setMultilingualElement(startGameButton, START_GAME);
+        setMultilingualElement(descriptionButton, DESCRIPTION);
+        setMultilingualElement(playerResultsButton, PLAYER_RESULTS);
+        setMultilingualElement(playerRankingsButton, PLAYER_RANKINGS);
+        setMultilingualElement(settingsButton, SETTINGS);
+        setMultilingualElement(changePasswordButton, CHANGE_PASSWORD);
+        setMultilingualElement(logoutButton, LOGOUT);
+        setMultilingualElement(quitButton, QUIT);
+        setMultilingualElement(deleteAccountButton, DELETE_ACCOUNT);
         usernameLabel.setText(getUsername());
     }
 
@@ -98,22 +91,22 @@ public class MainMenuController extends BaseController implements Initializable 
 
     @FXML
     private void handleDescriptionButton(ActionEvent event) {
-        navigateTo(DESCRIPTION, event);
+        navigateTo(FXMLPaths.DESCRIPTION, event);
     }
 
     @FXML
     private void handlePlayerResultsButton(ActionEvent event) {
-        navigateTo(PLAYER_RESULTS, event);
+        navigateTo(FXMLPaths.PLAYER_RESULTS, event);
     }
 
     @FXML
     private void handlePlayerRankingsButton(ActionEvent event) {
-        navigateTo(PLAYER_RANKINGS, event);
+        navigateTo(FXMLPaths.PLAYER_RANKINGS, event);
     }
 
     @FXML
     private void handleSettingsButton(ActionEvent event) {
-        navigateTo(SETTINGS, event);
+        navigateTo(FXMLPaths.SETTINGS, event);
     }
 
     @FXML
@@ -124,7 +117,7 @@ public class MainMenuController extends BaseController implements Initializable 
 
     @FXML
     private void handleChangePasswordButton(ActionEvent event) {
-        navigateTo(CHANGE_PASSWORD, event);
+        navigateTo(FXMLPaths.CHANGE_PASSWORD, event);
     }
 
     @FXML
