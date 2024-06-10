@@ -12,7 +12,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import model.Score;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
 import utils.UserSession;

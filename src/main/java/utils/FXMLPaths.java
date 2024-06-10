@@ -1,6 +1,7 @@
 package utils;
 
 public class FXMLPaths {
+    private FXMLPaths() {}
     public static final String MAIN_MENU = "/view/mainMenu.fxml";
     public static final String LOGIN = "/view/login.fxml";
     public static final String START = "/view/start.fxml";
