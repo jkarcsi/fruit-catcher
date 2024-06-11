@@ -160,9 +160,13 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void loadControlKeys() {
-        leftKey = KeyCode.valueOf( LEFT_ARROW.equals(PreferencesUtil.getPreference(getUsername(), LEFT_KEY, LEFT_ARROW)) ? LEFT : PreferencesUtil.getPreference(getUsername(),
+        leftKey = KeyCode.valueOf( LEFT_ARROW.equals(PreferencesUtil.getPreference(getUsername(),
+                LEFT_KEY,
+                LEFT_ARROW)) ? LEFT : PreferencesUtil.getPreference(getUsername(),
                 LEFT_KEY, LEFT_ARROW));
-        rightKey = KeyCode.valueOf( RIGHT_ARROW.equals(PreferencesUtil.getPreference(getUsername(), RIGHT_KEY, RIGHT_ARROW)) ? RIGHT : PreferencesUtil.getPreference(getUsername(),
+        rightKey = KeyCode.valueOf(RIGHT_ARROW.equals(PreferencesUtil.getPreference(getUsername(),
+                RIGHT_KEY,
+                RIGHT_ARROW)) ? RIGHT : PreferencesUtil.getPreference(getUsername(),
                 LEFT_KEY, RIGHT_ARROW));
     }
 

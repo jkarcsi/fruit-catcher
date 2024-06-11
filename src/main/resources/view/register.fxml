@@ -10,7 +10,7 @@
     <Label fx:id="passwordStrengthLabel" text="Password strength: " styleClass="label"/>
     <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" styleClass="text-field" />
     <TextField fx:id="passwordReminderField" promptText="Password Reminder" styleClass="text-field" />
-    <Button text="Register" onAction="#handleRegisterButton" styleClass="button"/>
-    <Button text="Back to Login" onAction="#handleBackToLoginButton" styleClass="button"/>
+    <Button fx:id="registerButton" onAction="#handleRegisterButton" styleClass="button"/>
+    <Button fx:id="backToLoginButton" onAction="#handleBackToLoginButton" styleClass="button"/>
     <Label fx:id="errorLabel" styleClass="error"/>
 </VBox>

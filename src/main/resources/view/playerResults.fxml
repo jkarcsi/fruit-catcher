@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.PlayerResultsController" spacing="10" alignment="CENTER" stylesheets="@styles.css" styleClass="vbox-center">
-    <Label text="Top Scores" styleClass="title"/>
+    <Label fx:id="topScores" styleClass="title"/>
     <TableView fx:id="resultsTable" prefWidth="300" styleClass="table-view">
         <columns>
             <TableColumn fx:id="scoreColumn" text="Score" prefWidth="150" styleClass="table-column"/>

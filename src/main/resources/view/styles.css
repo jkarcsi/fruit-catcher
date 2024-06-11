@@ -18,6 +18,21 @@
     -fx-border-color: #556b2f; /* Dark olive green border */
 }
 
+.game-button {
+    -fx-pref-width: 150; /* Set preferred width */
+    -fx-background-color: #6b8e23; /* Olive green button background */
+    -fx-text-fill: #fff; /* White text color */
+    -fx-font-size: 14px;
+    -fx-background-radius: 5; /* Rounded corners */
+    -fx-border-radius: 5; /* Rounded border */
+    -fx-border-color: #556b2f; /* Dark olive green border */
+    -fx-opacity: 0.1;
+}
+
+.game-button:hover {
+    -fx-opacity: 0.9;
+}
+
 .text-area {
     text-area-background: transparent;
     -fx-background-color: transparent; /* Transparent background */

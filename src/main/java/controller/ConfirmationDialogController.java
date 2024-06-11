@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import utils.SceneConstants;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +17,8 @@ import static utils.SceneConstants.YES;
 public class ConfirmationDialogController extends BaseController implements Initializable {
 
     @FXML
+    public Label confirmDeleteAccount;
+    @FXML
     private Button yesButton;
 
     @FXML
@@ -23,6 +27,7 @@ public class ConfirmationDialogController extends BaseController implements Init
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setMultilingualElement(confirmDeleteAccount, SceneConstants.CONFIRM_DELETE_ACCOUNT);
         setMultilingualElement(yesButton, YES);
         setMultilingualElement(noButton, NO);
     }

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ConfirmationDialogController" spacing="10" alignment="CENTER" stylesheets="@styles.css">
-    <Label text="Are you sure you want to delete your account?" styleClass="label"/>
+    <Label fx:id="confirmDeleteAccount" styleClass="label"/>
     <HBox spacing="10" alignment="CENTER">
         <Button fx:id="yesButton" onAction="#handleYesButton" styleClass="button"/>
         <Button fx:id="noButton" onAction="#handleNoButton" styleClass="button"/>

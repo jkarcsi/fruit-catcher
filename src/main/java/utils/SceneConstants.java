@@ -2,7 +2,10 @@ package utils;
 
 public class SceneConstants {
 
+    public static final String TOP_SCORES = "topScores";
+
     private SceneConstants() {}
+
 
     public static final String SCORE = "score";
     public static final String TIMER = "timer";
@@ -36,11 +39,12 @@ public class SceneConstants {
     public static final String LOGOUT = "logout";
     public static final String DELETE_ACCOUNT = "deleteAccount";
     public static final String TIMESTAMP = "timestamp";
-    public static final String YES = "Yes";
-    public static final String NO = "No";
+    public static final String YES = "yes";
+    public static final String NO = "no";
     public static final String USERNAME = "username";
     public static final String CURRENT_PASSWORD = "currentPassword";
     public static final String NEW_PASSWORD = "newPassword";
     public static final String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
+    public static final String CONFIRM_DELETE_ACCOUNT = "confirmDeleteAccount";
 
 }
