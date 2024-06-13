@@ -8,7 +8,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import utils.LoggerUtil;
 import utils.PreferencesUtil;
+import utils.Texture;
 
 import java.io.File;
 import java.net.URL;
@@ -80,16 +82,14 @@ public class SettingsController extends BaseController implements Initializable 
     @FXML
     private Button chooseDirectoryButton;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         gameModeComboBox.getItems().addAll("Normal", "Freeplay");
         leftKeyComboBox.getItems().addAll("<", "A", "J");
         rightKeyComboBox.getItems().addAll(">", "D", "L");
         languageComboBox.getItems().addAll("English", "Magyar");
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
-        textureComboBox.getItems().addAll("Classic", "Retro", "Futuristic");
+        textureComboBox.getItems().addAll("Forest", "Retro", "Futuristic");
 
         loadSettings();
         updateTexts();
@@ -98,7 +98,7 @@ public class SettingsController extends BaseController implements Initializable 
     private void loadSettings() {
         gameModeComboBox.setValue(PreferencesUtil.getPreference(getUsername(), GAME_MODE, "Normal"));
         difficultyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), DIFFICULTY, "Easy"));
-        textureComboBox.setValue(PreferencesUtil.getPreference(getUsername(), TEXTURE, "Classic"));
+        textureComboBox.setValue(PreferencesUtil.getPreference(getUsername(), TEXTURE, "Forest"));
         logFilePathTextField.setText(PreferencesUtil.getPreference(getUsername(), LOG_FILE_PATH, ""));
         languageComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH));
         leftKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LEFT_KEY, "<"));
@@ -127,7 +127,22 @@ public class SettingsController extends BaseController implements Initializable 
         PreferencesUtil.setPreference(getUsername(), LANGUAGE, languageComboBox.getValue());
         PreferencesUtil.setPreference(getUsername(), LEFT_KEY, leftKeyComboBox.getValue());
         PreferencesUtil.setPreference(getUsername(), RIGHT_KEY, rightKeyComboBox.getValue());
+
+        String value = textureComboBox.getValue();
+        LoggerUtil.logDebug("textureComboBox.getValue()");
+        LoggerUtil.logDebug(value);
+
+        applyTexture();
+
         handleBackToMainMenuButton(event);
+    }
+
+    private void applyTexture() {
+        String selectedTexture = textureComboBox.getValue();
+        Texture texture = Texture.valueOf(selectedTexture.toUpperCase());
+
+        PreferencesUtil.setTexture(getUsername(), texture);
+        applyUserStylesheet();
     }
 
     @FXML

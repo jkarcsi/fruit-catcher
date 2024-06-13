@@ -3,28 +3,28 @@ package controller;
 import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 import model.user.User;
 import model.user.UserDAO;
 import utils.LoggerUtil;
+import utils.PasswordStrength;
+import utils.UserRole;
 
 import static utils.FXMLPaths.LOGIN;
+import static utils.SceneConstants.AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN;
+import static utils.SceneConstants.PASSWORDS_DO_NOT_MATCH;
+import static utils.SceneConstants.PASSWORD_IS_NOT_STRONG_ENOUGH;
+import static utils.SceneConstants.USERNAME_ALREADY_EXISTS;
+import static utils.SceneConstants.USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY;
 
-public class RegisterController extends BaseController implements Initializable {
+public class RegisterController extends BaseController {
 
-    public static final String USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY = "Username, password, and password reminder cannot be empty";
-    public static final String PASSWORD_IS_NOT_STRONG_ENOUGH = "Password is not strong enough";
-    public static final String USERNAME_ALREADY_EXISTS = "Username already exists.";
-    public static final String AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN = "An error occurred. Please try again.";
     @FXML
     public Button registerButton;
 
@@ -49,11 +49,6 @@ public class RegisterController extends BaseController implements Initializable 
     @FXML
     private TextField passwordReminderField;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
     @FXML
     private void handleRegisterButton(ActionEvent event) {
         String username = usernameField.getText();
@@ -62,7 +57,7 @@ public class RegisterController extends BaseController implements Initializable 
         String passwordReminder = passwordReminderField.getText();
 
         if (!password.equals(confirmPassword)) {
-            errorLabel.setText("Passwords do not match");
+            errorLabel.setText(PASSWORDS_DO_NOT_MATCH);
             return;
         }
 
@@ -88,7 +83,7 @@ public class RegisterController extends BaseController implements Initializable 
             userDAO.saveUser(new User(username,
                     hashedPassword,
                     passwordReminder,
-                    "admin".equals(username) ? "admin" : "user",
+                    UserRole.ADMIN.value().equals(username) ? UserRole.ADMIN.value() : UserRole.USER.value(),
                     "active"));
             LoggerUtil.logInfo("User registered successfully");
 
@@ -119,11 +114,11 @@ public class RegisterController extends BaseController implements Initializable 
 
     private String getPasswordStrength(String password) {
         if (password.length() < 8) {
-            return "Weak";
+            return PasswordStrength.WEAK.value();
         } else if (password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*")) {
-            return "Strong";
+            return PasswordStrength.STRONG.value();
         } else {
-            return "Medium";
+            return PasswordStrength.MEDIUM.value();
         }
     }
 }

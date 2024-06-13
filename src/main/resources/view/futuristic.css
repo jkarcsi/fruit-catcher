@@ -1,0 +1,132 @@
+.root {
+    -fx-font-family: 'Arial';
+    -fx-background-color: #1a1a1a; /* Dark background */
+}
+
+.label {
+    -fx-text-fill: #00ffff; /* Cyan text color */
+    -fx-font-size: 16px;
+}
+
+.button {
+    -fx-pref-width: 150; /* Set preferred width */
+    -fx-background-color: #00ced1; /* Dark turquoise button background */
+    -fx-text-fill: #000; /* Black text color */
+    -fx-font-size: 14px;
+    -fx-background-radius: 5; /* Rounded corners */
+    -fx-border-radius: 5; /* Rounded border */
+    -fx-border-color: #00ffff; /* Cyan border */
+}
+
+.game-button {
+    -fx-pref-width: 150; /* Set preferred width */
+    -fx-background-color: #00ced1; /* Dark turquoise button background */
+    -fx-text-fill: #000; /* Black text color */
+    -fx-font-size: 14px;
+    -fx-background-radius: 5; /* Rounded corners */
+    -fx-border-radius: 5; /* Rounded border */
+    -fx-border-color: #00ffff; /* Cyan border */
+    -fx-opacity: 0.1;
+}
+
+.game-button:hover {
+    -fx-opacity: 0.9;
+}
+
+.text-area {
+    text-area-background: transparent;
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-control-inner-background: transparent; /* Transparent inner background */
+    -fx-text-fill: #00ffff; /* Cyan text color */
+    -fx-border-color: #00ced1; /* Dark turquoise border */
+    -fx-progress-color: transparent;
+}
+
+.text-area .content {
+    -fx-background-color: text-area-background;
+}
+
+.canvas {
+    -fx-background-color: transparent; /* Transparent background */
+}
+
+.vbox-center {
+    -fx-background-color: #2e2e2e; /* Dark grey background */
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.vbox {
+    -fx-background-color: #2e2e2e; /* Dark grey background */
+    -fx-padding: 20;
+    -fx-spacing: 10;
+}
+
+.hbox {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.retro-title {
+    -fx-font-family: 'Courier New', Courier, monospace;
+    -fx-text-fill: #00ffff; /* Cyan text color */
+    -fx-font-size: 36px; /* Large font size */
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.75), 4, 0.0, 2, 2);
+}
+
+.table-view {
+    -fx-background-color: #333333; /* Dark grey background for table */
+    -fx-border-color: #00ced1; /* Dark turquoise border */
+    -fx-table-cell-border-color: #00ced1; /* Dark turquoise border for cells */
+    -fx-control-inner-background: #333333; /* Dark grey background for cells */
+    -fx-text-background-color: transparent;
+    -fx-text-inner-color: #00ffff; /* Cyan text color */
+}
+
+.table-column {
+    -fx-background-color: #00ced1; /* Dark turquoise background for column headers */
+    -fx-text-fill: #000; /* Black text color for column headers */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.combo-box {
+    -fx-pref-width: 200px; /* Set preferred width for combo boxes */
+    -fx-font-size: 14px;
+    -fx-background-color: #fff;
+    -fx-border-color: #00ced1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.text-field {
+    -fx-pref-width: 100; /* Set preferred width */
+    -fx-max-width: 200;
+    -fx-alignment: center;
+    -fx-font-size: 14px;
+    -fx-padding: 5;
+    -fx-background-color: #fff;
+    -fx-border-color: #00ced1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #00bfff; /* Deep sky blue */
+}
+
+.error {
+    -fx-text-fill: red;
+}
+
+.reminder {
+    -fx-text-fill: blue;
+}
+
+.title {
+    -fx-font-size: 24px; /* Font size for the title */
+    -fx-text-fill: #00ffff; /* Cyan color for the title */
+    -fx-font-weight: bold; /* Bold font for the title */
+}

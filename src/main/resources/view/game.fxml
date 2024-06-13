@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController" stylesheets="@styles.css">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController" stylesheets="@forest.css">
     <Canvas fx:id="gameCanvas" width="800" height="600" />
     <Label fx:id="scoreLabel" layoutX="10" layoutY="10" text="Score: 0" styleClass="label" />
     <Label fx:id="timerLabel" layoutX="10" layoutY="30" text="Time: 60" styleClass="label" />

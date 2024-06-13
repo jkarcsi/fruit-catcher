@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.StartController" stylesheets="@styles.css">
+<BorderPane fx:id="startPageRoot" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.StartController" stylesheets="@forest.css">
 <top>
     <VBox spacing="10" alignment="TOP_CENTER" styleClass="vbox-center">
         <Label text="Fruit Catcher" styleClass="retro-title"/>

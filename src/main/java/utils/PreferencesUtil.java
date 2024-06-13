@@ -12,6 +12,7 @@ import static utils.SceneConstants.LEFT_KEY;
 import static utils.SceneConstants.LOG_FILE_PATH;
 import static utils.SceneConstants.RIGHT_ARROW;
 import static utils.SceneConstants.RIGHT_KEY;
+import static utils.SceneConstants.TEXTURE;
 
 public class PreferencesUtil {
     private PreferencesUtil() {}
@@ -61,9 +62,19 @@ public class PreferencesUtil {
             setPreference(username, GAME_MODE, "Normal");
             setPreference(username, DIFFICULTY, "Easy");
             setPreference(username, LOG_FILE_PATH, "");
+            setPreference(username, TEXTURE, "Forest");
             setPreference(username, LANGUAGE, ENGLISH);
             setPreference(username, LEFT_KEY, LEFT_ARROW);
             setPreference(username, RIGHT_KEY, RIGHT_ARROW);
         }
+    }
+
+    public static synchronized void setTexture(String username, Texture texture) {
+        setPreference(username, TEXTURE, texture.name());
+    }
+
+    public static synchronized Texture getTexture(String username) {
+        String textureName = getPreference(username, TEXTURE, "Forest");
+        return Texture.valueOf(textureName.toUpperCase());
     }
 }

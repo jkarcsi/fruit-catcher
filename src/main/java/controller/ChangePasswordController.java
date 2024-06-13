@@ -20,8 +20,10 @@ import static utils.FXMLPaths.MAIN_MENU;
 import static utils.SceneConstants.BACK_TO_MAIN_MENU;
 import static utils.SceneConstants.CHANGE_PASSWORD;
 import static utils.SceneConstants.CURRENT_PASSWORD;
+import static utils.SceneConstants.CURRENT_PASSWORD_IS_INCORRECT;
 import static utils.SceneConstants.NEW_PASSWORD;
 import static utils.SceneConstants.CONFIRM_NEW_PASSWORD;
+import static utils.SceneConstants.PASSWORDS_DO_NOT_MATCH;
 
 public class ChangePasswordController extends BaseController implements Initializable {
 
@@ -63,7 +65,7 @@ public class ChangePasswordController extends BaseController implements Initiali
         LoggerUtil.logInfo("Confirm password: " + confirmPassword);
 
         if (!newPassword.equals(confirmPassword)) {
-            errorMessage.setText("New passwords do not match");
+            setMultilingualElement(errorMessage, PASSWORDS_DO_NOT_MATCH);
             return;
         }
 
@@ -87,7 +89,7 @@ public class ChangePasswordController extends BaseController implements Initiali
                 // Navigate back to main menu
                 navigateTo(MAIN_MENU, event);
             } else {
-                errorMessage.setText("Current password is incorrect");
+                setMultilingualElement(errorMessage,  CURRENT_PASSWORD_IS_INCORRECT);
             }
         } catch (SQLException | HashException e) {
             e.printStackTrace();

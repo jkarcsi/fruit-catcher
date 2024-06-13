@@ -83,6 +83,12 @@ public class LoggerUtil {
 
             // Set the logger level to ALL to log all levels of messages
             logger.setLevel(Level.ALL);
+
+            // Set console handler level to ALL to log all levels of messages to the console
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
+            logger.addHandler(consoleHandler);
+
         } catch (IOException e) {
             logSevere("Error occurred in FileHandler with fallback directory: " + e.getMessage());
         }

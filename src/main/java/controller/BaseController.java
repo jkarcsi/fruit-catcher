@@ -4,6 +4,7 @@ import exceptions.HashException;
 import exceptions.ResourceNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Labeled;
@@ -12,12 +13,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
+import utils.Texture;
 import utils.UserSession;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -27,9 +31,49 @@ import static utils.SceneConstants.ENGLISH;
 import static utils.SceneConstants.LANGUAGE;
 import static utils.SceneConstants.MESSAGES;
 
-public abstract class BaseController {
+public class BaseController implements Initializable {
 
     private final String username = UserSession.getInstance().getUsername();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        applyUserStylesheet();
+    }
+
+    protected void applyUserStylesheet() {
+        Texture texture = PreferencesUtil.getTexture(getUsername());
+        LoggerUtil.logInfo("Texture texture = PreferencesUtil.getTexture(getUsername());");
+        LoggerUtil.logInfo(texture.toString());
+        for (Window window : Window.getWindows()) {
+            if (window instanceof Stage stage) {
+                Scene scene = stage.getScene();
+                // Skip the StartController stage
+                if (scene != null && scene.getRoot().getUserData() != null && scene.getRoot().getUserData().equals("StartPage")) {
+                    continue;
+                }
+                if (scene != null) {
+                    LoggerUtil.logInfo("scene != null");
+                    applyUserStylesheet(scene, texture);
+                }
+            }
+        }
+    }
+
+    private void applyUserStylesheet(Scene scene, Texture texture) {
+        scene.getStylesheets().clear();
+        URL cssFile = getClass().getResource("/view/" + texture.getCssFile());
+        if (cssFile != null) {
+            scene.getStylesheets().add(cssFile.toExternalForm());
+            LoggerUtil.logInfo("scene.getStylesheets().add(cssFile.toExternalForm());");
+            LoggerUtil.logInfo(cssFile.toExternalForm());
+        } else {
+            LoggerUtil.logSevere("CSS file not found: " + texture.getCssFile());
+        }
+
+        LoggerUtil.logInfo(scene.getStylesheets().toString());
+    }
+
+
 
     protected String getUsername() {
         return username;
@@ -91,7 +135,6 @@ public abstract class BaseController {
 
     protected void setMultilingualElement(TableColumn<?, ?> column, String text) {
         String string = getBundle().getString(text);
-        LoggerUtil.logDebug(string);
         column.setText(string);
     }
 
@@ -107,15 +150,8 @@ public abstract class BaseController {
         directoryChooser.setTitle(getBundle().getString(text));
     }
 
-    protected String setMultilingualElement(String text) {
-
-        String string = getBundle().getString(text);
-        LoggerUtil.logDebug(string);
-        return string;
-    }
-
     private ResourceBundle getBundle() {
-        String language = PreferencesUtil.getPreference(username, LANGUAGE, ENGLISH);
+        String language = PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH);
         Locale locale = new Locale(language);
         return ResourceBundle.getBundle(MESSAGES, locale);
     }

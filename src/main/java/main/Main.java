@@ -17,6 +17,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(START));
         Scene scene = new Scene(loader.load(), 800, 600);
+//
+//        scene.getStylesheets().clear();
+//        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/" + Texture.FOREST.getCssFile())).toExternalForm());
+
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/image/icon.png"))));
         primaryStage.setScene(scene);
         primaryStage.setTitle("Fruit Catcher");

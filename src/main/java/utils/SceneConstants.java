@@ -43,8 +43,15 @@ public class SceneConstants {
     public static final String NO = "no";
     public static final String USERNAME = "username";
     public static final String CURRENT_PASSWORD = "currentPassword";
+    public static final String CURRENT_PASSWORD_IS_INCORRECT = "incorrectCurrentPassword";
     public static final String NEW_PASSWORD = "newPassword";
     public static final String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
     public static final String CONFIRM_DELETE_ACCOUNT = "confirmDeleteAccount";
+    public static final String PASSWORDS_DO_NOT_MATCH = "passwordsDoNotMatch";
+    public static final String USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY = "Username, password, and password reminder cannot be empty";
+    public static final String PASSWORD_IS_NOT_STRONG_ENOUGH = "Password is not strong enough";
+    public static final String USERNAME_ALREADY_EXISTS = "Username already exists.";
+    public static final String AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN = "An error occurred. Please try again.";
+//    public static final String PASSWORDS_DO_NOT_MATCH = "Passwords do not match";
 
 }
