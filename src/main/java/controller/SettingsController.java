@@ -16,18 +16,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static utils.SceneConstants.BACK_TO_MAIN_MENU;
-import static utils.SceneConstants.CHOOSE_DIRECTORY;
-import static utils.SceneConstants.DIFFICULTY;
-import static utils.SceneConstants.ENGLISH;
-import static utils.SceneConstants.GAME_MODE;
-import static utils.SceneConstants.LANGUAGE;
-import static utils.SceneConstants.LEFT_KEY;
-import static utils.SceneConstants.LOG_FILE_PATH;
-import static utils.SceneConstants.RIGHT_KEY;
-import static utils.SceneConstants.SAVE;
-import static utils.SceneConstants.TEXTURE;
 import static utils.FXMLPaths.MAIN_MENU;
+import static utils.SceneConstants.*;
 
 public class SettingsController extends BaseController implements Initializable {
 
@@ -98,7 +88,7 @@ public class SettingsController extends BaseController implements Initializable 
     private void loadSettings() {
         gameModeComboBox.setValue(PreferencesUtil.getPreference(getUsername(), GAME_MODE, "Normal"));
         difficultyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), DIFFICULTY, "Easy"));
-        textureComboBox.setValue(PreferencesUtil.getPreference(getUsername(), TEXTURE, "Forest"));
+        textureComboBox.setValue(PreferencesUtil.getTexture(getUsername()).getTextureName());
         logFilePathTextField.setText(PreferencesUtil.getPreference(getUsername(), LOG_FILE_PATH, ""));
         languageComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH));
         leftKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LEFT_KEY, "<"));
@@ -127,10 +117,6 @@ public class SettingsController extends BaseController implements Initializable 
         PreferencesUtil.setPreference(getUsername(), LANGUAGE, languageComboBox.getValue());
         PreferencesUtil.setPreference(getUsername(), LEFT_KEY, leftKeyComboBox.getValue());
         PreferencesUtil.setPreference(getUsername(), RIGHT_KEY, rightKeyComboBox.getValue());
-
-        String value = textureComboBox.getValue();
-        LoggerUtil.logDebug("textureComboBox.getValue()");
-        LoggerUtil.logDebug(value);
 
         applyTexture();
 

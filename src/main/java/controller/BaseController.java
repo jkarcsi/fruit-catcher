@@ -31,7 +31,7 @@ import static utils.SceneConstants.ENGLISH;
 import static utils.SceneConstants.LANGUAGE;
 import static utils.SceneConstants.MESSAGES;
 
-public class BaseController implements Initializable {
+public abstract class BaseController implements Initializable {
 
     private final String username = UserSession.getInstance().getUsername();
 
@@ -42,8 +42,7 @@ public class BaseController implements Initializable {
 
     protected void applyUserStylesheet() {
         Texture texture = PreferencesUtil.getTexture(getUsername());
-        LoggerUtil.logInfo("Texture texture = PreferencesUtil.getTexture(getUsername());");
-        LoggerUtil.logInfo(texture.toString());
+        LoggerUtil.logDebug("Applying texture: " + texture.getTextureName());
         for (Window window : Window.getWindows()) {
             if (window instanceof Stage stage) {
                 Scene scene = stage.getScene();
@@ -52,7 +51,6 @@ public class BaseController implements Initializable {
                     continue;
                 }
                 if (scene != null) {
-                    LoggerUtil.logInfo("scene != null");
                     applyUserStylesheet(scene, texture);
                 }
             }
@@ -64,16 +62,11 @@ public class BaseController implements Initializable {
         URL cssFile = getClass().getResource("/view/" + texture.getCssFile());
         if (cssFile != null) {
             scene.getStylesheets().add(cssFile.toExternalForm());
-            LoggerUtil.logInfo("scene.getStylesheets().add(cssFile.toExternalForm());");
-            LoggerUtil.logInfo(cssFile.toExternalForm());
+            LoggerUtil.logDebug("Applied stylesheet: " + cssFile.toExternalForm());
         } else {
             LoggerUtil.logSevere("CSS file not found: " + texture.getCssFile());
         }
-
-        LoggerUtil.logInfo(scene.getStylesheets().toString());
     }
-
-
 
     protected String getUsername() {
         return username;

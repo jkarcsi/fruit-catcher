@@ -62,7 +62,7 @@ public class PreferencesUtil {
             setPreference(username, GAME_MODE, "Normal");
             setPreference(username, DIFFICULTY, "Easy");
             setPreference(username, LOG_FILE_PATH, "");
-            setPreference(username, TEXTURE, "Forest");
+            setPreference(username, TEXTURE, Texture.FOREST.getTextureName());
             setPreference(username, LANGUAGE, ENGLISH);
             setPreference(username, LEFT_KEY, LEFT_ARROW);
             setPreference(username, RIGHT_KEY, RIGHT_ARROW);
@@ -70,11 +70,11 @@ public class PreferencesUtil {
     }
 
     public static synchronized void setTexture(String username, Texture texture) {
-        setPreference(username, TEXTURE, texture.name());
+        setPreference(username, TEXTURE, texture.getTextureName());
     }
 
     public static synchronized Texture getTexture(String username) {
-        String textureName = getPreference(username, TEXTURE, "Forest");
+        String textureName = getPreference(username, TEXTURE, Texture.FOREST.getTextureName());
         return Texture.valueOf(textureName.toUpperCase());
     }
 }
