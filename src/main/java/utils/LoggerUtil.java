@@ -30,6 +30,12 @@ public class LoggerUtil {
     }
 
     public static void configureLogger() {
+        Logger rootLogger = Logger.getLogger("");
+        Handler[] handlers = rootLogger.getHandlers();
+        for (Handler handler : handlers) {
+            rootLogger.removeHandler(handler);
+        }
+
         if (fileHandler != null) {
             logger.removeHandler(fileHandler);
             fileHandler.close();
@@ -52,16 +58,7 @@ public class LoggerUtil {
             }
 
             // Configure the logger with handler and formatter
-            fileHandler = new FileHandler(logFileName, true);
-            fileHandler.setFormatter(new SimpleFormatter());
-            logger.addHandler(fileHandler);
-
-            ConsoleHandler consoleHandler = new ConsoleHandler();
-            consoleHandler.setLevel(Level.ALL);
-            logger.addHandler(consoleHandler);
-
-            // Set the logger level to ALL to log all levels of messages
-            logger.setLevel(Level.ALL);
+            setHandlerFormatter(logFileName);
         } catch (AccessDeniedException e) {
             String fallbackLogDirectory = System.getProperty("user.home") + File.separator + "logs";
             configureFallbackLogger(fallbackLogDirectory);
@@ -81,21 +78,28 @@ public class LoggerUtil {
             Files.createDirectories(Paths.get(fallbackLogDirectory));
 
             // Configure the logger with handler and formatter
-            fileHandler = new FileHandler(logFileName, true);
-            fileHandler.setFormatter(new SimpleFormatter());
-            logger.addHandler(fileHandler);
-
-            // Set the logger level to ALL to log all levels of messages
-            logger.setLevel(Level.ALL);
-
-            // Set console handler level to ALL to log all levels of messages to the console
-            ConsoleHandler consoleHandler = new ConsoleHandler();
-            consoleHandler.setLevel(Level.ALL);
-            logger.addHandler(consoleHandler);
+            setHandlerFormatter(logFileName);
 
         } catch (IOException e) {
             logSevere("Error occurred in FileHandler with fallback directory: " + e.getMessage());
         }
+    }
+
+    private static void setHandlerFormatter(String logFileName) throws IOException {
+        // Configure the logger with handler and formatter
+        fileHandler = new FileHandler(logFileName, true);
+        fileHandler.setFormatter(new SimpleFormatter());
+        fileHandler.setLevel(Level.ALL);
+        logger.addHandler(fileHandler);
+
+        // Set console handler level to INFO to log INFO, WARNING, and SEVERE levels of messages to the console
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.INFO);
+        consoleHandler.setFilter(logRecord -> logRecord.getLevel().intValue() >= Level.INFO.intValue());
+        logger.addHandler(consoleHandler);
+
+        // Ensure logger level is set to ALL so that all messages are logged
+        logger.setLevel(Level.ALL);
     }
 
     public static String getLogDirectory() {
@@ -121,7 +125,7 @@ public class LoggerUtil {
 
     private static void log(String message, Level level) {
         logger.log(level, message);
-        if (logTextArea != null) {
+        if (logTextArea != null && level.intValue() >= Level.INFO.intValue()) {
             Platform.runLater(() -> logTextArea.appendText(level.getLocalizedName() + ": " + message + "\n"));
         }
     }

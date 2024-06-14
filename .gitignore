@@ -10,10 +10,13 @@ target/
 .idea/sqldialects.xml
 .idea/workspace.xml
 .idea/libraries/
-.idea/sonarlint
+.idea/sonarlint/
 *.iws
 *.iml
 *.ipr
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/dataSources/
 
 ### Eclipse ###
 .apt_generated
@@ -46,3 +49,6 @@ build/
 ### Preferences files ###
 /user_preferences.properties
 /src/main/resources/config.properties
+
+### Internal DB ###
+fcg.db

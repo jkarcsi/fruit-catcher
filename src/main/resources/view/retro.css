@@ -51,14 +51,14 @@
 }
 
 .vbox-center {
-    -fx-background-color: #f5deb3; /* Wheat background */
+    -fx-background-color: #f0e68c; /* Wheat background */
     -fx-padding: 20;
     -fx-spacing: 10;
     -fx-alignment: center;
 }
 
 .vbox {
-    -fx-background-color: #f5deb3; /* Wheat background */
+    -fx-background-color: #f0e68c; /* Wheat background */
     -fx-padding: 20;
     -fx-spacing: 10;
 }

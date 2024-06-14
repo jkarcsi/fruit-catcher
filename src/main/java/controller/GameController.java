@@ -460,7 +460,7 @@ public class GameController extends BaseController implements Initializable {
             countdownTimer.cancel();
         }
         mediaPlayer.pause();
-        if (isNormalMode) {
+        if (isNormalMode && score > 0) {
             saveScore();
         }
         showGameOverScreen(score, gameCanvas);
