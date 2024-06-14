@@ -80,11 +80,6 @@ public class DatabaseInitializer {
                     "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                     "FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE" +
                     ")");
-
-            // Insert default admin and user
-            statement.executeUpdate("INSERT OR IGNORE INTO users (username, password, password_reminder, role, status) VALUES " +
-                    "('admin', 'adminpassword', 'Admin reminder', 'admin', 'active'), " +
-                    "('user', 'userpassword', 'User reminder', 'user', 'active')");
         }
     }
 }
