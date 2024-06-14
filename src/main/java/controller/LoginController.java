@@ -9,7 +9,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import model.user.User;
 import model.user.UserDAO;
@@ -33,8 +35,9 @@ public class LoginController extends BaseController {
     @FXML
     private Label errorMessage;
 
-    @FXML
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         passwordField.setOnKeyPressed(this::handleKeyPressed);
     }
 

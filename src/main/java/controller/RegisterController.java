@@ -3,12 +3,15 @@ package controller;
 import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import model.user.User;
 import model.user.UserDAO;
@@ -18,13 +21,17 @@ import utils.UserRole;
 
 import static utils.FXMLPaths.LOGIN;
 import static utils.SceneConstants.AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN;
+import static utils.SceneConstants.BACK_TO_LOGIN;
+import static utils.SceneConstants.CONFIRM_PASSWORD;
+import static utils.SceneConstants.PASSWORD;
 import static utils.SceneConstants.PASSWORDS_DO_NOT_MATCH;
 import static utils.SceneConstants.PASSWORD_IS_NOT_STRONG_ENOUGH;
+import static utils.SceneConstants.PASSWORD_STRENGTH;
+import static utils.SceneConstants.REGISTER;
 import static utils.SceneConstants.USERNAME_ALREADY_EXISTS;
 import static utils.SceneConstants.USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY;
 
-public class RegisterController extends BaseController {
-
+public class RegisterController extends BaseController implements Initializable {
     @FXML
     public Button registerButton;
 
@@ -48,6 +55,15 @@ public class RegisterController extends BaseController {
 
     @FXML
     private TextField passwordReminderField;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setMultilingualElement(registerButton, REGISTER);
+        setMultilingualElement(backToLoginButton, BACK_TO_LOGIN);
+        setMultilingualElement(passwordStrengthLabel, PASSWORD_STRENGTH);
+        setMultilingualPromptElement(passwordField, PASSWORD);
+        setMultilingualPromptElement(confirmPasswordField, CONFIRM_PASSWORD);
+    }
 
     @FXML
     private void handleRegisterButton(ActionEvent event) {

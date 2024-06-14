@@ -92,6 +92,10 @@
     -fx-font-weight: bold;
 }
 
+.table-column:hover, .table-column:focused, .table-column:selected {
+    -fx-background-color: #b0c4de; /* Light steel blue background for handled rows */
+}
+
 .combo-box {
     -fx-pref-width: 200px; /* Set preferred width for combo boxes */
     -fx-font-size: 14px;

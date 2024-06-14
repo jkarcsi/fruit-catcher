@@ -11,7 +11,9 @@ import model.user.User;
 import model.user.UserDAO;
 import utils.LoggerUtil;
 
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import static utils.FXMLPaths.LOGIN;
 
@@ -28,8 +30,9 @@ public class AdminController extends BaseController {
 
     private ObservableList<User> usersList;
 
-    @FXML
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         usersList = FXCollections.observableArrayList();
@@ -54,6 +57,7 @@ public class AdminController extends BaseController {
                 UserDAO userDAO = new UserDAO();
                 userDAO.banUser(selectedUser.getUsername());
                 loadUsers(); // Refresh the users list
+                usersTable.getSelectionModel().select(selectedUser); // Retain the selection
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -71,6 +75,7 @@ public class AdminController extends BaseController {
                 UserDAO userDAO = new UserDAO();
                 userDAO.unbanUser(selectedUser.getUsername());
                 loadUsers(); // Refresh the users list
+                usersTable.getSelectionModel().select(selectedUser); // Retain the selection
             } catch (SQLException e) {
                 e.printStackTrace();
             }

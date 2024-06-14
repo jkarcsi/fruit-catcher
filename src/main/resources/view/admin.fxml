@@ -6,9 +6,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AdminController" spacing="10" alignment="CENTER" styleClass="vbox-center" maxWidth="300" prefWidth="300" >
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.AdminController" spacing="10" alignment="CENTER" stylesheets="@forest.css" styleClass="vbox-center" maxWidth="300" prefWidth="300" >
     <Label text="Admin Panel" styleClass="label"/>
-    <TableView fx:id="usersTable">
+    <TableView fx:id="usersTable" styleClass="table-view">
         <columns>
             <TableColumn fx:id="usernameColumn" text="Username" prefWidth="150" styleClass="table-column" />
             <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" styleClass="table-column" />

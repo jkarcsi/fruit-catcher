@@ -2,10 +2,14 @@ package utils;
 
 public class SceneConstants {
 
-    public static final String TOP_SCORES = "topScores";
-
     private SceneConstants() {}
 
+    public static final String TOP_SCORES = "topScores";
+    public static final String REGISTER = "register";
+    public static final String PASSWORD_STRENGTH = "passwordStrength";
+    public static final String PASSWORD = "password";
+    public static final String CONFIRM_PASSWORD = "confirmPassword";
+    public static final String BACK_TO_LOGIN = "backToLogin";
 
     public static final String SCORE = "score";
     public static final String TIMER = "timer";

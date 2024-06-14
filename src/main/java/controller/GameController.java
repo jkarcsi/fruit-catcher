@@ -92,7 +92,8 @@ public class GameController extends BaseController implements Initializable {
     private List<GameLevel> levels;
     private boolean doublePointsActive;
     private Timeline doublePointsTimer;
-    private boolean isFreeplayMode;
+    private boolean isNormalMode;
+    private boolean isPlaygroundMode;
     private List<MovingCloud> clouds;
 
     @Override
@@ -109,8 +110,9 @@ public class GameController extends BaseController implements Initializable {
         clouds = new ArrayList<>();
 
         String gameMode = PreferencesUtil.getPreference(getUsername(), GAME_MODE, "Normal");
-        isFreeplayMode = "Freeplay".equals(gameMode);
-        if (isFreeplayMode) {
+        isNormalMode = "Normal".equals(gameMode);
+        isPlaygroundMode = "Playground".equals(gameMode);
+        if (!isNormalMode) {
             timerLabel.setVisible(false);
         }
 
@@ -134,7 +136,7 @@ public class GameController extends BaseController implements Initializable {
             gameCanvas.getScene().setOnKeyPressed(this::handleKeyPress);
             gameCanvas.getScene().setOnKeyReleased(this::handleKeyRelease);
             gameCanvas.requestFocus();
-            if (!isFreeplayMode) {
+            if (isNormalMode) {
                 startCountdown();
             }
         });
@@ -223,7 +225,12 @@ public class GameController extends BaseController implements Initializable {
             double y = RANDOM.nextDouble() * gameCanvas.getHeight() * 0.6;
             double speed = 0.5 + RANDOM.nextDouble() * 0.5;
             boolean moveRight = RANDOM.nextBoolean();
-            clouds.add(new MovingCloud(RANDOM.nextDouble() * gameCanvas.getWidth(), y, speed, moveRight, selectedCloud, scaleFactor));
+            clouds.add(new MovingCloud(RANDOM.nextDouble() * gameCanvas.getWidth(),
+                    y,
+                    speed,
+                    moveRight,
+                    selectedCloud,
+                    scaleFactor));
         }
     }
 
@@ -290,7 +297,7 @@ public class GameController extends BaseController implements Initializable {
         score = Math.max(score, 0);
         setMultilingualElement(scoreLabel, SCORE, ": " + score);
 
-        if (score > (level + 1) * 150) {
+        if (!isPlaygroundMode && (score > (level + 1) * 150)) {
             levelUp();
         }
 
@@ -345,23 +352,43 @@ public class GameController extends BaseController implements Initializable {
         }
 
         if (RANDOM.nextDouble() < currentLevel.getFruitSpawnRate()) {
-            fallingObjects.add(new Fruit(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+            fallingObjects.add(new Fruit(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+                    0,
+                    currentLevel.getFruitSpeed(),
+                    currentLevel.getFruitSize(),
+                    currentLevel.getFruitSize()));
         }
 
         if (RANDOM.nextDouble() < currentLevel.getLeafSpawnRate()) {
-            fallingObjects.add(new Leaf(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getLeafSpeed(), currentLevel.getLeafSize(), currentLevel.getLeafSize()));
+            fallingObjects.add(new Leaf(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+                    0,
+                    currentLevel.getLeafSpeed(),
+                    currentLevel.getLeafSize(),
+                    currentLevel.getLeafSize()));
         }
 
         if (RANDOM.nextDouble() < 0.001) { // Spawn a ScoreMultiplier with a 0.1% chance
-            fallingObjects.add(new ScoreMultiplier(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+            fallingObjects.add(new ScoreMultiplier(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+                    0,
+                    currentLevel.getFruitSpeed(),
+                    currentLevel.getFruitSize(),
+                    currentLevel.getFruitSize()));
         }
 
-        if (RANDOM.nextDouble() < 0.001 && !isFreeplayMode) { // Spawn a BonusTime, in normal mode, with a 0.1% chance
-            fallingObjects.add(new BonusTime(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+        if (RANDOM.nextDouble() < 0.001 && isNormalMode) { // Spawn a BonusTime, in normal mode, with a 0.1% chance
+            fallingObjects.add(new BonusTime(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+                    0,
+                    currentLevel.getFruitSpeed(),
+                    currentLevel.getFruitSize(),
+                    currentLevel.getFruitSize()));
         }
 
         if (RANDOM.nextDouble() < 0.002) { // Spawn a BlackFruit with a 0.2% chance
-            fallingObjects.add(new BlackFruit(RANDOM.nextInt((int) gameCanvas.getWidth()-20), 0, currentLevel.getFruitSpeed(), currentLevel.getFruitSize(), currentLevel.getFruitSize()));
+            fallingObjects.add(new BlackFruit(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+                    0,
+                    currentLevel.getFruitSpeed(),
+                    currentLevel.getFruitSize(),
+                    currentLevel.getFruitSize()));
         }
     }
 
@@ -381,7 +408,7 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void levelUp() {
-        if (level < levels.size() - 1) {
+        if (!isPlaygroundMode && level < levels.size() - 1) {
             level++;
             LoggerUtil.logInfo("Level up! New level: " + (level + 1));
         }
@@ -409,13 +436,13 @@ public class GameController extends BaseController implements Initializable {
         gamePaused = !gamePaused;
         if (gamePaused) {
             gameLoop.pause();
-            if (!isFreeplayMode) {
+            if (isNormalMode) {
                 countdownTimer.cancel();
             }
             mediaPlayer.pause();
             LoggerUtil.logInfo("Game paused");
         } else {
-            if (!isFreeplayMode) {
+            if (isNormalMode) {
                 startCountdown();
             }
             gameLoop.play();
@@ -429,11 +456,11 @@ public class GameController extends BaseController implements Initializable {
 
     private void endGame() {
         gameLoop.stop();
-        if (!isFreeplayMode) {
+        if (isNormalMode) {
             countdownTimer.cancel();
         }
         mediaPlayer.pause();
-        if (!isFreeplayMode) {
+        if (isNormalMode) {
             saveScore();
         }
         showGameOverScreen(score, gameCanvas);
@@ -453,7 +480,7 @@ public class GameController extends BaseController implements Initializable {
     @FXML
     private void handleQuitButton() {
         gameLoop.stop();
-        if (!isFreeplayMode) {
+        if (isNormalMode) {
             countdownTimer.cancel();
         }
         mediaPlayer.pause();

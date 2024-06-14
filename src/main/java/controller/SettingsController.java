@@ -74,7 +74,7 @@ public class SettingsController extends BaseController implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        gameModeComboBox.getItems().addAll("Normal", "Freeplay");
+        gameModeComboBox.getItems().addAll("Normal", "Freeplay", "Playground");
         leftKeyComboBox.getItems().addAll("<", "A", "J");
         rightKeyComboBox.getItems().addAll(">", "D", "L");
         languageComboBox.getItems().addAll("English", "Magyar");
