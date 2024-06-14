@@ -120,7 +120,6 @@ public class UserDAO {
         }
     }
 
-
     public void saveScore(String username, int score) throws SQLException {
         List<Score> userTopScores = getTopScores(username, 10);
         List<Score> overallTopScores = getTopScores(null, 10);

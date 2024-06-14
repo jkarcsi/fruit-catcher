@@ -2,21 +2,19 @@ package model.database;
 
 import utils.ConfigUtil;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseInitializer {
-    private DatabaseInitializer() {}
+    private DatabaseInitializer(){}
 
-    private static final String DB_URL = ConfigUtil.getConfig("db.url");
+    private static String DB_URL = ConfigUtil.getConfig("db.url");
     private static final String DB_USER = ConfigUtil.getConfig("db.user");
     private static final String DB_PASSWORD = ConfigUtil.getConfig("db.password");
-    private static final String DB_NAME = ConfigUtil.getConfig("db.url").substring(DB_URL.lastIndexOf('/') + 1);
-    private static final String BASE_DB_URL = ConfigUtil.getConfig("db.url").substring(0, DB_URL.lastIndexOf('/'));
+    private static final String DB_NAME = null == DB_URL ? null : ConfigUtil.getConfig("db.url").substring(DB_URL.lastIndexOf('/') + 1);
+    private static final String BASE_DB_URL = null == DB_URL ? null :  ConfigUtil.getConfig("db.url").substring(0, DB_URL.lastIndexOf('/'));
 
     public static void initializeDatabase() throws SQLException {
         try (Connection baseConnection = DriverManager.getConnection(BASE_DB_URL, DB_USER, DB_PASSWORD);
@@ -24,14 +22,14 @@ public class DatabaseInitializer {
 
             // Create database if it doesn't exist
             baseStatement.executeUpdate("CREATE DATABASE IF NOT EXISTS " + DB_NAME);
+        } catch (SQLException e) {
+            DB_URL = "jdbc:sqlite:fcg.db";
+            initializeInnerDatabase();
         }
 
         // Connect to the newly created database
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              Statement statement = connection.createStatement()) {
-
-            // Use the new database
-            statement.executeUpdate("USE " + DB_NAME);
 
             // Create users table if it doesn't exist
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS users (" +
@@ -54,33 +52,39 @@ public class DatabaseInitializer {
                     "CONSTRAINT fk_scores_users FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci");
 
-            // Create admin and user accounts
-            createUserIfNotExists(statement, "admin", "admin", "admin");
-            createUserIfNotExists(statement, "user", "user", "user");
+        } catch (SQLException e) {
+            DB_URL = "jdbc:sqlite:fcg.db";
+            initializeInnerDatabase();
         }
     }
 
-    private static void createUserIfNotExists(Statement statement, String username, String password, String role) throws SQLException {
-        // Hash the password using SHA-256
-        String hashedPassword = hashPassword(password);
+    public static void initializeInnerDatabase() throws SQLException {
+        try (Connection connection = DriverManager.getConnection(DB_URL);
+             Statement statement = connection.createStatement()) {
 
-        // Insert user if not exists
-        statement.executeUpdate("INSERT IGNORE INTO users (username, password, role) VALUES ('" + username + "', '" + hashedPassword + "', '" + role + "')");
-    }
+            // Create users table if it doesn't exist
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS users (" +
+                    "username TEXT NOT NULL, " +
+                    "password TEXT NOT NULL, " +
+                    "password_reminder TEXT, " +
+                    "role TEXT DEFAULT 'user', " +
+                    "status TEXT DEFAULT 'active', " +
+                    "PRIMARY KEY (username)" +
+                    ")");
 
-    private static String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error hashing password", e);
+            // Create scores table if it doesn't exist
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS scores (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "username TEXT, " +
+                    "score INTEGER, " +
+                    "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                    "FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE" +
+                    ")");
+
+            // Insert default admin and user
+            statement.executeUpdate("INSERT OR IGNORE INTO users (username, password, password_reminder, role, status) VALUES " +
+                    "('admin', 'adminpassword', 'Admin reminder', 'admin', 'active'), " +
+                    "('user', 'userpassword', 'User reminder', 'user', 'active')");
         }
     }
 }
