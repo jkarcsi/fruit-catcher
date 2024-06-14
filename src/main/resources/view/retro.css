@@ -34,7 +34,7 @@
 }
 
 .text-area {
-    text-area-background: transparent;
+    text-area-background: #f0e68c;
     -fx-background-color: transparent; /* Transparent background */
     -fx-control-inner-background: transparent; /* Transparent inner background */
     -fx-text-fill: #556b2f; /* Dark olive green text color */

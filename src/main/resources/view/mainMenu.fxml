@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.MainMenuController" stylesheets="@forest.css">
+            fx:controller="controller.MainMenuController" >
     <top>
         <VBox spacing="10" alignment="CENTER" styleClass="vbox-center">
             <Label text="Fruit Catcher" styleClass="retro-title"/>

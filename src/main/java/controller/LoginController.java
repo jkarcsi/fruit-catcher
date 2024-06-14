@@ -3,14 +3,11 @@ package controller;
 import exceptions.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -20,8 +17,6 @@ import utils.LoggerUtil;
 import utils.PreferencesUtil;
 import utils.UserSession;
 
-import static utils.FXMLPaths.ADMIN;
-import static utils.FXMLPaths.MAIN_MENU;
 import static utils.FXMLPaths.REGISTER;
 
 public class LoginController extends BaseController {
@@ -68,18 +63,7 @@ public class LoginController extends BaseController {
             } else {
                 UserSession.getInstance().setUsername(username); // Set the username in UserSession
                 PreferencesUtil.setDefaultPreferences(username); // Set default settings for new users
-                FXMLLoader loader;
-                if (user.getRole().equals("admin")) {
-                    loader = new FXMLLoader(getClass().getResource(ADMIN));
-                } else {
-                    loader = new FXMLLoader(getClass().getResource(MAIN_MENU));
-                }
-                Scene scene = new Scene(loader.load(), 800, 600);
-
-                Stage stage = (Stage) usernameField.getScene().getWindow();
-                stage.setScene(scene);
-                stage.setResizable(false);
-                LoggerUtil.logInfo("User logged in: " + username);
+                navigateByRole(user, usernameField);
             }
         } catch (SQLException | IOException | HashException e) {
             LoggerUtil.logSevere("Error during login attempt for user: " + username);

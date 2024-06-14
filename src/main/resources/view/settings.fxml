@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.SettingsController"
-      stylesheets="@forest.css" styleClass="vbox-center">
+      styleClass="vbox-center">
     <Label fx:id="gameModeLabel" text="Game Mode" styleClass="label"/>
     <ComboBox fx:id="gameModeComboBox" styleClass="combo-box"/>
     <Label fx:id="difficultyLabel" text="Difficulty" styleClass="label"/>

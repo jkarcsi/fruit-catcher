@@ -4,10 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.user.UserDAO;
 import utils.FXMLPaths;
@@ -128,13 +126,7 @@ public class MainMenuController extends BaseController implements Initializable 
     @FXML
     private void handleDeleteAccountButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(DELETE_ACCOUNT_CONFIRMATION));
-            Stage dialogStage = new Stage();
-            dialogStage.setScene(new Scene(loader.load()));
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(((javafx.scene.Node) event.getSource()).getScene().getWindow());
-            dialogStage.setResizable(false);
-            dialogStage.showAndWait();
+            FXMLLoader loader = navigateToDialog(DELETE_ACCOUNT_CONFIRMATION, event);
 
             ConfirmationDialogController controller = loader.getController();
             if (controller.isConfirmed()) {

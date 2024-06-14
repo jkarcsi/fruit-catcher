@@ -4,7 +4,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.RegisterController" spacing="10" alignment="CENTER" stylesheets="@forest.css" styleClass="vbox-center">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.RegisterController" spacing="10" alignment="CENTER" styleClass="vbox-center">
     <TextField fx:id="usernameField" promptText="Username" styleClass="text-field" />
     <PasswordField fx:id="passwordField" promptText="Password" onKeyReleased="#checkPasswordStrength" styleClass="text-field" />
     <Label fx:id="passwordStrengthLabel" text="Password strength: " styleClass="label"/>

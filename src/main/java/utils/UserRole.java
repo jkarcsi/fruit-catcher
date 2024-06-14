@@ -4,10 +4,10 @@ public enum UserRole {
     ADMIN("admin"),
     USER("user");
 
-    private final String strength;
+    private final String role;
     UserRole(final String role) {
-        this.strength = role;
+        this.role = role;
     }
 
-    public String value() { return this.strength; }
+    public String value() { return this.role; }
 }

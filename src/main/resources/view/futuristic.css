@@ -1,6 +1,6 @@
 .root {
     -fx-font-family: 'Arial';
-    -fx-background-color: #1a1a1a; /* Dark background */
+    -fx-background-color: #2e2e2e; /* Dark background */
 }
 
 .label {
@@ -34,7 +34,7 @@
 }
 
 .text-area {
-    text-area-background: transparent;
+    text-area-background: #2e2e2e;
     -fx-background-color: transparent; /* Transparent background */
     -fx-control-inner-background: transparent; /* Transparent inner background */
     -fx-text-fill: #00ffff; /* Cyan text color */

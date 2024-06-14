@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.PlayerRankingsController" spacing="10" alignment="CENTER" stylesheets="@forest.css" styleClass="vbox-center">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.PlayerRankingsController" spacing="10" alignment="CENTER" styleClass="vbox-center">
     <Label fx:id="rankings" styleClass="title"/>
     <TableView fx:id="rankingsTable" prefWidth="400" styleClass="table-view" >
         <columns>

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ConfirmationDialogController" spacing="10" alignment="CENTER" stylesheets="@forest.css">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ConfirmationDialogController" spacing="10" alignment="CENTER" >
     <Label fx:id="confirmDeleteAccount" styleClass="label"/>
     <HBox spacing="10" alignment="CENTER">
         <Button fx:id="yesButton" onAction="#handleYesButton" styleClass="button"/>

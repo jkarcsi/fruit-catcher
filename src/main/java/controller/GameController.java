@@ -5,9 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -31,7 +29,6 @@ import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
@@ -50,7 +47,6 @@ import static utils.SceneConstants.RIGHT_ARROW;
 import static utils.SceneConstants.RIGHT_KEY;
 import static utils.SceneConstants.SCORE;
 import static utils.SceneConstants.TIMER;
-import static utils.FXMLPaths.GAME_OVER;
 import static utils.FXMLPaths.MAIN_MENU;
 
 public class GameController extends BaseController implements Initializable {
@@ -179,7 +175,6 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupLogTextArea() {
-        logTextArea.setStyle("text-area-background: #e7ffe7;");
         LoggerUtil.setLogTextArea(logTextArea);
     }
 
@@ -441,7 +436,7 @@ public class GameController extends BaseController implements Initializable {
         if (!isFreeplayMode) {
             saveScore();
         }
-        showGameOverScreen();
+        showGameOverScreen(score, gameCanvas);
     }
 
     private void saveScore() {
@@ -451,20 +446,6 @@ public class GameController extends BaseController implements Initializable {
             LoggerUtil.logInfo("Score saved for user: " + getUsername() + ", score: " + score);
         } catch (SQLException e) {
             LoggerUtil.logSevere("Error saving score for user: " + getUsername());
-            e.printStackTrace();
-        }
-    }
-
-    private void showGameOverScreen() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(GAME_OVER));
-            Scene scene = new Scene(loader.load(), 800, 600);
-            GameOverController controller = loader.getController();
-            controller.setScore(score);
-            Stage stage = (Stage) gameCanvas.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }

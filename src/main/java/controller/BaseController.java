@@ -11,13 +11,17 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import model.user.User;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
 import utils.Texture;
+import utils.UserRole;
 import utils.UserSession;
 
 import java.io.IOException;
@@ -26,9 +30,11 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static utils.FXMLPaths.ADMIN;
+import static utils.FXMLPaths.GAME_OVER;
+import static utils.FXMLPaths.MAIN_MENU;
 import static utils.SceneConstants.ENGLISH;
 import static utils.SceneConstants.LANGUAGE;
 import static utils.SceneConstants.MESSAGES;
@@ -77,10 +83,8 @@ public abstract class BaseController implements Initializable {
 
     private void forceSceneUpdate(Scene scene) {
         // This forces a re-render of the scene, which can sometimes help with style changes.
-        LoggerUtil.logInfo("FORCE");
-        LoggerUtil.logInfo(scene.getStylesheets().toString());
-        scene.getRoot().setVisible(false);
-        scene.getRoot().setVisible(true);
+        scene.getRoot().applyCss();
+        scene.getRoot().layout();
     }
 
     protected String getUsername() {
@@ -96,6 +100,7 @@ public abstract class BaseController implements Initializable {
             stage.setScene(scene);
             stage.setResizable(false);
             LoggerUtil.logDebug("Navigated to: " + fxmlFile);
+            applyUserStylesheet(scene, PreferencesUtil.getTexture(getUsername())); // Apply styles on navigation
         } catch (IOException e) {
             LoggerUtil.logSevere("Failed to navigate to: " + fxmlFile);
             e.printStackTrace();
@@ -110,8 +115,53 @@ public abstract class BaseController implements Initializable {
             stage.setScene(scene);
             stage.setResizable(false);
             LoggerUtil.logDebug("Navigated to: " + fxmlFile);
+            applyUserStylesheet(scene, PreferencesUtil.getTexture(getUsername())); // Apply styles on navigation
         } catch (IOException e) {
             LoggerUtil.logSevere("Failed to navigate to: " + fxmlFile);
+            e.printStackTrace();
+        }
+    }
+
+    protected FXMLLoader navigateToDialog(String fxmlFile, ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+        Stage dialogStage = new Stage();
+        dialogStage.getIcons().add(loadImage("/image/icon.png"));
+        dialogStage.setScene(new Scene(loader.load()));
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(((javafx.scene.Node) event.getSource()).getScene().getWindow());
+        dialogStage.setResizable(false);
+        applyUserStylesheet(dialogStage.getScene(), PreferencesUtil.getTexture(getUsername())); // Apply styles on navigation
+        dialogStage.showAndWait();
+        return loader;
+    }
+
+    protected void navigateByRole(User user, TextField usernameField) throws IOException {
+        FXMLLoader loader;
+        if (user.getRole().equals(UserRole.ADMIN.value())) {
+            loader = new FXMLLoader(getClass().getResource(ADMIN));
+        } else {
+            loader = new FXMLLoader(getClass().getResource(MAIN_MENU));
+        }
+        Scene scene = new Scene(loader.load(), 800, 600);
+
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        applyUserStylesheet(scene, PreferencesUtil.getTexture(user.getUsername())); // Apply styles on navigation
+        LoggerUtil.logInfo("User logged in: " + user.getUsername());
+    }
+
+    protected void showGameOverScreen(int score, Canvas gameCanvas) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(GAME_OVER));
+            Scene scene = new Scene(loader.load(), 800, 600);
+            GameOverController controller = loader.getController();
+            controller.setScore(score);
+            Stage stage = (Stage) gameCanvas.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            applyUserStylesheet(scene, PreferencesUtil.getTexture(getUsername())); // Apply styles on navigation
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
