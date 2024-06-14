@@ -8,12 +8,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import utils.LoggerUtil;
 import utils.PreferencesUtil;
 import utils.Texture;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import static utils.FXMLPaths.MAIN_MENU;
@@ -79,7 +79,8 @@ public class SettingsController extends BaseController implements Initializable 
         rightKeyComboBox.getItems().addAll(">", "D", "L");
         languageComboBox.getItems().addAll("English", "Magyar");
         difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
-        textureComboBox.getItems().addAll("Forest", "Retro", "Futuristic");
+        textureComboBox.getItems().addAll(Arrays.stream(Texture.values()).map(Texture::getTextureName).toList());
+
 
         loadSettings();
         updateTexts();

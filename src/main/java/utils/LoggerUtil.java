@@ -56,6 +56,10 @@ public class LoggerUtil {
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
 
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
+            logger.addHandler(consoleHandler);
+
             // Set the logger level to ALL to log all levels of messages
             logger.setLevel(Level.ALL);
         } catch (AccessDeniedException e) {

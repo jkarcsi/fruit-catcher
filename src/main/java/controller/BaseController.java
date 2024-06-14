@@ -3,6 +3,7 @@ package controller;
 import exceptions.HashException;
 import exceptions.ResourceNotFoundException;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -25,6 +26,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static utils.SceneConstants.ENGLISH;
@@ -35,7 +37,7 @@ public abstract class BaseController implements Initializable {
 
     private final String username = UserSession.getInstance().getUsername();
 
-    @Override
+    @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         applyUserStylesheet();
     }
@@ -48,9 +50,11 @@ public abstract class BaseController implements Initializable {
                 Scene scene = stage.getScene();
                 // Skip the StartController stage
                 if (scene != null && scene.getRoot().getUserData() != null && scene.getRoot().getUserData().equals("StartPage")) {
+                    LoggerUtil.logDebug("Skipping StartPage scene");
                     continue;
                 }
                 if (scene != null) {
+                    LoggerUtil.logDebug("Applying stylesheet to scene: " + scene);
                     applyUserStylesheet(scene, texture);
                 }
             }
@@ -58,14 +62,25 @@ public abstract class BaseController implements Initializable {
     }
 
     private void applyUserStylesheet(Scene scene, Texture texture) {
+        LoggerUtil.logDebug("Clearing current stylesheets");
         scene.getStylesheets().clear();
         URL cssFile = getClass().getResource("/view/" + texture.getCssFile());
         if (cssFile != null) {
+            LoggerUtil.logDebug("Found CSS file: " + cssFile.toExternalForm());
             scene.getStylesheets().add(cssFile.toExternalForm());
             LoggerUtil.logDebug("Applied stylesheet: " + cssFile.toExternalForm());
+            forceSceneUpdate(scene);
         } else {
             LoggerUtil.logSevere("CSS file not found: " + texture.getCssFile());
         }
+    }
+
+    private void forceSceneUpdate(Scene scene) {
+        // This forces a re-render of the scene, which can sometimes help with style changes.
+        LoggerUtil.logInfo("FORCE");
+        LoggerUtil.logInfo(scene.getStylesheets().toString());
+        scene.getRoot().setVisible(false);
+        scene.getRoot().setVisible(true);
     }
 
     protected String getUsername() {
@@ -80,7 +95,9 @@ public abstract class BaseController implements Initializable {
             stage.getIcons().add(loadImage("/image/icon.png"));
             stage.setScene(scene);
             stage.setResizable(false);
+            LoggerUtil.logDebug("Navigated to: " + fxmlFile);
         } catch (IOException e) {
+            LoggerUtil.logSevere("Failed to navigate to: " + fxmlFile);
             e.printStackTrace();
         }
     }
@@ -92,7 +109,9 @@ public abstract class BaseController implements Initializable {
             Stage stage = (Stage) gameCanvas.getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);
+            LoggerUtil.logDebug("Navigated to: " + fxmlFile);
         } catch (IOException e) {
+            LoggerUtil.logSevere("Failed to navigate to: " + fxmlFile);
             e.printStackTrace();
         }
     }
