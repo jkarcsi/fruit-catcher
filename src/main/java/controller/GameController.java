@@ -28,6 +28,7 @@ import model.falling.ScoreMultiplier;
 import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
+import utils.UserSession;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -52,8 +53,9 @@ import static utils.FXMLPaths.MAIN_MENU;
 public class GameController extends BaseController implements Initializable {
 
     public static final Random RANDOM = new Random();
+    public UserDAO userDAO;
     @FXML
-    private Canvas gameCanvas;
+    Canvas gameCanvas;
 
     @FXML
     private Label scoreLabel;
@@ -78,9 +80,9 @@ public class GameController extends BaseController implements Initializable {
 
     private GraphicsContext gc;
     private Timeline gameLoop;
-    private int score;
-    private List<FallingObject> fallingObjects;
-    private Basket basket;
+    int score;
+    List<FallingObject> fallingObjects;
+    Basket basket;
     private boolean gamePaused;
     private int timeRemaining;
     private Timer countdownTimer;
@@ -88,9 +90,9 @@ public class GameController extends BaseController implements Initializable {
     private MediaPlayer mediaPlayer;
     private KeyCode leftKey;
     private KeyCode rightKey;
-    private int level;
-    private List<GameLevel> levels;
-    private boolean doublePointsActive;
+    int level;
+    List<GameLevel> levels;
+    boolean doublePointsActive;
     private Timeline doublePointsTimer;
     private boolean isNormalMode;
     private boolean isPlaygroundMode;
@@ -280,7 +282,7 @@ public class GameController extends BaseController implements Initializable {
         gameLoop.play();
     }
 
-    private void updateGame() {
+    void updateGame() {
         basket.update(gameCanvas.getWidth(), gameCanvas.getHeight());
 
         for (FallingObject obj : fallingObjects) {
@@ -306,7 +308,7 @@ public class GameController extends BaseController implements Initializable {
         }
     }
 
-    private void manageColliding(FallingObject obj) {
+    void manageColliding(FallingObject obj) {
         if (obj.collidesWith(basket)) {
             if (obj instanceof Fruit) {
                 score += doublePointsActive ? 20 : 10;
@@ -392,7 +394,7 @@ public class GameController extends BaseController implements Initializable {
         }
     }
 
-    private void activateDoublePoints() {
+    void activateDoublePoints() {
         doublePointsActive = true;
         LoggerUtil.logInfo("Double points activated!");
 
@@ -407,7 +409,7 @@ public class GameController extends BaseController implements Initializable {
         doublePointsTimer.play();
     }
 
-    private void levelUp() {
+    void levelUp() {
         if (!isPlaygroundMode && level < levels.size() - 1) {
             level++;
             LoggerUtil.logInfo("Level up! New level: " + (level + 1));
@@ -466,9 +468,9 @@ public class GameController extends BaseController implements Initializable {
         showGameOverScreen(score, gameCanvas);
     }
 
-    private void saveScore() {
+    void saveScore() {
         try {
-            UserDAO userDAO = new UserDAO();
+            userDAO = new UserDAO();
             userDAO.saveScore(getUsername(), score);
             LoggerUtil.logInfo("Score saved for user: " + getUsername() + ", score: " + score);
         } catch (SQLException e) {
@@ -485,5 +487,21 @@ public class GameController extends BaseController implements Initializable {
         }
         mediaPlayer.pause();
         navigateTo(MAIN_MENU, gameCanvas);
+    }
+
+    public void setUsername(String testuser) {
+        UserSession.getInstance().setUsername(testuser);
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int i) {
+        this.score = i;
+    }
+
+    public int getLevel() {
+        return this.level;
     }
 }

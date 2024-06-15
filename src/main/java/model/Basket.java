@@ -9,23 +9,30 @@ public class Basket {
     private final double width;
     private final double height;
     private double velocityX;
-    private final Image basketImage;
+    private Image basketImage;
 
+    // Eredeti konstruktor, amely képet tölt be
     public Basket(double x, double y, double width, double height) {
+        this(x, y, width, height, true);
+    }
+
+    public Basket(double x, double y, double width, double height, boolean loadImage) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.velocityX = 0;
-        this.basketImage = new Image("/image/basket.png");
+        if (loadImage) {
+            this.basketImage = new Image("/image/basket.png"); // Kép betöltése, ha szükséges
+        }
     }
 
     public void moveLeft() {
-        velocityX = -5; // Adjust the speed as needed
+        velocityX = -5;
     }
 
     public void moveRight() {
-        velocityX = 5; // Adjust the speed as needed
+        velocityX = 5;
     }
 
     public void stop() {

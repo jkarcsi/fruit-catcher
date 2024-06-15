@@ -60,10 +60,6 @@ public class ChangePasswordController extends BaseController implements Initiali
         String newPassword = newPasswordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
-        LoggerUtil.logInfo("Current password: " + oldPassword);
-        LoggerUtil.logInfo("New password: " + newPassword);
-        LoggerUtil.logInfo("Confirm password: " + confirmPassword);
-
         if (!newPassword.equals(confirmPassword)) {
             setMultilingualElement(errorMessage, PASSWORDS_DO_NOT_MATCH);
             return;
