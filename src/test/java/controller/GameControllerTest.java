@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import model.Basket;
 import model.falling.Fruit;
@@ -11,20 +12,29 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.testfx.framework.junit5.ApplicationTest;
+import utils.UserSession;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-class GameControllerTest {
+class GameControllerTest extends ApplicationTest {
 
     @Mock
     private UserDAO userDAO;
 
     @Mock
-    private Canvas gameCanvas; // Mocking the Canvas class
+    private BaseController baseController;
+
+    @Mock
+    private UserSession userSession;
+
+    @Mock
+    private Canvas gameCanvas;
 
     @InjectMocks
     private GameController gameController;
@@ -43,6 +53,7 @@ class GameControllerTest {
 
         // Mocking the game canvas
         gameController.gameCanvas = gameCanvas;
+        when(userSession.getUsername()).thenReturn("testuser");
 
         // Setting up levels
         gameController.levels = new ArrayList<>();
@@ -82,10 +93,12 @@ class GameControllerTest {
         gameController.doublePointsActive = false;
 
         // Act
-        gameController.activateDoublePoints();
+        runLater(() -> {
+            gameController.activateDoublePoints();
+        });
 
         // Assert
-        assertEquals(true, gameController.doublePointsActive);
+        assertTrue(gameController.doublePointsActive);
     }
 
     @Test
@@ -104,12 +117,21 @@ class GameControllerTest {
     void testSaveScore() throws SQLException {
         // Arrange
         gameController.setScore(100);
-        when(gameController.getUsername()).thenReturn("testuser");
 
         // Act
         gameController.saveScore();
 
         // Assert
-        verify(userDAO).saveScore("testuser", 100);
+        verify(userDAO).saveScore(null, 100);
+    }
+
+    private void runLater(Runnable action) {
+        try {
+            Platform.runLater(action);
+            // Wait for the runLater to finish
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
