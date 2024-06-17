@@ -28,7 +28,6 @@ import model.falling.ScoreMultiplier;
 import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
-import utils.UserSession;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -52,8 +51,6 @@ import static utils.FXMLPaths.MAIN_MENU;
 
 public class GameController extends BaseController implements Initializable {
 
-    public static final Random RANDOM = new Random();
-    public UserDAO userDAO;
 
     @FXML
     Canvas gameCanvas;
@@ -79,6 +76,8 @@ public class GameController extends BaseController implements Initializable {
     @FXML
     TextArea logTextArea;
 
+    public static final Random RANDOM = new Random();
+    public UserDAO userDAO;
     private GraphicsContext gc;
     Timeline gameLoop;
     int score;
@@ -113,25 +112,7 @@ public class GameController extends BaseController implements Initializable {
         doublePointsActive = false;
         clouds = new ArrayList<>();
 
-        String gameMode = PreferencesUtil.getPreference(getUsername(), GAME_MODE, "Normal");
-        isNormalMode = "Normal".equals(gameMode);
-        isPlaygroundMode = "Playground".equals(gameMode);
-        if (!isNormalMode) {
-            timerLabel.setVisible(false);
-        }
-
-        setupInitialLevels();
-
-        String difficulty = PreferencesUtil.getPreference(getUsername(), DIFFICULTY, "Easy");
-        switch (difficulty) {
-            case "Medium" -> level = 5;
-            case "Hard" -> level = 10;
-            default -> level = 0;
-        }
-
-        setupBackground();
-        setupMusic();
-        setupLogTextArea();
+        initialSetup();
 
         Platform.runLater(() -> {
             adjustCanvasSize();
@@ -144,6 +125,33 @@ public class GameController extends BaseController implements Initializable {
                 startCountdown();
             }
         });
+    }
+
+    private void initialSetup() {
+        setupGameMode();
+        setupInitialLevels();
+        setupDifficulty();
+        setupBackground();
+        setupMusic();
+        setupLogTextArea();
+    }
+
+    private void setupGameMode() {
+        String gameMode = PreferencesUtil.getPreference(getUsername(), GAME_MODE, "Normal");
+        isNormalMode = "Normal".equals(gameMode);
+        isPlaygroundMode = "Playground".equals(gameMode);
+        if (!isNormalMode) {
+            timerLabel.setVisible(false);
+        }
+    }
+
+    private void setupDifficulty() {
+        String difficulty = PreferencesUtil.getPreference(getUsername(), DIFFICULTY, "Easy");
+        switch (difficulty) {
+            case "Medium" -> level = 5;
+            case "Hard" -> level = 10;
+            default -> level = 0;
+        }
     }
 
     private void updateTexts() {
@@ -499,10 +507,6 @@ public class GameController extends BaseController implements Initializable {
         }
         mediaPlayer.pause();
         navigateTo(MAIN_MENU, gameCanvas);
-    }
-
-    public void setUsername(String testuser) {
-        UserSession.getInstance().setUsername(testuser);
     }
 
     public int getScore() {

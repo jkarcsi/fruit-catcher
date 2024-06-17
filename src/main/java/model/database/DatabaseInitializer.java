@@ -1,6 +1,7 @@
 package model.database;
 
 import utils.ConfigUtil;
+import utils.LoggerUtil;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -64,20 +65,20 @@ public class DatabaseInitializer {
 
             // Create users table if it doesn't exist
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS users (" +
-                    "username TEXT NOT NULL, " +
-                    "password TEXT NOT NULL, " +
-                    "password_reminder TEXT, " +
-                    "role TEXT DEFAULT 'user', " +
-                    "status TEXT DEFAULT 'active', " +
+                    "username VARCHAR(50) NOT NULL, " +
+                    "password VARCHAR(255) NOT NULL, " +
+                    "password_reminder VARCHAR(255) DEFAULT NULL, " +
+                    "role VARCHAR(10) DEFAULT 'user', " +
+                    "status VARCHAR(10) DEFAULT 'active', " +
                     "PRIMARY KEY (username)" +
                     ")");
 
             // Create scores table if it doesn't exist
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS scores (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "username TEXT, " +
+                    "username VARCHAR(50) DEFAULT NULL, " +
                     "score INTEGER, " +
-                    "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                    "timestamp VARCHAR(50) NULL DEFAULT CURRENT_TIMESTAMP, " +
                     "FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE" +
                     ")");
         }

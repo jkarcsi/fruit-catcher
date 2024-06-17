@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,27 +128,39 @@ public class UserDAO {
         if ((userTopScores.size() < 10 || score > userTopScores.get(userTopScores.size() - 1)
                 .getScore()) || (overallTopScores.size() < 10 || score > overallTopScores.get(overallTopScores.size() - 1)
                 .getScore())) {
-            insertScore(username, score);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String timestamp = LocalDateTime.now().format(formatter);
+
+            insertScore(username, score, timestamp);
         }
     }
 
-    private void insertScore(String username, int score) throws SQLException {
+    private void insertScore(String username, int score, String timestamp) throws SQLException {
         LoggerUtil.logDebug(username);
-        String query = "INSERT INTO scores (username, score) VALUES (?, ?)";
+        String query = "INSERT INTO scores (username, score, timestamp) VALUES (?, ?, ?)";
         LoggerUtil.logDebug(query);
         Connection connection = Database.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setInt(2, score);
+            statement.setString(3, timestamp);
             statement.executeUpdate();
         }
     }
 
     public List<Score> getTopScores(String username, int limit) throws SQLException {
         List<Score> scores = new ArrayList<>();
-        String query = username != null
-                ? "SELECT score, timestamp FROM scores WHERE username = ? ORDER BY score DESC LIMIT ?"
-                : "SELECT username, score, timestamp FROM scores ORDER BY score DESC LIMIT ?";
+        String query;
+
+        if (username != null) {
+            query = "SELECT s.score, s.timestamp FROM scores s JOIN users u ON s.username = u.username " +
+                    "WHERE s.username = ? AND u.status != 'banned' ORDER BY s.score DESC LIMIT ?";
+        } else {
+            query = "SELECT s.username, s.score, s.timestamp FROM scores s JOIN users u ON s.username = u.username " +
+                    "WHERE u.status != 'banned' ORDER BY s.score DESC LIMIT ?";
+        }
+
         Connection connection = Database.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             if (username != null) {
@@ -155,6 +169,7 @@ public class UserDAO {
             } else {
                 statement.setInt(1, limit);
             }
+
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String user = username != null ? username : resultSet.getString("username");
@@ -165,4 +180,5 @@ public class UserDAO {
         }
         return scores;
     }
+
 }
