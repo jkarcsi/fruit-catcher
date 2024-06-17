@@ -54,49 +54,50 @@ public class GameController extends BaseController implements Initializable {
 
     public static final Random RANDOM = new Random();
     public UserDAO userDAO;
+
     @FXML
     Canvas gameCanvas;
 
     @FXML
-    private Label scoreLabel;
+    Label scoreLabel;
 
     @FXML
-    private Label timerLabel;
+    Label timerLabel;
 
     @FXML
-    private Button toggleBackgroundButton;
+    Button toggleBackgroundButton;
 
     @FXML
-    private Button toggleMusicButton;
+    Button toggleMusicButton;
 
     @FXML
-    private Button pauseButton;
+    Button pauseButton;
 
     @FXML
-    private Button quitButton;
+    Button quitButton;
 
     @FXML
-    private TextArea logTextArea;
+    TextArea logTextArea;
 
     private GraphicsContext gc;
-    private Timeline gameLoop;
+    Timeline gameLoop;
     int score;
     List<FallingObject> fallingObjects;
     Basket basket;
-    private boolean gamePaused;
+    boolean gamePaused;
     private int timeRemaining;
     private Timer countdownTimer;
     private boolean isMusicPlaying = false;
-    private MediaPlayer mediaPlayer;
-    private KeyCode leftKey;
-    private KeyCode rightKey;
+    MediaPlayer mediaPlayer;
+    KeyCode leftKey;
+    KeyCode rightKey;
     int level;
     List<GameLevel> levels;
     boolean doublePointsActive;
     private Timeline doublePointsTimer;
     private boolean isNormalMode;
     private boolean isPlaygroundMode;
-    private List<MovingCloud> clouds;
+    List<MovingCloud> clouds;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -107,6 +108,7 @@ public class GameController extends BaseController implements Initializable {
         timeRemaining = 60;
         fallingObjects = new ArrayList<>();
         basket = new Basket(300, 500, 50, 50);
+        userDAO = new UserDAO();
         gamePaused = false;
         doublePointsActive = false;
         clouds = new ArrayList<>();
@@ -153,13 +155,13 @@ public class GameController extends BaseController implements Initializable {
         setMultilingualElement(quitButton, QUIT);
     }
 
-    private void handleKeyRelease(KeyEvent event) {
+    void handleKeyRelease(KeyEvent event) {
         if (event.getCode() == leftKey || event.getCode() == rightKey) {
             basket.stop();
         }
     }
 
-    private void loadControlKeys() {
+    void loadControlKeys() {
         leftKey = KeyCode.valueOf( LEFT_ARROW.equals(PreferencesUtil.getPreference(getUsername(),
                 LEFT_KEY,
                 LEFT_ARROW)) ? LEFT : PreferencesUtil.getPreference(getUsername(),
@@ -236,7 +238,7 @@ public class GameController extends BaseController implements Initializable {
         }
     }
 
-    private void setupMusic() {
+    void setupMusic() {
         String musicFile = Objects.requireNonNull(getClass().getResource("/sound/dezert.mp3")).toExternalForm();
         Media media = new Media(musicFile);
         mediaPlayer = new MediaPlayer(media);
@@ -271,7 +273,7 @@ public class GameController extends BaseController implements Initializable {
         gameCanvas.requestFocus();
     }
 
-    private void startGame() {
+    void startGame() {
         gameLoop = new Timeline(new KeyFrame(Duration.millis(16), e -> {
             if (!gamePaused) {
                 updateGame();
@@ -339,7 +341,7 @@ public class GameController extends BaseController implements Initializable {
         }
     }
 
-    private void handleKeyPress(KeyEvent event) {
+    void handleKeyPress(KeyEvent event) {
         if (event.getCode() == leftKey) {
             basket.moveLeft();
         } else if (event.getCode() == rightKey) {
@@ -347,52 +349,63 @@ public class GameController extends BaseController implements Initializable {
         }
     }
 
-    private void spawnNewFallingObjects() {
+    void spawnNewFallingObjects() {
         GameLevel currentLevel = levels.get(level);
         if (level == levels.size() - 2) {
             addLevel();
         }
 
-        if (RANDOM.nextDouble() < currentLevel.getFruitSpawnRate()) {
-            fallingObjects.add(new Fruit(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+        double canvasWidth = gameCanvas.getWidth() - 20;
+        if (canvasWidth <= 0) {
+            canvasWidth = 1; // Ensure that the bound for nextInt is positive
+        }
+
+        if (shouldSpawn(currentLevel.getFruitSpawnRate())) {
+            fallingObjects.add(new Fruit(RANDOM.nextInt((int) canvasWidth),
                     0,
                     currentLevel.getFruitSpeed(),
                     currentLevel.getFruitSize(),
                     currentLevel.getFruitSize()));
         }
 
-        if (RANDOM.nextDouble() < currentLevel.getLeafSpawnRate()) {
-            fallingObjects.add(new Leaf(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+        if (shouldSpawn(currentLevel.getLeafSpawnRate())) {
+            fallingObjects.add(new Leaf(RANDOM.nextInt((int) canvasWidth),
                     0,
                     currentLevel.getLeafSpeed(),
                     currentLevel.getLeafSize(),
                     currentLevel.getLeafSize()));
         }
 
-        if (RANDOM.nextDouble() < 0.001) { // Spawn a ScoreMultiplier with a 0.1% chance
-            fallingObjects.add(new ScoreMultiplier(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+        if (shouldSpawn(0.001)) { // Spawn a ScoreMultiplier with a 0.1% chance
+            fallingObjects.add(new ScoreMultiplier(RANDOM.nextInt((int) canvasWidth),
                     0,
                     currentLevel.getFruitSpeed(),
                     currentLevel.getFruitSize(),
                     currentLevel.getFruitSize()));
         }
 
-        if (RANDOM.nextDouble() < 0.001 && isNormalMode) { // Spawn a BonusTime, in normal mode, with a 0.1% chance
-            fallingObjects.add(new BonusTime(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+        if (shouldSpawn(0.001) && isNormalMode) { // Spawn a BonusTime, in normal mode, with a 0.1% chance
+            fallingObjects.add(new BonusTime(RANDOM.nextInt((int) canvasWidth),
                     0,
                     currentLevel.getFruitSpeed(),
                     currentLevel.getFruitSize(),
                     currentLevel.getFruitSize()));
         }
 
-        if (RANDOM.nextDouble() < 0.002) { // Spawn a BlackFruit with a 0.2% chance
-            fallingObjects.add(new BlackFruit(RANDOM.nextInt((int) gameCanvas.getWidth() - 20),
+        if (shouldSpawn(0.002)) { // Spawn a BlackFruit with a 0.2% chance
+            fallingObjects.add(new BlackFruit(RANDOM.nextInt((int) canvasWidth),
                     0,
                     currentLevel.getFruitSpeed(),
                     currentLevel.getFruitSize(),
                     currentLevel.getFruitSize()));
         }
     }
+
+
+    boolean shouldSpawn(double rate) {
+        return RANDOM.nextDouble() < rate;
+    }
+
 
     void activateDoublePoints() {
         doublePointsActive = true;
@@ -434,7 +447,7 @@ public class GameController extends BaseController implements Initializable {
     }
 
     @FXML
-    private void handlePauseButton() {
+    void handlePauseButton() {
         gamePaused = !gamePaused;
         if (gamePaused) {
             gameLoop.pause();
@@ -456,7 +469,7 @@ public class GameController extends BaseController implements Initializable {
         gameCanvas.requestFocus();
     }
 
-    private void endGame() {
+    void endGame() {
         gameLoop.stop();
         if (isNormalMode) {
             countdownTimer.cancel();
@@ -503,4 +516,5 @@ public class GameController extends BaseController implements Initializable {
     public int getLevel() {
         return this.level;
     }
+
 }

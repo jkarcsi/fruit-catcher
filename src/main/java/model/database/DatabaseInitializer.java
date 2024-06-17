@@ -77,7 +77,7 @@ public class DatabaseInitializer {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "username TEXT, " +
                     "score INTEGER, " +
-                    "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                    "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                     "FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE" +
                     ")");
         }
