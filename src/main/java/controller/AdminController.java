@@ -50,7 +50,7 @@ public class AdminController extends BaseController {
     }
 
     @FXML
-    private void handleBanUserButton(ActionEvent event) {
+    private void handleBanUserButton() {
         User selectedUser = usersTable.getSelectionModel().getSelectedItem();
         if (selectedUser != null && !selectedUser.getUsername().equals(getUsername())) {
             try {
@@ -68,7 +68,7 @@ public class AdminController extends BaseController {
     }
 
     @FXML
-    private void handleUnbanUserButton(ActionEvent event) {
+    private void handleUnbanUserButton() {
         User selectedUser = usersTable.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
             try {
