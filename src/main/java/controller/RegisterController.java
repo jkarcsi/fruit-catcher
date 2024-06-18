@@ -90,7 +90,7 @@ public class RegisterController extends BaseController implements Initializable 
         try {
             UserDAO userDAO = new UserDAO();
 
-            if (null != userDAO.getUser(username)) {
+            if (null != userDAO.getUser(username, false)) {
                 errorLabel.setText(USERNAME_ALREADY_EXISTS);
                 return;
             }
@@ -100,7 +100,7 @@ public class RegisterController extends BaseController implements Initializable 
                     hashedPassword,
                     passwordReminder,
                     UserRole.ADMIN.value().equals(username) ? UserRole.ADMIN.value() : UserRole.USER.value(),
-                    "active"));
+                    "active"), false);
             LoggerUtil.logInfo("User registered successfully");
 
             // Navigate back to login screen

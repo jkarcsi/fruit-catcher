@@ -2,6 +2,7 @@ package model.user;
 
 import model.Score;
 import model.database.Database;
+import utils.ConfigUtil;
 import utils.LoggerUtil;
 
 import java.sql.Connection;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
-    public User getUser(String username) throws SQLException {
+    public User getUser(String username, boolean isTest) throws SQLException {
         String query = "SELECT * FROM users WHERE username = ?";
-        Connection connection = Database.getConnection();
+        Connection connection = getConnection(isTest);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
@@ -31,10 +32,10 @@ public class UserDAO {
         return null;
     }
 
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers(boolean isTest) throws SQLException {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM users";
-        Connection connection = Database.getConnection();
+        Connection connection = getConnection(isTest);
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -49,27 +50,27 @@ public class UserDAO {
         return users;
     }
 
-    public void banUser(String username) throws SQLException {
+    public void banUser(String username, boolean isTest) throws SQLException {
         String query = "UPDATE users SET status = 'banned' WHERE username = ?";
-        Connection connection = Database.getConnection();
+        Connection connection = getConnection(isTest);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.executeUpdate();
         }
     }
 
-    public void unbanUser(String username) throws SQLException {
+    public void unbanUser(String username, boolean isTest) throws SQLException {
         String query = "UPDATE users SET status = 'active' WHERE username = ?";
-        Connection connection = Database.getConnection();
+        Connection connection = getConnection(isTest);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.executeUpdate();
         }
     }
 
-    public void saveUser(User user) throws SQLException {
+    public void saveUser(User user, boolean isTest) throws SQLException {
         String query = "INSERT INTO users (username, password, password_reminder, role, status) VALUES (?, ?, ?, ?, ?)";
-        Connection connection = Database.getConnection();
+        Connection connection = getConnection(isTest);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
@@ -82,9 +83,9 @@ public class UserDAO {
         }
     }
 
-    public void updateUser(User user) throws SQLException {
+    public void updateUser(User user, boolean isTest) throws SQLException {
         String query = "UPDATE users SET password = ?, password_reminder = ? WHERE username = ?";
-        Connection connection = Database.getConnection();
+        Connection connection = getConnection(isTest);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getPassword());
             statement.setString(2, user.getPasswordReminder());
@@ -95,12 +96,11 @@ public class UserDAO {
         }
     }
 
-    public void deleteUser(String username) throws SQLException {
+    public void deleteUser(String username, boolean isTest) throws SQLException {
         String deleteUserQuery = "DELETE FROM users WHERE username = ?";
         String deleteResultsQuery = "DELETE FROM scores WHERE username = ?";
-
-        try (Connection connection = Database.getConnection();
-             PreparedStatement deleteUserStmt = connection.prepareStatement(deleteUserQuery);
+        Connection connection = getConnection(isTest);
+        try (PreparedStatement deleteUserStmt = connection.prepareStatement(deleteUserQuery);
              PreparedStatement deleteResultsStmt = connection.prepareStatement(deleteResultsQuery)) {
 
             // Begin transaction
@@ -122,9 +122,19 @@ public class UserDAO {
         }
     }
 
-    public void saveScore(String username, int score) throws SQLException {
-        List<Score> userTopScores = getTopScores(username, 10);
-        List<Score> overallTopScores = getTopScores(null, 10);
+    private static Connection getConnection(boolean isTest) throws SQLException {
+        Connection connection;
+        if (isTest) {
+            connection = Database.getTestConnection();
+        } else {
+            connection = Database.getConnection();
+        }
+        return connection;
+    }
+
+    public void saveScore(String username, int score, boolean isTest) throws SQLException {
+        List<Score> userTopScores = getTopScores(username, 10, isTest);
+        List<Score> overallTopScores = getTopScores(null, 10, isTest);
         if ((userTopScores.size() < 10 || score > userTopScores.get(userTopScores.size() - 1)
                 .getScore()) || (overallTopScores.size() < 10 || score > overallTopScores.get(overallTopScores.size() - 1)
                 .getScore())) {
@@ -132,15 +142,15 @@ public class UserDAO {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String timestamp = LocalDateTime.now().format(formatter);
 
-            insertScore(username, score, timestamp);
+            insertScore(username, score, timestamp, isTest);
         }
     }
 
-    private void insertScore(String username, int score, String timestamp) throws SQLException {
+    private void insertScore(String username, int score, String timestamp, boolean isTest) throws SQLException {
         LoggerUtil.logDebug(username);
         String query = "INSERT INTO scores (username, score, timestamp) VALUES (?, ?, ?)";
         LoggerUtil.logDebug(query);
-        Connection connection = Database.getConnection();
+        Connection connection = getConnection(isTest);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setInt(2, score);
@@ -149,7 +159,7 @@ public class UserDAO {
         }
     }
 
-    public List<Score> getTopScores(String username, int limit) throws SQLException {
+    public List<Score> getTopScores(String username, int limit, boolean isTest) throws SQLException {
         List<Score> scores = new ArrayList<>();
         String query;
 
@@ -161,7 +171,7 @@ public class UserDAO {
                     "WHERE u.status != 'banned' ORDER BY s.score DESC LIMIT ?";
         }
 
-        Connection connection = Database.getConnection();
+        Connection connection = getConnection(isTest);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             if (username != null) {
                 statement.setString(1, username);

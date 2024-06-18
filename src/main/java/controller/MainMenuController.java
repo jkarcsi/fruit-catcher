@@ -141,7 +141,7 @@ public class MainMenuController extends BaseController implements Initializable 
     private void deleteUserAccount(ActionEvent event) {
         try {
             UserDAO userDAO = new UserDAO();
-            userDAO.deleteUser(getUsername());
+            userDAO.deleteUser(getUsername(), false);
             LoggerUtil.logInfo("Account deleted for user: " + getUsername());
             // Log out and navigate to login screen
             UserSession.getInstance().setUsername(null);

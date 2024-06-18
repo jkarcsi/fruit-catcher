@@ -55,7 +55,7 @@ public class LoginController extends BaseController {
         try {
             String hashedPassword = hashPassword(password);
             UserDAO userDAO = new UserDAO();
-            User user = userDAO.getUser(username);
+            User user = userDAO.getUser(username, false);
 
             if (user == null || !user.getPassword().equals(hashedPassword)) {
                 errorMessage.setText("Invalid username or password.");
@@ -90,7 +90,7 @@ public class LoginController extends BaseController {
         }
 
         UserDAO userDAO = new UserDAO();
-        User user = userDAO.getUser(username);
+        User user = userDAO.getUser(username, false);
 
         if (user != null) {
             passwordReminderLabel.setText("Password reminder: " + user.getPasswordReminder());

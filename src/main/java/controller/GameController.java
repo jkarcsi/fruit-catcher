@@ -491,7 +491,7 @@ public class GameController extends BaseController implements Initializable {
 
     void saveScore() {
         try {
-            userDAO.saveScore(getUsername(), score);
+            userDAO.saveScore(getUsername(), score, false);
             LoggerUtil.logInfo("Score saved for user: " + getUsername() + ", score: " + score);
         } catch (SQLException e) {
             LoggerUtil.logSevere("Error saving score for user: " + getUsername());

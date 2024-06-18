@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.database.DatabaseInitializer;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Objects;
 

@@ -67,7 +67,7 @@ public class ChangePasswordController extends BaseController implements Initiali
 
         try {
             UserDAO userDAO = new UserDAO();
-            User user = userDAO.getUser(getUsername());
+            User user = userDAO.getUser(getUsername(), false);
 
             if (user == null) {
                 LoggerUtil.logInfo("User not found: " + getUsername());
@@ -79,7 +79,7 @@ public class ChangePasswordController extends BaseController implements Initiali
             if (user.getPassword().equals(hashedOldPassword)) {
                 String hashedNewPassword = hashPassword(newPassword);
                 user.setPassword(hashedNewPassword);
-                userDAO.updateUser(user);
+                userDAO.updateUser(user, false);
                 LoggerUtil.logInfo("Password changed successfully");
 
                 // Navigate back to main menu

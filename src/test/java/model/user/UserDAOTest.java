@@ -2,11 +2,15 @@ package model.user;
 
 import model.Score;
 import model.database.Database;
+import model.database.DatabaseInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.sqlite.SQLiteException;
+import utils.ConfigUtil;
 
 import java.sql.Connection;
+import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -19,23 +23,19 @@ class UserDAOTest {
     @BeforeEach
     public void setUp() throws Exception {
         userDAO = new UserDAO();
-        connection = Database.getConnection();
+        ConfigUtil.loadTestConfig();
+        DatabaseInitializer.initializeTestDatabase();
+        connection = Database.getTestConnection();
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS users (" +
-                    "username TEXT NOT NULL, " +
-                    "password TEXT NOT NULL, " +
-                    "password_reminder TEXT, " +
-                    "role TEXT DEFAULT 'user', " +
-                    "status TEXT DEFAULT 'active', " +
-                    "PRIMARY KEY (username)" +
-                    ")");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS scores (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "username TEXT, " +
-                    "score INTEGER, " +
-                    "timestamp TEXT DEFAULT CURRENT_TIMESTAMP, " +
-                    "FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE" +
-                    ")");
+            statement.executeUpdate(DatabaseInitializer.CREATE_EXTERNAL_USERS_TABLE);
+            statement.executeUpdate(DatabaseInitializer.CREATE_EXTERNAL_SCORES_TABLE);
+        } catch (SQLSyntaxErrorException | SQLiteException e) {
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(DatabaseInitializer.CREATE_INTERNAL_USERS_TABLE);
+                statement.executeUpdate(DatabaseInitializer.CREATE_INTERNAL_SCORES_TABLE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -53,9 +53,9 @@ class UserDAOTest {
     @Test
     void testSaveUser() throws Exception {
         User user = new User("testuser", "password", "reminder", "user", "active");
-        userDAO.saveUser(user);
+        userDAO.saveUser(user, true);
 
-        User fetchedUser = userDAO.getUser("testuser");
+        User fetchedUser = userDAO.getUser("testuser", true);
         assertNotNull(fetchedUser);
         assertEquals("testuser", fetchedUser.getUsername());
         assertEquals("password", fetchedUser.getPassword());
@@ -67,10 +67,10 @@ class UserDAOTest {
     @Test
     void testBanUser() throws Exception {
         User user = new User("testuser", "password", "reminder", "user", "active");
-        userDAO.saveUser(user);
-        userDAO.banUser("testuser");
+        userDAO.saveUser(user, true);
+        userDAO.banUser("testuser", true);
 
-        User fetchedUser = userDAO.getUser("testuser");
+        User fetchedUser = userDAO.getUser("testuser", true);
         assertNotNull(fetchedUser);
         assertEquals("banned", fetchedUser.getStatus());
     }
@@ -78,10 +78,10 @@ class UserDAOTest {
     @Test
     void testUnbanUser() throws Exception {
         User user = new User("testuser", "password", "reminder", "user", "banned");
-        userDAO.saveUser(user);
-        userDAO.unbanUser("testuser");
+        userDAO.saveUser(user, true);
+        userDAO.unbanUser("testuser", true);
 
-        User fetchedUser = userDAO.getUser("testuser");
+        User fetchedUser = userDAO.getUser("testuser", true);
         assertNotNull(fetchedUser);
         assertEquals("active", fetchedUser.getStatus());
     }
@@ -89,10 +89,10 @@ class UserDAOTest {
     @Test
     void testSaveScore() throws Exception {
         User user = new User("testuser", "password", "reminder", "user", "active");
-        userDAO.saveUser(user);
+        userDAO.saveUser(user, true);
 
-        userDAO.saveScore("testuser", 100);
-        List<Score> scores = userDAO.getTopScores("testuser", 10);
+        userDAO.saveScore("testuser", 100, true);
+        List<Score> scores = userDAO.getTopScores("testuser", 10, true);
 
         assertNotNull(scores);
         assertEquals(1, scores.size());
@@ -103,13 +103,13 @@ class UserDAOTest {
     void testGetTopScoresExcludingBannedUsers() throws Exception {
         User user1 = new User("activeuser", "password", "reminder", "user", "active");
         User user2 = new User("banneduser", "password", "reminder", "user", "banned");
-        userDAO.saveUser(user1);
-        userDAO.saveUser(user2);
+        userDAO.saveUser(user1, true);
+        userDAO.saveUser(user2, true);
 
-        userDAO.saveScore("activeuser", 200);
-        userDAO.saveScore("banneduser", 300);
+        userDAO.saveScore("activeuser", 200, true);
+        userDAO.saveScore("banneduser", 300, true);
 
-        List<Score> scores = userDAO.getTopScores(null, 10);
+        List<Score> scores = userDAO.getTopScores(null, 10, true);
         assertNotNull(scores);
         assertEquals(1, scores.size());
         assertEquals("activeuser", scores.get(0).getUsername());
@@ -119,15 +119,15 @@ class UserDAOTest {
     @Test
     void testDeleteUser() throws Exception {
         User user = new User("testuser", "password", "reminder", "user", "active");
-        userDAO.saveUser(user);
-        userDAO.saveScore("testuser", 100);
+        userDAO.saveUser(user, true);
+        userDAO.saveScore("testuser", 100, true);
 
-        userDAO.deleteUser("testuser");
+        userDAO.deleteUser("testuser", true);
 
-        User fetchedUser = userDAO.getUser("testuser");
+        User fetchedUser = userDAO.getUser("testuser", true);
         assertNull(fetchedUser);
 
-        List<Score> scores = userDAO.getTopScores("testuser", 10);
+        List<Score> scores = userDAO.getTopScores("testuser", 10, true);
         assertTrue(scores.isEmpty());
     }
 
@@ -135,10 +135,10 @@ class UserDAOTest {
     void testGetAllUsers() throws Exception {
         User user1 = new User("user1", "password1", "reminder1", "user", "active");
         User user2 = new User("user2", "password2", "reminder2", "user", "active");
-        userDAO.saveUser(user1);
-        userDAO.saveUser(user2);
+        userDAO.saveUser(user1, true);
+        userDAO.saveUser(user2, true);
 
-        List<User> users = userDAO.getAllUsers();
+        List<User> users = userDAO.getAllUsers(true);
 
         assertNotNull(users);
         assertEquals(2, users.size());
@@ -147,13 +147,13 @@ class UserDAOTest {
     @Test
     void testUpdateUser() throws Exception {
         User user = new User("testuser", "password", "reminder", "user", "active");
-        userDAO.saveUser(user);
+        userDAO.saveUser(user, true);
 
         user.setPassword("newpassword");
         user.setPasswordReminder("newreminder");
-        userDAO.updateUser(user);
+        userDAO.updateUser(user, true);
 
-        User updatedUser = userDAO.getUser("testuser");
+        User updatedUser = userDAO.getUser("testuser", true);
 
         assertNotNull(updatedUser);
         assertEquals("newpassword", updatedUser.getPassword());

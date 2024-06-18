@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
+import utils.ConfigUtil;
 import utils.UserSession;
 
 import java.sql.SQLException;
@@ -45,10 +46,10 @@ class GameControllerTest extends ApplicationTest {
 
     @InjectMocks
     private GameController gameController;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        ConfigUtil.loadTestConfig();
         when(userSession.getUsername()).thenReturn("testuser");
 
         // Initialize necessary GameController attributes
@@ -110,9 +111,7 @@ class GameControllerTest extends ApplicationTest {
         gameController.doublePointsActive = false;
 
         // Act
-        runLater(() -> {
-            gameController.activateDoublePoints();
-        });
+        runLater(() -> gameController.activateDoublePoints());
 
         // Assert
         assertTrue(gameController.doublePointsActive);
@@ -139,7 +138,7 @@ class GameControllerTest extends ApplicationTest {
         gameController.saveScore();
 
         // Assert
-        verify(userDAO).saveScore(null, 100);
+        verify(userDAO).saveScore(null, 100, false);
     }
 
     private void runLater(Runnable action) {
@@ -164,9 +163,7 @@ class GameControllerTest extends ApplicationTest {
         gameController.basket = new Basket(300, 500, 50, 50, false);
 
         // Act
-        runLater(() -> {
-            gameController.updateGame();
-        });
+        runLater(() -> gameController.updateGame());
 
         // Assert
         assertEquals(2, gameController.fallingObjects.size());

@@ -42,7 +42,7 @@ public class AdminController extends BaseController {
     private void loadUsers() {
         try {
             UserDAO userDAO = new UserDAO();
-            usersList.setAll(userDAO.getAllUsers());
+            usersList.setAll(userDAO.getAllUsers(false));
             usersTable.setItems(usersList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,7 +55,7 @@ public class AdminController extends BaseController {
         if (selectedUser != null && !selectedUser.getUsername().equals(getUsername())) {
             try {
                 UserDAO userDAO = new UserDAO();
-                userDAO.banUser(selectedUser.getUsername());
+                userDAO.banUser(selectedUser.getUsername(), false);
                 loadUsers(); // Refresh the users list
                 usersTable.getSelectionModel().select(selectedUser); // Retain the selection
             } catch (SQLException e) {
@@ -73,7 +73,7 @@ public class AdminController extends BaseController {
         if (selectedUser != null) {
             try {
                 UserDAO userDAO = new UserDAO();
-                userDAO.unbanUser(selectedUser.getUsername());
+                userDAO.unbanUser(selectedUser.getUsername(), false);
                 loadUsers(); // Refresh the users list
                 usersTable.getSelectionModel().select(selectedUser); // Retain the selection
             } catch (SQLException e) {
