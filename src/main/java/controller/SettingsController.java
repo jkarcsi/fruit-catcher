@@ -8,6 +8,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import utils.Difficulty;
+import utils.GameMode;
+import utils.Language;
 import utils.PreferencesUtil;
 import utils.Texture;
 
@@ -74,26 +77,19 @@ public class SettingsController extends BaseController implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        gameModeComboBox.getItems().addAll("Normal", "Freeplay", "Playground");
-        leftKeyComboBox.getItems().addAll("<", "A", "J");
-        rightKeyComboBox.getItems().addAll(">", "D", "L");
-        languageComboBox.getItems().addAll("English", "Magyar");
-        difficultyComboBox.getItems().addAll("Easy", "Medium", "Hard");
-        textureComboBox.getItems().addAll(Arrays.stream(Texture.values()).map(Texture::getTextureName).toList());
-
-
         loadSettings();
         updateTexts();
+        loadComboBoxItems();
     }
 
     private void loadSettings() {
-        gameModeComboBox.setValue(PreferencesUtil.getPreference(getUsername(), GAME_MODE, "Normal"));
-        difficultyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), DIFFICULTY, "Easy"));
+        gameModeComboBox.setValue(PreferencesUtil.getPreference(getUsername(), GAME_MODE, GameMode.NORMAL.getValue()));
+        difficultyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), DIFFICULTY, Difficulty.EASY.getValue()));
         textureComboBox.setValue(PreferencesUtil.getTexture(getUsername()).getTextureName());
         logFilePathTextField.setText(PreferencesUtil.getPreference(getUsername(), LOG_FILE_PATH, ""));
         languageComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH));
-        leftKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LEFT_KEY, "<"));
-        rightKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), RIGHT_KEY, ">"));
+        leftKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LEFT_KEY, LEFT_ARROW));
+        rightKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), RIGHT_KEY, RIGHT_ARROW));
     }
 
     private void updateTexts() {
@@ -107,6 +103,15 @@ public class SettingsController extends BaseController implements Initializable 
         setMultilingualElement(saveButton, SAVE);
         setMultilingualElement(backToMainMenuButton, BACK_TO_MAIN_MENU);
         setMultilingualElement(chooseDirectoryButton, CHOOSE_DIRECTORY);
+    }
+
+    private void loadComboBoxItems() {
+        gameModeComboBox.getItems().addAll(Arrays.stream(GameMode.values()).map(GameMode::getValue).toList());
+        difficultyComboBox.getItems().addAll(Arrays.stream(Difficulty.values()).map(Difficulty::getValue).toList());
+        textureComboBox.getItems().addAll(Arrays.stream(Texture.values()).map(Texture::getTextureName).toList());
+        languageComboBox.getItems().addAll(Arrays.stream(Language.values()).map(Language::getValue).toList());
+        leftKeyComboBox.getItems().addAll("<", "A", "J");
+        rightKeyComboBox.getItems().addAll(">", "D", "L");
     }
 
     @FXML

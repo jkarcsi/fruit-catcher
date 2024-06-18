@@ -1,8 +1,10 @@
 package controller;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
@@ -18,10 +20,17 @@ public class StartController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startPageRoot.setUserData("StartPage");
+        startPageRoot.setOnKeyPressed(this::handleKeyPressed);
+    }
+
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleStartButton(event);
+        }
     }
 
     @FXML
-    private void handleStartButton(ActionEvent event) {
+    private void handleStartButton(Event event) {
         navigateTo(LOGIN, event);
     }
 }

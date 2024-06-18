@@ -3,6 +3,7 @@ package controller;
 import exceptions.HashException;
 import exceptions.ResourceNotFoundException;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -91,7 +92,7 @@ public abstract class BaseController implements Initializable {
         return username;
     }
 
-    protected void navigateTo(String fxmlFile, ActionEvent event) {
+    protected void navigateTo(String fxmlFile, Event event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Scene scene = new Scene(loader.load(), 800, 600);
@@ -214,7 +215,15 @@ public abstract class BaseController implements Initializable {
 
     private ResourceBundle getBundle() {
         String language = PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH);
-        Locale locale = new Locale(language);
+        String languageCode = getLanguageCode(language);
+        Locale locale = new Locale(languageCode);
         return ResourceBundle.getBundle(MESSAGES, locale);
+    }
+
+    private String getLanguageCode(String language) {
+        return switch (language.toLowerCase()) {
+            case "hungarian", "magyar" -> "hu";
+            default -> "en";
+        };
     }
 }

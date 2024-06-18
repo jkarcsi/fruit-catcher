@@ -3,16 +3,7 @@ package utils;
 import java.io.*;
 import java.util.Properties;
 
-import static utils.SceneConstants.DIFFICULTY;
-import static utils.SceneConstants.ENGLISH;
-import static utils.SceneConstants.GAME_MODE;
-import static utils.SceneConstants.LANGUAGE;
-import static utils.SceneConstants.LEFT_ARROW;
-import static utils.SceneConstants.LEFT_KEY;
-import static utils.SceneConstants.LOG_FILE_PATH;
-import static utils.SceneConstants.RIGHT_ARROW;
-import static utils.SceneConstants.RIGHT_KEY;
-import static utils.SceneConstants.TEXTURE;
+import static utils.SceneConstants.*;
 
 public class PreferencesUtil {
     private PreferencesUtil() {}
@@ -59,8 +50,8 @@ public class PreferencesUtil {
     public static synchronized void setDefaultPreferences(String username) {
         loadProperties();
         if (!properties.containsKey(username + "." + GAME_MODE)) {
-            setPreference(username, GAME_MODE, "Normal");
-            setPreference(username, DIFFICULTY, "Easy");
+            setPreference(username, GAME_MODE, GameMode.NORMAL.getValue());
+            setPreference(username, DIFFICULTY, Difficulty.EASY.getValue());
             setPreference(username, LOG_FILE_PATH, "");
             setPreference(username, TEXTURE, Texture.FOREST.getTextureName());
             setPreference(username, LANGUAGE, ENGLISH);
