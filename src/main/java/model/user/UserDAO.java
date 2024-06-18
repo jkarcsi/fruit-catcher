@@ -2,7 +2,6 @@ package model.user;
 
 import model.Score;
 import model.database.Database;
-import utils.ConfigUtil;
 import utils.LoggerUtil;
 
 import java.sql.Connection;
