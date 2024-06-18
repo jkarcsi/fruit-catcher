@@ -10,6 +10,8 @@ public class PreferencesUtil {
     private static final String PREFERENCES_FILE = "user_preferences.properties";
     private static final Properties properties = new Properties();
 
+    private static final String USERNAME = UserSession.getInstance().getUsername();
+
     static {
         loadProperties();
     }
@@ -38,34 +40,34 @@ public class PreferencesUtil {
         }
     }
 
-    public static synchronized void setPreference(String username, String key, String value) {
-        properties.setProperty(username + "." + key, value);
+    public static synchronized void setPreference(String key, String value) {
+        properties.setProperty(USERNAME + "." + key, value);
         saveProperties();
     }
 
-    public static synchronized String getPreference(String username, String key, String defaultValue) {
-        return properties.getProperty(username + "." + key, defaultValue);
+    public static synchronized String getPreference(String key, String defaultValue) {
+        return properties.getProperty(USERNAME + "." + key, defaultValue);
     }
 
     public static synchronized void setDefaultPreferences(String username) {
         loadProperties();
         if (!properties.containsKey(username + "." + GAME_MODE)) {
-            setPreference(username, GAME_MODE, GameMode.NORMAL.getValue());
-            setPreference(username, DIFFICULTY, Difficulty.EASY.getValue());
-            setPreference(username, LOG_FILE_PATH, "");
-            setPreference(username, TEXTURE, Texture.FOREST.getTextureName());
-            setPreference(username, LANGUAGE, ENGLISH);
-            setPreference(username, LEFT_KEY, LEFT_ARROW);
-            setPreference(username, RIGHT_KEY, RIGHT_ARROW);
+            setPreference( GAME_MODE, GameMode.NORMAL.getValue());
+            setPreference(DIFFICULTY, Difficulty.EASY.getValue());
+            setPreference(LOG_FILE_PATH, "");
+            setPreference(TEXTURE, Texture.FOREST.getTextureName());
+            setPreference(LANGUAGE, ENGLISH);
+            setPreference(LEFT_KEY, LEFT_ARROW);
+            setPreference(RIGHT_KEY, RIGHT_ARROW);
         }
     }
 
-    public static synchronized void setTexture(String username, Texture texture) {
-        setPreference(username, TEXTURE, texture.getTextureName());
+    public static synchronized void setTexture(Texture texture) {
+        setPreference(TEXTURE, texture.getTextureName());
     }
 
-    public static synchronized Texture getTexture(String username) {
-        String textureName = getPreference(username, TEXTURE, Texture.FOREST.getTextureName());
+    public static synchronized Texture getTexture() {
+        String textureName = getPreference(TEXTURE, Texture.FOREST.getTextureName());
         return Texture.valueOf(textureName.toUpperCase());
     }
 }

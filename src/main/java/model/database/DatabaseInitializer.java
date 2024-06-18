@@ -41,6 +41,15 @@ public class DatabaseInitializer {
             "timestamp VARCHAR(50) NULL DEFAULT CURRENT_TIMESTAMP, " +
             "FOREIGN KEY (username) REFERENCES users (username) ON DELETE CASCADE" +
             ")";
+    public static final String TEST_DB_URL = "test.db.url";
+    public static final String DB_URL = "db.url";
+    public static final String TEST_DB_USER = "test.db.user";
+    public static final String TEST_DB_PASSWORD = "test.db.password";
+    public static final String JDBC_SQLITE_FCG_TEST_DB = "jdbc:sqlite:fcg_test.db";
+    public static final String JDBC_SQLITE_FCG_DB = "jdbc:sqlite:fcg.db";
+    public static final String DB_USER = "db.user";
+    public static final String DB_PASSWORD = "db.password";
+    public static final char FORWARD_SLASH = '/';
 
     private DatabaseInitializer() {}
 
@@ -51,12 +60,12 @@ public class DatabaseInitializer {
     private static String baseDbUrl;
 
     public static void initializeDatabase() throws SQLException {
-        dbUrl = ConfigUtil.getConfig("db.url");
-        dbUser = ConfigUtil.getConfig("db.user");
-        dbPassword = ConfigUtil.getConfig("db.password");
+        dbUrl = ConfigUtil.getConfig(DB_URL);
+        dbUser = ConfigUtil.getConfig(DB_USER);
+        dbPassword = ConfigUtil.getConfig(DB_PASSWORD);
 
         if (dbUrl == null || dbUser == null || dbPassword == null) {
-            dbUrl = "jdbc:sqlite:fcg.db";
+            dbUrl = JDBC_SQLITE_FCG_DB;
             initializeSQLiteDatabase(dbUrl);
         } else {
             getAdditionalDbData(false);
@@ -65,12 +74,12 @@ public class DatabaseInitializer {
     }
 
     public static void initializeTestDatabase() throws SQLException {
-        dbUrl = ConfigUtil.getTestConfig("test.db.url");
-        dbUser = ConfigUtil.getTestConfig("test.db.user");
-        dbPassword = ConfigUtil.getTestConfig("test.db.password");
+        dbUrl = ConfigUtil.getTestConfig(TEST_DB_URL);
+        dbUser = ConfigUtil.getTestConfig(TEST_DB_USER);
+        dbPassword = ConfigUtil.getTestConfig(TEST_DB_PASSWORD);
 
         if (dbUrl == null || dbUser == null || dbPassword == null) {
-            dbUrl = "jdbc:sqlite:fcg_test.db";
+            dbUrl = JDBC_SQLITE_FCG_TEST_DB;
             initializeSQLiteDatabase(dbUrl);
         } else {
             getAdditionalDbData(true);
@@ -106,11 +115,11 @@ public class DatabaseInitializer {
 
     private static void getAdditionalDbData(boolean isTest) {
         dbName = isTest ?
-                ConfigUtil.getTestConfig("test.db.url").substring(dbUrl.lastIndexOf('/') + 1)
+                ConfigUtil.getTestConfig(TEST_DB_URL).substring(dbUrl.lastIndexOf(FORWARD_SLASH) + 1)
                 :
-                ConfigUtil.getConfig("db.url").substring(dbUrl.lastIndexOf('/') + 1);
-        baseDbUrl = isTest ? ConfigUtil.getTestConfig("test.db.url").substring(0, dbUrl.lastIndexOf('/'))
+                ConfigUtil.getConfig(DB_URL).substring(dbUrl.lastIndexOf(FORWARD_SLASH) + 1);
+        baseDbUrl = isTest ? ConfigUtil.getTestConfig(TEST_DB_URL).substring(0, dbUrl.lastIndexOf(FORWARD_SLASH))
                 :
-                ConfigUtil.getConfig("db.url").substring(0, dbUrl.lastIndexOf('/'));
+                ConfigUtil.getConfig(DB_URL).substring(0, dbUrl.lastIndexOf(FORWARD_SLASH));
     }
 }

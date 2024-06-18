@@ -83,13 +83,13 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     private void loadSettings() {
-        gameModeComboBox.setValue(PreferencesUtil.getPreference(getUsername(), GAME_MODE, GameMode.NORMAL.getValue()));
-        difficultyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), DIFFICULTY, Difficulty.EASY.getValue()));
-        textureComboBox.setValue(PreferencesUtil.getTexture(getUsername()).getTextureName());
-        logFilePathTextField.setText(PreferencesUtil.getPreference(getUsername(), LOG_FILE_PATH, ""));
-        languageComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH));
-        leftKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), LEFT_KEY, LEFT_ARROW));
-        rightKeyComboBox.setValue(PreferencesUtil.getPreference(getUsername(), RIGHT_KEY, RIGHT_ARROW));
+        gameModeComboBox.setValue(PreferencesUtil.getPreference(GAME_MODE, GameMode.NORMAL.getValue()));
+        difficultyComboBox.setValue(PreferencesUtil.getPreference(DIFFICULTY, Difficulty.EASY.getValue()));
+        textureComboBox.setValue(PreferencesUtil.getTexture().getTextureName());
+        logFilePathTextField.setText(PreferencesUtil.getPreference(LOG_FILE_PATH, ""));
+        languageComboBox.setValue(PreferencesUtil.getPreference(LANGUAGE, ENGLISH));
+        leftKeyComboBox.setValue(PreferencesUtil.getPreference(LEFT_KEY, LEFT_ARROW));
+        rightKeyComboBox.setValue(PreferencesUtil.getPreference(RIGHT_KEY, RIGHT_ARROW));
     }
 
     private void updateTexts() {
@@ -116,13 +116,13 @@ public class SettingsController extends BaseController implements Initializable 
 
     @FXML
     private void handleSaveButton(ActionEvent event) {
-        PreferencesUtil.setPreference(getUsername(), GAME_MODE, gameModeComboBox.getValue());
-        PreferencesUtil.setPreference(getUsername(), DIFFICULTY, difficultyComboBox.getValue());
-        PreferencesUtil.setPreference(getUsername(), TEXTURE, textureComboBox.getValue());
-        PreferencesUtil.setPreference(getUsername(), LOG_FILE_PATH, logFilePathTextField.getText());
-        PreferencesUtil.setPreference(getUsername(), LANGUAGE, languageComboBox.getValue());
-        PreferencesUtil.setPreference(getUsername(), LEFT_KEY, leftKeyComboBox.getValue());
-        PreferencesUtil.setPreference(getUsername(), RIGHT_KEY, rightKeyComboBox.getValue());
+        PreferencesUtil.setPreference(GAME_MODE, gameModeComboBox.getValue());
+        PreferencesUtil.setPreference(DIFFICULTY, difficultyComboBox.getValue());
+        PreferencesUtil.setPreference(TEXTURE, textureComboBox.getValue());
+        PreferencesUtil.setPreference(LOG_FILE_PATH, logFilePathTextField.getText());
+        PreferencesUtil.setPreference(LANGUAGE, languageComboBox.getValue());
+        PreferencesUtil.setPreference(LEFT_KEY, leftKeyComboBox.getValue());
+        PreferencesUtil.setPreference(RIGHT_KEY, rightKeyComboBox.getValue());
 
         applyTexture();
 
@@ -133,7 +133,7 @@ public class SettingsController extends BaseController implements Initializable 
         String selectedTexture = textureComboBox.getValue();
         Texture texture = Texture.valueOf(selectedTexture.toUpperCase());
 
-        PreferencesUtil.setTexture(getUsername(), texture);
+        PreferencesUtil.setTexture(texture);
         applyUserStylesheet();
     }
 

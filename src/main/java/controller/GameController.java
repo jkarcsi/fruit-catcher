@@ -137,7 +137,7 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupGameMode() {
-        String gameMode = PreferencesUtil.getPreference(getUsername(), GAME_MODE, "Normal");
+        String gameMode = PreferencesUtil.getPreference(GAME_MODE, "Normal");
         isNormalMode = "Normal".equals(gameMode);
         isPlaygroundMode = "Playground".equals(gameMode);
         if (!isNormalMode) {
@@ -146,7 +146,7 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupDifficulty() {
-        String difficulty = PreferencesUtil.getPreference(getUsername(), DIFFICULTY, "Easy");
+        String difficulty = PreferencesUtil.getPreference(DIFFICULTY, "Easy");
         switch (difficulty) {
             case "Medium" -> level = 5;
             case "Hard" -> level = 10;
@@ -170,14 +170,10 @@ public class GameController extends BaseController implements Initializable {
     }
 
     void loadControlKeys() {
-        leftKey = KeyCode.valueOf( LEFT_ARROW.equals(PreferencesUtil.getPreference(getUsername(),
-                LEFT_KEY,
-                LEFT_ARROW)) ? LEFT : PreferencesUtil.getPreference(getUsername(),
-                LEFT_KEY, LEFT_ARROW));
-        rightKey = KeyCode.valueOf(RIGHT_ARROW.equals(PreferencesUtil.getPreference(getUsername(),
-                RIGHT_KEY,
-                RIGHT_ARROW)) ? RIGHT : PreferencesUtil.getPreference(getUsername(),
-                LEFT_KEY, RIGHT_ARROW));
+        leftKey = KeyCode.valueOf(LEFT_ARROW.equals(PreferencesUtil.getPreference(LEFT_KEY,
+                LEFT_ARROW)) ? LEFT : PreferencesUtil.getPreference(LEFT_KEY, LEFT_ARROW));
+        rightKey = KeyCode.valueOf(RIGHT_ARROW.equals(PreferencesUtil.getPreference(RIGHT_KEY,
+                RIGHT_ARROW)) ? RIGHT : PreferencesUtil.getPreference(LEFT_KEY, RIGHT_ARROW));
     }
 
     private void adjustCanvasSize() {

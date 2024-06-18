@@ -103,8 +103,7 @@ public class LoggerUtil {
     }
 
     public static String getLogDirectory() {
-        String username = UserSession.getInstance().getUsername();
-        return PreferencesUtil.getPreference(username, "logFilePath", "log");
+        return PreferencesUtil.getPreference("logFilePath", "log");
     }
 
     public static void logInfo(String message) {

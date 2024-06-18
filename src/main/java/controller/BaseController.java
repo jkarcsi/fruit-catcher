@@ -50,7 +50,7 @@ public abstract class BaseController implements Initializable {
     }
 
     protected void applyUserStylesheet() {
-        Texture texture = PreferencesUtil.getTexture(getUsername());
+        Texture texture = PreferencesUtil.getTexture();
         LoggerUtil.logDebug("Applying texture: " + texture.getTextureName());
         for (Window window : Window.getWindows()) {
             if (window instanceof Stage stage) {
@@ -101,7 +101,7 @@ public abstract class BaseController implements Initializable {
             stage.setScene(scene);
             stage.setResizable(false);
             LoggerUtil.logDebug("Navigated to: " + fxmlFile);
-            applyUserStylesheet(scene, PreferencesUtil.getTexture(getUsername())); // Apply styles on navigation
+            applyUserStylesheet(scene, PreferencesUtil.getTexture()); // Apply styles on navigation
         } catch (IOException e) {
             LoggerUtil.logSevere("Failed to navigate to: " + fxmlFile);
             e.printStackTrace();
@@ -116,7 +116,7 @@ public abstract class BaseController implements Initializable {
             stage.setScene(scene);
             stage.setResizable(false);
             LoggerUtil.logDebug("Navigated to: " + fxmlFile);
-            applyUserStylesheet(scene, PreferencesUtil.getTexture(getUsername())); // Apply styles on navigation
+            applyUserStylesheet(scene, PreferencesUtil.getTexture()); // Apply styles on navigation
         } catch (IOException e) {
             LoggerUtil.logSevere("Failed to navigate to: " + fxmlFile);
             e.printStackTrace();
@@ -131,7 +131,7 @@ public abstract class BaseController implements Initializable {
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(((javafx.scene.Node) event.getSource()).getScene().getWindow());
         dialogStage.setResizable(false);
-        applyUserStylesheet(dialogStage.getScene(), PreferencesUtil.getTexture(getUsername())); // Apply styles on navigation
+        applyUserStylesheet(dialogStage.getScene(), PreferencesUtil.getTexture()); // Apply styles on navigation
         dialogStage.showAndWait();
         return loader;
     }
@@ -148,7 +148,7 @@ public abstract class BaseController implements Initializable {
         Stage stage = (Stage) usernameField.getScene().getWindow();
         stage.setScene(scene);
         stage.setResizable(false);
-        applyUserStylesheet(scene, PreferencesUtil.getTexture(user.getUsername())); // Apply styles on navigation
+        applyUserStylesheet(scene, PreferencesUtil.getTexture()); // Apply styles on navigation
         LoggerUtil.logInfo("User logged in: " + user.getUsername());
     }
 
@@ -161,7 +161,7 @@ public abstract class BaseController implements Initializable {
             Stage stage = (Stage) gameCanvas.getScene().getWindow();
             stage.setScene(scene);
             stage.setResizable(false);
-            applyUserStylesheet(scene, PreferencesUtil.getTexture(getUsername())); // Apply styles on navigation
+            applyUserStylesheet(scene, PreferencesUtil.getTexture()); // Apply styles on navigation
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -213,8 +213,8 @@ public abstract class BaseController implements Initializable {
         directoryChooser.setTitle(getBundle().getString(text));
     }
 
-    private ResourceBundle getBundle() {
-        String language = PreferencesUtil.getPreference(getUsername(), LANGUAGE, ENGLISH);
+    ResourceBundle getBundle() {
+        String language = PreferencesUtil.getPreference(LANGUAGE, ENGLISH);
         String languageCode = getLanguageCode(language);
         Locale locale = new Locale(languageCode);
         return ResourceBundle.getBundle(MESSAGES, locale);
