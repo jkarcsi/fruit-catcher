@@ -170,10 +170,11 @@ public class GameController extends BaseController implements Initializable {
     }
 
     void loadControlKeys() {
-        leftKey = KeyCode.valueOf(LEFT_ARROW.equals(PreferencesUtil.getPreference(LEFT_KEY,
-                LEFT_ARROW)) ? LEFT : PreferencesUtil.getPreference(LEFT_KEY, LEFT_ARROW));
-        rightKey = KeyCode.valueOf(RIGHT_ARROW.equals(PreferencesUtil.getPreference(RIGHT_KEY,
-                RIGHT_ARROW)) ? RIGHT : PreferencesUtil.getPreference(LEFT_KEY, RIGHT_ARROW));
+        String leftKeyPref = PreferencesUtil.getPreference(LEFT_KEY, LEFT_ARROW);
+        leftKey = KeyCode.valueOf(leftKeyPref.equals(LEFT_ARROW) ? LEFT : leftKeyPref);
+
+        String rightKeyPref = PreferencesUtil.getPreference(RIGHT_KEY, RIGHT_ARROW);
+        rightKey = KeyCode.valueOf(rightKeyPref.equals(RIGHT_ARROW) ? RIGHT : rightKeyPref);
     }
 
     private void adjustCanvasSize() {

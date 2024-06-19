@@ -10,8 +10,6 @@ public class PreferencesUtil {
     private static final String PREFERENCES_FILE = "user_preferences.properties";
     private static final Properties properties = new Properties();
 
-    private static final String USERNAME = UserSession.getInstance().getUsername();
-
     static {
         loadProperties();
     }
@@ -41,18 +39,18 @@ public class PreferencesUtil {
     }
 
     public static synchronized void setPreference(String key, String value) {
-        properties.setProperty(USERNAME + "." + key, value);
+        properties.setProperty(UserSession.getInstance().getUsername() + "." + key, value);
         saveProperties();
     }
 
     public static synchronized String getPreference(String key, String defaultValue) {
-        return properties.getProperty(USERNAME + "." + key, defaultValue);
+        return properties.getProperty(UserSession.getInstance().getUsername() + "." + key, defaultValue);
     }
 
     public static synchronized void setDefaultPreferences(String username) {
         loadProperties();
         if (!properties.containsKey(username + "." + GAME_MODE)) {
-            setPreference( GAME_MODE, GameMode.NORMAL.getValue());
+            setPreference(GAME_MODE, GameMode.NORMAL.getValue());
             setPreference(DIFFICULTY, Difficulty.EASY.getValue());
             setPreference(LOG_FILE_PATH, "");
             setPreference(TEXTURE, Texture.FOREST.getTextureName());

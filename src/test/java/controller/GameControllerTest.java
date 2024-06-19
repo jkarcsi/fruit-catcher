@@ -46,6 +46,7 @@ class GameControllerTest extends ApplicationTest {
 
     @InjectMocks
     private GameController gameController;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

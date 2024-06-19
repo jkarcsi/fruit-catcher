@@ -80,6 +80,11 @@ public class SettingsController extends BaseController implements Initializable 
         loadSettings();
         updateTexts();
         loadComboBoxItems();
+        addListeners();
+    }
+
+    private void addListeners() {
+        textureComboBox.valueProperty().addListener((observable, oldValue, newValue) -> applyTexture());
     }
 
     private void loadSettings() {
