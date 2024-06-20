@@ -6,6 +6,7 @@ import java.util.Properties;
 import static utils.SceneConstants.*;
 
 public class PreferencesUtil {
+
     private PreferencesUtil() {}
     private static final String PREFERENCES_FILE = "user_preferences.properties";
     private static final Properties properties = new Properties();

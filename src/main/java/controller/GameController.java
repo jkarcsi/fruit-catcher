@@ -26,6 +26,8 @@ import model.falling.Fruit;
 import model.falling.Leaf;
 import model.falling.ScoreMultiplier;
 import model.user.UserDAO;
+import utils.Difficulty;
+import utils.GameMode;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
 
@@ -137,16 +139,16 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupGameMode() {
-        String gameMode = PreferencesUtil.getPreference(GAME_MODE, "Normal");
-        isNormalMode = "Normal".equals(gameMode);
-        isPlaygroundMode = "Playground".equals(gameMode);
+        String gameMode = PreferencesUtil.getPreference(GAME_MODE, GameMode.NORMAL.getValue());
+        isNormalMode = GameMode.NORMAL.getValue().equalsIgnoreCase(gameMode);
+        isPlaygroundMode = GameMode.PLAYGROUND.getValue().equalsIgnoreCase(gameMode);
         if (!isNormalMode) {
             timerLabel.setVisible(false);
         }
     }
 
     private void setupDifficulty() {
-        String difficulty = PreferencesUtil.getPreference(DIFFICULTY, "Easy");
+        String difficulty = PreferencesUtil.getPreference(DIFFICULTY, Difficulty.EASY.getValue());
         switch (difficulty) {
             case "Medium" -> level = 5;
             case "Hard" -> level = 10;
@@ -179,7 +181,7 @@ public class GameController extends BaseController implements Initializable {
 
     private void adjustCanvasSize() {
         Stage stage = (Stage) gameCanvas.getScene().getWindow();
-        gameCanvas.setWidth(stage.getWidth()-20);
+        gameCanvas.setWidth(stage.getWidth() - 20);
         gameCanvas.setHeight(stage.getHeight());
         stage.widthProperty().addListener((obs, oldVal, newVal) -> gameCanvas.setWidth(newVal.doubleValue()));
         stage.heightProperty().addListener((obs, oldVal, newVal) -> gameCanvas.setHeight(newVal.doubleValue()));
