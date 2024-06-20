@@ -25,55 +25,55 @@ import static utils.SceneConstants.*;
 public class SettingsController extends BaseController implements Initializable {
 
     @FXML
-    ComboBox<String> gameModeComboBox;
+    private ComboBox<String> gameModeComboBox;
 
     @FXML
-    ComboBox<String> difficultyComboBox;
+    private ComboBox<String> difficultyComboBox;
 
     @FXML
-    ComboBox<String> textureComboBox;
+    private ComboBox<String> textureComboBox;
 
     @FXML
-    TextField logFilePathTextField;
+    private TextField logFilePathTextField;
 
     @FXML
-    ComboBox<String> languageComboBox;
+    private ComboBox<String> languageComboBox;
 
     @FXML
-    ComboBox<String> leftKeyComboBox;
+    private ComboBox<String> leftKeyComboBox;
 
     @FXML
-    ComboBox<String> rightKeyComboBox;
+    private ComboBox<String> rightKeyComboBox;
 
     @FXML
-    Label gameModeLabel;
+    private Label gameModeLabel;
 
     @FXML
-    Label difficultyLabel;
+    private Label difficultyLabel;
 
     @FXML
-    Label textureLabel;
+    private Label textureLabel;
 
     @FXML
-    Label logFilePathLabel;
+    private Label logFilePathLabel;
 
     @FXML
-    Label languageLabel;
+    private Label languageLabel;
 
     @FXML
-    Label leftKeyLabel;
+    private Label leftKeyLabel;
 
     @FXML
-    Label rightKeyLabel;
+    private Label rightKeyLabel;
 
     @FXML
-    Button saveButton;
+    private Button saveButton;
 
     @FXML
-    Button backToMainMenuButton;
+    private Button backToMainMenuButton;
 
     @FXML
-    Button chooseDirectoryButton;
+    private Button chooseDirectoryButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
