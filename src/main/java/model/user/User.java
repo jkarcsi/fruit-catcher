@@ -4,8 +4,8 @@ public class User {
     private String username;
     private String password;
     private String passwordReminder;
-    private String role;
-    private String status;
+    private final String role;
+    private final String status;
 
     public User(String username, String password, String passwordReminder, String role, String status) {
         this.username = username;
@@ -45,15 +45,9 @@ public class User {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

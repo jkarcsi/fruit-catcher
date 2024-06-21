@@ -10,6 +10,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static utils.FXMLPaths.MAIN_MENU;
+import static utils.SceneConstants.BACK_TO_MAIN_MENU;
+import static utils.SceneConstants.DESC_FIRST;
+import static utils.SceneConstants.DESC_SECOND;
+import static utils.SceneConstants.DESC_THIRD;
 
 public class DescriptionController extends BaseController implements Initializable {
 
@@ -28,10 +32,10 @@ public class DescriptionController extends BaseController implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setMultilingualElement(descFirst, "descFirst");
-        setMultilingualElement(descSecond, "descSecond");
-        setMultilingualElement(descThird, "descThird");
-        setMultilingualElement(backToMainMenu, "backToMainMenu");
+        setMultilingualElement(descFirst, DESC_FIRST);
+        setMultilingualElement(descSecond, DESC_SECOND);
+        setMultilingualElement(descThird, DESC_THIRD);
+        setMultilingualElement(backToMainMenu, BACK_TO_MAIN_MENU);
     }
 
     @FXML

@@ -73,17 +73,17 @@ public class RegisterController extends BaseController implements Initializable 
         String passwordReminder = passwordReminderField.getText();
 
         if (!password.equals(confirmPassword)) {
-            errorLabel.setText(PASSWORDS_DO_NOT_MATCH);
+            setMultilingualElement(errorLabel, PASSWORDS_DO_NOT_MATCH);
             return;
         }
 
         if (username.isEmpty() || password.isEmpty() || passwordReminder.isEmpty()) {
-            errorLabel.setText(USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY);
+            setMultilingualElement(errorLabel, USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY);
             return;
         }
 
         if (!isPasswordStrong(password)) {
-            errorLabel.setText(PASSWORD_IS_NOT_STRONG_ENOUGH);
+            setMultilingualElement(errorLabel, PASSWORD_IS_NOT_STRONG_ENOUGH);
             return;
         }
 
@@ -91,7 +91,7 @@ public class RegisterController extends BaseController implements Initializable 
             UserDAO userDAO = new UserDAO();
 
             if (null != userDAO.getUser(username, false)) {
-                errorLabel.setText(USERNAME_ALREADY_EXISTS);
+                setMultilingualElement(errorLabel, USERNAME_ALREADY_EXISTS);
                 return;
             }
 
@@ -108,7 +108,7 @@ public class RegisterController extends BaseController implements Initializable 
 
         } catch (SQLException | HashException e) {
             e.printStackTrace();
-            errorLabel.setText(AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN);
+            setMultilingualElement(errorLabel, AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN);
         }
     }
 

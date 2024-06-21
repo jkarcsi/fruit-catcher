@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
 
+import static utils.SceneConstants.LOG_FILE_PATH;
+
 public class LoggerUtil {
     private LoggerUtil() {
         // empty constructor
@@ -103,7 +105,7 @@ public class LoggerUtil {
     }
 
     public static String getLogDirectory() {
-        return PreferencesUtil.getPreference("logFilePath", "log");
+        return PreferencesUtil.getPreference(LOG_FILE_PATH, "log");
     }
 
     public static void logInfo(String message) {

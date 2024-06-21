@@ -36,6 +36,7 @@ import java.util.ResourceBundle;
 import static utils.FXMLPaths.ADMIN;
 import static utils.FXMLPaths.GAME_OVER;
 import static utils.FXMLPaths.MAIN_MENU;
+import static utils.ResourcePaths.IMAGE_ICON_PNG;
 import static utils.SceneConstants.ENGLISH;
 import static utils.SceneConstants.LANGUAGE;
 import static utils.SceneConstants.MESSAGES;
@@ -51,7 +52,7 @@ public abstract class BaseController implements Initializable {
 
     protected void applyUserStylesheet() {
         Texture texture = PreferencesUtil.getTexture();
-        LoggerUtil.logDebug("Applying texture: " + texture.getTextureName());
+        LoggerUtil.logDebug("Applying texture: " + texture.getValue());
         for (Window window : Window.getWindows()) {
             if (window instanceof Stage stage) {
                 Scene scene = stage.getScene();
@@ -97,7 +98,7 @@ public abstract class BaseController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Scene scene = new Scene(loader.load(), 800, 600);
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.getIcons().add(loadImage("/image/icon.png"));
+            stage.getIcons().add(loadImage(IMAGE_ICON_PNG));
             stage.setScene(scene);
             stage.setResizable(false);
             LoggerUtil.logDebug("Navigated to: " + fxmlFile);
@@ -126,7 +127,7 @@ public abstract class BaseController implements Initializable {
     protected FXMLLoader navigateToDialog(String fxmlFile, ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Stage dialogStage = new Stage();
-        dialogStage.getIcons().add(loadImage("/image/icon.png"));
+        dialogStage.getIcons().add(loadImage(IMAGE_ICON_PNG));
         dialogStage.setScene(new Scene(loader.load()));
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(((javafx.scene.Node) event.getSource()).getScene().getWindow());
@@ -187,7 +188,8 @@ public abstract class BaseController implements Initializable {
     protected Image loadImage(String path) {
         InputStream inputStream = getClass().getResourceAsStream(path);
         if (inputStream == null) {
-            throw new ResourceNotFoundException("Resource not found: " + path + " in classpath: " + System.getProperty("java.class.path"));
+            throw new ResourceNotFoundException("Resource not found: " + path + " in classpath: " + System.getProperty(
+                    "java.class.path"));
         }
         return new Image(inputStream);
     }
@@ -214,10 +216,10 @@ public abstract class BaseController implements Initializable {
     }
 
     ResourceBundle getBundle() {
-        String language = PreferencesUtil.getPreference(LANGUAGE, ENGLISH);
-        String languageCode = getLanguageCode(language);
-        Locale locale = new Locale(languageCode);
-        return ResourceBundle.getBundle(MESSAGES, locale);
+            String language = PreferencesUtil.getPreference(LANGUAGE, ENGLISH);
+            String languageCode = getLanguageCode(language);
+            Locale locale = new Locale(languageCode);
+            return ResourceBundle.getBundle(MESSAGES, locale);
     }
 
     private String getLanguageCode(String language) {

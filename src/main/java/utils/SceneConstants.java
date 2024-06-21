@@ -4,13 +4,14 @@ public class SceneConstants {
 
     private SceneConstants() {}
 
+    public static final String FRUIT_CATCHER = "Fruit Catcher";
+    public static final String DOT = ".";
     public static final String TOP_SCORES = "topScores";
     public static final String REGISTER = "register";
     public static final String PASSWORD_STRENGTH = "passwordStrength";
     public static final String PASSWORD = "password";
     public static final String CONFIRM_PASSWORD = "confirmPassword";
     public static final String BACK_TO_LOGIN = "backToLogin";
-
     public static final String SCORE = "score";
     public static final String TIMER = "timer";
     public static final String BACKGROUND = "background";
@@ -52,10 +53,16 @@ public class SceneConstants {
     public static final String CONFIRM_NEW_PASSWORD = "confirmNewPassword";
     public static final String CONFIRM_DELETE_ACCOUNT = "confirmDeleteAccount";
     public static final String PASSWORDS_DO_NOT_MATCH = "passwordsDoNotMatch";
-    public static final String USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY = "Username, password, and password reminder cannot be empty";
-    public static final String PASSWORD_IS_NOT_STRONG_ENOUGH = "Password is not strong enough";
-    public static final String USERNAME_ALREADY_EXISTS = "Username already exists.";
-    public static final String AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN = "An error occurred. Please try again.";
-//    public static final String PASSWORDS_DO_NOT_MATCH = "Passwords do not match";
+    public static final String USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY = "emptyRegisterFields";
+    public static final String PASSWORD_IS_NOT_STRONG_ENOUGH = "notStrongPassword";
+    public static final String USERNAME_ALREADY_EXISTS = "usernameAlreadyExists";
+    public static final String AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN = "unknownError";
+    public static final String DESC_FIRST = "descFirst";
+    public static final String DESC_SECOND = "descSecond";
+    public static final String DESC_THIRD = "descThird";
+    public static final String DISABLE_BACKGROUND = "disableBackground";
+    public static final String ENABLE_BACKGROUND = "enableBackground";
+    public static final String PLAY_MUSIC = "playMusic";
+    public static final String PAUSE_MUSIC = "pauseMusic";
 
 }

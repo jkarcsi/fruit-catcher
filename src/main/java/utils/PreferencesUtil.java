@@ -40,21 +40,21 @@ public class PreferencesUtil {
     }
 
     public static synchronized void setPreference(String key, String value) {
-        properties.setProperty(UserSession.getInstance().getUsername() + "." + key, value);
+        properties.setProperty(UserSession.getInstance().getUsername() + DOT + key, value);
         saveProperties();
     }
 
     public static synchronized String getPreference(String key, String defaultValue) {
-        return properties.getProperty(UserSession.getInstance().getUsername() + "." + key, defaultValue);
+        return properties.getProperty(UserSession.getInstance().getUsername() + DOT + key, defaultValue);
     }
 
     public static synchronized void setDefaultPreferences(String username) {
         loadProperties();
-        if (!properties.containsKey(username + "." + GAME_MODE)) {
+        if (!properties.containsKey(username + DOT + GAME_MODE)) {
             setPreference(GAME_MODE, GameMode.NORMAL.getValue());
             setPreference(DIFFICULTY, Difficulty.EASY.getValue());
             setPreference(LOG_FILE_PATH, "");
-            setPreference(TEXTURE, Texture.FOREST.getTextureName());
+            setPreference(TEXTURE, Texture.FOREST.getValue());
             setPreference(LANGUAGE, ENGLISH);
             setPreference(LEFT_KEY, LEFT_ARROW);
             setPreference(RIGHT_KEY, RIGHT_ARROW);
@@ -62,11 +62,12 @@ public class PreferencesUtil {
     }
 
     public static synchronized void setTexture(Texture texture) {
-        setPreference(TEXTURE, texture.getTextureName());
+        setPreference(TEXTURE, texture.getValue());
     }
 
     public static synchronized Texture getTexture() {
-        String textureName = getPreference(TEXTURE, Texture.FOREST.getTextureName());
+        String textureName = getPreference(TEXTURE, Texture.FOREST.getValue());
         return Texture.valueOf(textureName.toUpperCase());
     }
+
 }

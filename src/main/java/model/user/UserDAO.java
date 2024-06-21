@@ -1,7 +1,10 @@
 package model.user;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Score;
 import model.database.Database;
+import model.ranking.Ranking;
 import utils.LoggerUtil;
 
 import java.sql.Connection;
@@ -189,5 +192,26 @@ public class UserDAO {
         }
         return scores;
     }
+
+    public ObservableList<Ranking> getTopPlayers() throws SQLException {
+        List<Ranking> rankingList = new ArrayList<>();
+        String query = "SELECT s.username, SUM(s.score) AS total_score " +
+                "FROM scores s JOIN users u ON s.username = u.username " +
+                "WHERE u.status != 'banned' " +
+                "GROUP BY s.username " +
+                "ORDER BY total_score DESC " +
+                "LIMIT 10";
+        Connection connection = Database.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                int totalScore = resultSet.getInt("total_score");
+                rankingList.add(new Ranking(username, totalScore));
+            }
+        }
+        return FXCollections.observableArrayList(rankingList);
+    }
+
 
 }

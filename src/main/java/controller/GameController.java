@@ -35,14 +35,22 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
 
+import static utils.ResourcePaths.IMAGE_CLOUD_1_PNG;
+import static utils.ResourcePaths.IMAGE_CLOUD_2_PNG;
+import static utils.ResourcePaths.IMAGE_CLOUD_3_PNG;
+import static utils.ResourcePaths.SOUND_DEZERT_MP_3;
 import static utils.SceneConstants.BACKGROUND;
 import static utils.SceneConstants.DIFFICULTY;
+import static utils.SceneConstants.DISABLE_BACKGROUND;
+import static utils.SceneConstants.ENABLE_BACKGROUND;
 import static utils.SceneConstants.GAME_MODE;
 import static utils.SceneConstants.LEFT;
 import static utils.SceneConstants.LEFT_ARROW;
 import static utils.SceneConstants.LEFT_KEY;
 import static utils.SceneConstants.MUSIC;
 import static utils.SceneConstants.PAUSE;
+import static utils.SceneConstants.PAUSE_MUSIC;
+import static utils.SceneConstants.PLAY_MUSIC;
 import static utils.SceneConstants.QUIT;
 import static utils.SceneConstants.RIGHT;
 import static utils.SceneConstants.RIGHT_ARROW;
@@ -52,7 +60,6 @@ import static utils.SceneConstants.TIMER;
 import static utils.FXMLPaths.MAIN_MENU;
 
 public class GameController extends BaseController implements Initializable {
-
 
     @FXML
     Canvas gameCanvas;
@@ -148,7 +155,7 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupDifficulty() {
-        String difficulty = PreferencesUtil.getPreference(DIFFICULTY, Difficulty.EASY.getValue());
+        String difficulty = PreferencesUtil.getPreference(DIFFICULTY, Difficulty.EASY.getValue().toLowerCase());
         switch (difficulty) {
             case "Medium" -> level = 5;
             case "Hard" -> level = 10;
@@ -222,9 +229,9 @@ public class GameController extends BaseController implements Initializable {
     }
 
     private void setupBackground() {
-        Image cloud1 = loadImage("/image/cloud1.png");
-        Image cloud2 = loadImage("/image/cloud2.png");
-        Image cloud3 = loadImage("/image/cloud3.png");
+        Image cloud1 = loadImage(IMAGE_CLOUD_1_PNG);
+        Image cloud2 = loadImage(IMAGE_CLOUD_2_PNG);
+        Image cloud3 = loadImage(IMAGE_CLOUD_3_PNG);
 
         double scaleFactor = 0.1;
         for (int i = 0; i < 20; i++) {
@@ -246,7 +253,7 @@ public class GameController extends BaseController implements Initializable {
     }
 
     void setupMusic() {
-        String musicFile = Objects.requireNonNull(getClass().getResource("/sound/dezert.mp3")).toExternalForm();
+        String musicFile = Objects.requireNonNull(getClass().getResource(SOUND_DEZERT_MP_3)).toExternalForm();
         Media media = new Media(musicFile);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -256,11 +263,11 @@ public class GameController extends BaseController implements Initializable {
     private void handleToggleBackgroundButton() {
         if (clouds.isEmpty()) {
             setupBackground();
-            setMultilingualElement(toggleBackgroundButton, "disableBackground");
+            setMultilingualElement(toggleBackgroundButton, DISABLE_BACKGROUND);
             LoggerUtil.logInfo("Background enabled");
         } else {
             clouds.clear();
-            setMultilingualElement(toggleBackgroundButton, "enableBackground");
+            setMultilingualElement(toggleBackgroundButton, ENABLE_BACKGROUND);
             LoggerUtil.logInfo("Background disabled");
         }
         gameCanvas.requestFocus();
@@ -271,11 +278,11 @@ public class GameController extends BaseController implements Initializable {
         if (isMusicPlaying) {
             mediaPlayer.pause();
             isMusicPlaying = false;
-            setMultilingualElement(toggleMusicButton, "playMusic");
+            setMultilingualElement(toggleMusicButton, PLAY_MUSIC);
         } else {
             mediaPlayer.play();
             isMusicPlaying = true;
-            setMultilingualElement(toggleMusicButton, "pauseMusic");
+            setMultilingualElement(toggleMusicButton, PAUSE_MUSIC);
         }
         gameCanvas.requestFocus();
     }

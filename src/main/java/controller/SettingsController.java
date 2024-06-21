@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,12 +12,16 @@ import javafx.stage.DirectoryChooser;
 import utils.Difficulty;
 import utils.GameMode;
 import utils.Language;
+import utils.Localizable;
 import utils.PreferencesUtil;
 import utils.Texture;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import static utils.FXMLPaths.MAIN_MENU;
@@ -25,74 +30,98 @@ import static utils.SceneConstants.*;
 public class SettingsController extends BaseController implements Initializable {
 
     @FXML
-    private ComboBox<String> gameModeComboBox;
+    ComboBox<String> gameModeComboBox;
 
     @FXML
-    private ComboBox<String> difficultyComboBox;
+    ComboBox<String> difficultyComboBox;
 
     @FXML
-    private ComboBox<String> textureComboBox;
+    ComboBox<String> textureComboBox;
 
     @FXML
-    private TextField logFilePathTextField;
+    TextField logFilePathTextField;
 
     @FXML
-    private ComboBox<String> languageComboBox;
+    ComboBox<String> languageComboBox;
 
     @FXML
-    private ComboBox<String> leftKeyComboBox;
+    ComboBox<String> leftKeyComboBox;
 
     @FXML
-    private ComboBox<String> rightKeyComboBox;
+    ComboBox<String> rightKeyComboBox;
 
     @FXML
-    private Label gameModeLabel;
+    Label gameModeLabel;
 
     @FXML
-    private Label difficultyLabel;
+    Label difficultyLabel;
 
     @FXML
-    private Label textureLabel;
+    Label textureLabel;
 
     @FXML
-    private Label logFilePathLabel;
+    Label logFilePathLabel;
 
     @FXML
-    private Label languageLabel;
+    Label languageLabel;
 
     @FXML
-    private Label leftKeyLabel;
+    Label leftKeyLabel;
 
     @FXML
-    private Label rightKeyLabel;
+    Label rightKeyLabel;
 
     @FXML
-    private Button saveButton;
+    Button saveButton;
 
     @FXML
-    private Button backToMainMenuButton;
+    Button backToMainMenuButton;
 
     @FXML
-    private Button chooseDirectoryButton;
+    Button chooseDirectoryButton;
+
+    private ChangeListener<String> languageChangeListener;
+    private Map<String, String> localizedToEnumTextureMap;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadSettings();
+        initializeLocalizedToEnumTextureMap();
         updateTexts();
         loadComboBoxItems();
         addListeners();
     }
 
+    private void initializeLocalizedToEnumTextureMap() {
+        localizedToEnumTextureMap = new HashMap<>();
+        ResourceBundle bundle = getBundle();
+        for (Texture texture : Texture.values()) {
+            String localizedTextureName = bundle.getString(texture.getKey().toLowerCase());
+            localizedToEnumTextureMap.put(capitalize(localizedTextureName), texture.name());
+        }
+    }
+
     private void addListeners() {
         textureComboBox.valueProperty().addListener((observable, oldValue, newValue) -> applyTexture());
+
+        languageChangeListener = (observable, oldValue, newValue) -> switchLanguageAndUpdateComboBoxDisplay(newValue);
+        languageComboBox.valueProperty().addListener(languageChangeListener);
     }
 
     private void loadSettings() {
-        gameModeComboBox.setValue(PreferencesUtil.getPreference(GAME_MODE, GameMode.NORMAL.getValue()));
-        difficultyComboBox.setValue(PreferencesUtil.getPreference(DIFFICULTY, Difficulty.EASY.getValue()));
-        textureComboBox.setValue(PreferencesUtil.getTexture().getTextureName());
+        ResourceBundle bundle = getBundle();
+        gameModeComboBox.setValue(capitalize(bundle.getString(GAME_MODE + DOT + PreferencesUtil.getPreference(GAME_MODE,
+                GameMode.NORMAL.getValue()).toLowerCase())));
+        difficultyComboBox.setValue(capitalize(bundle.getString(DIFFICULTY + DOT + PreferencesUtil.getPreference(
+                DIFFICULTY,
+                Difficulty.EASY.getValue()).toLowerCase())));
+        textureComboBox.setValue(capitalize(bundle.getString(TEXTURE + DOT + PreferencesUtil.getTexture()
+                .getValue()
+                .toLowerCase())));
+        languageComboBox.setValue(capitalize(bundle.getString(LANGUAGE + DOT + PreferencesUtil.getPreference(LANGUAGE,
+                ENGLISH).toLowerCase())));
+
         logFilePathTextField.setText(PreferencesUtil.getPreference(LOG_FILE_PATH, ""));
-        languageComboBox.setValue(PreferencesUtil.getPreference(LANGUAGE, ENGLISH));
         leftKeyComboBox.setValue(PreferencesUtil.getPreference(LEFT_KEY, LEFT_ARROW));
         rightKeyComboBox.setValue(PreferencesUtil.getPreference(RIGHT_KEY, RIGHT_ARROW));
     }
@@ -111,21 +140,37 @@ public class SettingsController extends BaseController implements Initializable 
     }
 
     private void loadComboBoxItems() {
-        gameModeComboBox.getItems().addAll(Arrays.stream(GameMode.values()).map(GameMode::getValue).toList());
-        difficultyComboBox.getItems().addAll(Arrays.stream(Difficulty.values()).map(Difficulty::getValue).toList());
-        textureComboBox.getItems().addAll(Arrays.stream(Texture.values()).map(Texture::getTextureName).toList());
-        languageComboBox.getItems().addAll(Arrays.stream(Language.values()).map(Language::getValue).toList());
+        ResourceBundle bundle = getBundle();
+
+        gameModeComboBox.getItems()
+                .addAll(Arrays.stream(GameMode.values())
+                        .map(mode -> capitalize(bundle.getString(GAME_MODE + DOT + mode.getValue().toLowerCase())))
+                        .toList());
+        difficultyComboBox.getItems()
+                .addAll(Arrays.stream(Difficulty.values())
+                        .map(difficulty -> capitalize(bundle.getString(DIFFICULTY + DOT + difficulty.getValue()
+                                .toLowerCase())))
+                        .toList());
+        textureComboBox.getItems()
+                .addAll(Arrays.stream(Texture.values())
+                        .map(texture -> capitalize(bundle.getString(TEXTURE + DOT + texture.getValue().toLowerCase())))
+                        .toList());
+        languageComboBox.getItems()
+                .addAll(Arrays.stream(Language.values())
+                        .map(language -> capitalize(bundle.getString(LANGUAGE + DOT + language.getValue()
+                                .toLowerCase())))
+                        .toList());
         leftKeyComboBox.getItems().addAll("<", "A", "J");
         rightKeyComboBox.getItems().addAll(">", "D", "L");
     }
 
     @FXML
     private void handleSaveButton(ActionEvent event) {
-        PreferencesUtil.setPreference(GAME_MODE, gameModeComboBox.getValue());
-        PreferencesUtil.setPreference(DIFFICULTY, difficultyComboBox.getValue());
-        PreferencesUtil.setPreference(TEXTURE, textureComboBox.getValue());
+        PreferencesUtil.setPreference(GAME_MODE, getEnglishValue(gameModeComboBox.getValue(), GameMode.values()));
+        PreferencesUtil.setPreference(DIFFICULTY, getEnglishValue(difficultyComboBox.getValue(), Difficulty.values()));
+        PreferencesUtil.setPreference(TEXTURE, getEnglishValue(textureComboBox.getValue(), Texture.values()));
         PreferencesUtil.setPreference(LOG_FILE_PATH, logFilePathTextField.getText());
-        PreferencesUtil.setPreference(LANGUAGE, languageComboBox.getValue());
+        PreferencesUtil.setPreference(LANGUAGE, getEnglishValue(languageComboBox.getValue(), Language.values()));
         PreferencesUtil.setPreference(LEFT_KEY, leftKeyComboBox.getValue());
         PreferencesUtil.setPreference(RIGHT_KEY, rightKeyComboBox.getValue());
 
@@ -134,12 +179,43 @@ public class SettingsController extends BaseController implements Initializable 
         handleBackToMainMenuButton(event);
     }
 
-    private void applyTexture() {
-        String selectedTexture = textureComboBox.getValue();
-        Texture texture = Texture.valueOf(selectedTexture.toUpperCase());
+    private <T extends Enum<T> & Localizable> String getEnglishValue(String localizedValue, T[] values) {
+        ResourceBundle currentBundle = getBundle();
+        ResourceBundle englishBundle = ResourceBundle.getBundle(MESSAGES, new Locale("en"));
 
-        PreferencesUtil.setTexture(texture);
-        applyUserStylesheet();
+        // First, it looks at the localized value in the current language resource file and looks for the corresponding key
+        for (T value : values) {
+            String localizedKey = value.getKey();
+            if (currentBundle.containsKey(localizedKey) && capitalize(currentBundle.getString(localizedKey)).equals(localizedValue)) {
+                // Use this key in the English resource file to return the English value
+                return englishBundle.getString(localizedKey);
+            }
+        }
+
+        // If this is not found in the current language resource file, look for it in the English resource file
+        for (T value : values) {
+            String localizedKey = value.getKey();
+            if (englishBundle.containsKey(localizedKey) && capitalize(englishBundle.getString(localizedKey)).equals(localizedValue)) {
+                return englishBundle.getString(localizedKey);
+            }
+        }
+
+        return localizedValue; // Returns the original value if there is no match at all
+    }
+
+    private void applyTexture() {
+        initializeLocalizedToEnumTextureMap();
+        String selectedTexture = textureComboBox.getValue();
+        if (selectedTexture != null) {
+            try {
+                String textureEnumName = getTextureEnumName(selectedTexture);
+                Texture texture = Texture.valueOf(textureEnumName);
+                PreferencesUtil.setTexture(texture);
+                applyUserStylesheet();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -155,5 +231,82 @@ public class SettingsController extends BaseController implements Initializable 
     @FXML
     private void handleBackToMainMenuButton(ActionEvent event) {
         navigateTo(MAIN_MENU, event);
+    }
+
+    public void switchLanguageAndUpdateComboBoxDisplay(String newLanguage) {
+        // Update the language preference
+        PreferencesUtil.setPreference(LANGUAGE, capitalize(getEnglishValue(newLanguage, Language.values())));
+
+        // Reload the resource bundle to reflect the new language
+        ResourceBundle.clearCache();
+        getBundle();
+
+        // Temporarily disable the listener
+        if (languageChangeListener != null) {
+            languageComboBox.valueProperty().removeListener(languageChangeListener);
+        }
+
+        // Update the UI texts
+        updateTexts();
+
+        // Update the ComboBox items
+        updateComboBoxItems();
+
+        // Re-enable the listener
+        languageComboBox.valueProperty().addListener(languageChangeListener);
+    }
+
+    private void updateComboBoxItems() {
+        ResourceBundle bundle = getBundle();
+
+        gameModeComboBox.getItems().clear();
+        gameModeComboBox.getItems()
+                .addAll(Arrays.stream(GameMode.values())
+                        .map(mode -> capitalize(bundle.getString("gameMode." + mode.getValue().toLowerCase())))
+                        .toList());
+        String gameModePreference = PreferencesUtil.getPreference(GAME_MODE, GameMode.NORMAL.getValue().toLowerCase())
+                .toLowerCase();
+        gameModeComboBox.setValue(capitalize(bundle.getString("gameMode." + gameModePreference)));
+
+        difficultyComboBox.getItems().clear();
+        difficultyComboBox.getItems()
+                .addAll(Arrays.stream(Difficulty.values())
+                        .map(difficulty -> capitalize(bundle.getString("difficulty." + difficulty.getValue()
+                                .toLowerCase())))
+                        .toList());
+        String difficultyPreference = PreferencesUtil.getPreference(DIFFICULTY,
+                Difficulty.EASY.getValue().toLowerCase()).toLowerCase();
+        difficultyComboBox.setValue(capitalize(bundle.getString("difficulty." + difficultyPreference)));
+
+        textureComboBox.getItems().clear();
+        textureComboBox.getItems()
+                .addAll(Arrays.stream(Texture.values())
+                        .map(texture -> capitalize(bundle.getString("texture." + texture.getValue().toLowerCase())))
+                        .toList());
+        String texturePreference = PreferencesUtil.getTexture().getValue().toLowerCase();
+        textureComboBox.setValue(capitalize(bundle.getString("texture." + texturePreference)));
+
+        languageComboBox.getItems().clear();
+        languageComboBox.getItems()
+                .addAll(Arrays.stream(Language.values())
+                        .map(language -> capitalize(bundle.getString("language." + language.getValue().toLowerCase())))
+                        .toList());
+        String languagePreference = PreferencesUtil.getPreference(LANGUAGE, ENGLISH.toLowerCase()).toLowerCase();
+        languageComboBox.setValue(capitalize(bundle.getString("language." + languagePreference)));
+    }
+
+    private String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    }
+
+    private String getTextureEnumName(String localizedName) {
+        String enumName = localizedToEnumTextureMap.get(localizedName);
+        if (enumName == null) {
+            throw new IllegalArgumentException("No matching texture enum found for: " + localizedName);
+        }
+        return enumName;
     }
 }

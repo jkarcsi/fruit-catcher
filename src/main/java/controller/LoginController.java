@@ -17,6 +17,7 @@ import model.user.User;
 import model.user.UserDAO;
 import utils.LoggerUtil;
 import utils.PreferencesUtil;
+import utils.UserRole;
 import utils.UserSession;
 
 import static utils.FXMLPaths.REGISTER;
@@ -64,8 +65,10 @@ public class LoginController extends BaseController {
                 errorMessage.setText("User is banned.");
                 LoggerUtil.logWarning("Banned user login attempt: " + username);
             } else {
-                UserSession.getInstance().setUsername(username); // Set the username in UserSession
-                PreferencesUtil.setDefaultPreferences(username); // Set default settings for new users
+                if (!user.getRole().equals(UserRole.ADMIN.value())) {
+                    UserSession.getInstance().setUsername(username); // Set the username in UserSession
+                    PreferencesUtil.setDefaultPreferences(username); // Set default settings for new users
+                }
                 navigateByRole(user, usernameField);
             }
         } catch (SQLException | IOException | HashException e) {

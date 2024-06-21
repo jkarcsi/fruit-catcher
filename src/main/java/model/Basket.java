@@ -3,6 +3,8 @@ package model;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import static utils.ResourcePaths.IMAGE_BASKET_PNG;
+
 public class Basket {
     private double x;
     private double y;
@@ -23,7 +25,7 @@ public class Basket {
         this.height = height;
         this.velocityX = 0;
         if (loadImage) {
-            this.basketImage = new Image("/image/basket.png"); // Kép betöltése, ha szükséges
+            this.basketImage = new Image(IMAGE_BASKET_PNG); // Kép betöltése, ha szükséges
         }
     }
 

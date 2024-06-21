@@ -1,24 +1,31 @@
 package utils;
 
-public enum Texture {
-    FOREST("Forest", "forest.css"),
-    RETRO("Retro","retro.css"),
-    FUTURISTIC("Futuristic", "futuristic.css");
+public enum Texture implements Localizable {
+    FOREST("texture.forest", "Forest", "forest.css"),
+    RETRO("texture.retro", "Retro", "retro.css"),
+    FUTURISTIC("texture.futuristic", "Futuristic", "futuristic.css");
 
-    private final String textureName;
+    private final String key;
+    private final String value;
     private final String cssFile;
 
-
-    Texture(String textureName, String cssFile) {
+    Texture(String key, String value, String cssFile) {
+        this.key = key;
+        this.value = value;
         this.cssFile = cssFile;
-        this.textureName = textureName;
+    }
+
+    @Override
+    public String getKey() {
+        return key;
+    }
+
+    @Override
+    public String getValue() {
+        return value;
     }
 
     public String getCssFile() {
         return cssFile;
-    }
-
-    public String getTextureName() {
-        return textureName;
     }
 }
