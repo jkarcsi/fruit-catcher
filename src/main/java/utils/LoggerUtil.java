@@ -48,8 +48,15 @@ public class LoggerUtil {
 
             // Check if the directory is writable
             File logDirectory = new File(logDirectoryPath);
-            if (!logDirectory.exists() && !logDirectory.mkdirs()) {
-                throw new AccessDeniedException("Cannot create log directory: " + logDirectoryPath);
+            if (logDirectoryPath.equals(DEFAULT_LOG_PATH) && !logDirectory.exists()) {
+                boolean isDirectoryCreated = logDirectory.mkdirs();
+                if (!isDirectoryCreated) {
+                    throw new AccessDeniedException("Cannot create log directory: " + logDirectoryPath);
+                }
+            } else if (!logDirectoryPath.equals(DEFAULT_LOG_PATH) && !logDirectory.exists()) {
+                setDefaultLogDirectory();
+                configureLogger();
+                return;
             }
 
             if (!Files.isWritable(logDirectory.toPath())) {
@@ -65,6 +72,10 @@ public class LoggerUtil {
         } catch (IOException e) {
             logSevere("Error occurred in FileHandler: " + e.getMessage());
         }
+    }
+
+    public static void setDefaultLogDirectory() {
+        PreferencesUtil.setPreference(LOG_FILE_PATH, DEFAULT_LOG_PATH);
     }
 
     private static void configureFallbackLogger(String fallbackLogDirectory) {

@@ -69,7 +69,7 @@ public class LoginController extends BaseController {
                 if (!user.getRole().equals(UserRole.ADMIN.value())) {
                     UserSession.getInstance().setUsername(username); // Set the username in UserSession
                     PreferencesUtil.setDefaultPreferences(username); // Set default settings for new users
-                    configureLogger();
+                    configureLogger(); // Set logger settings to user
                 }
                 navigateByRole(user, usernameField);
             }
