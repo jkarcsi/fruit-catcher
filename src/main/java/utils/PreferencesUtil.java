@@ -3,6 +3,7 @@ package utils;
 import java.io.*;
 import java.util.Properties;
 
+import static utils.ResourcePaths.DEFAULT_LOG_PATH;
 import static utils.SceneConstants.*;
 
 public class PreferencesUtil {
@@ -19,7 +20,9 @@ public class PreferencesUtil {
         File file = new File(PREFERENCES_FILE);
         if (!file.exists()) {
             try {
-                file.createNewFile();
+                if (file.createNewFile()) {
+                    LoggerUtil.logDebug("New user preferences file created.");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -46,6 +49,10 @@ public class PreferencesUtil {
 
     public static synchronized String getPreference(String key, String defaultValue) {
         return properties.getProperty(UserSession.getInstance().getUsername() + DOT + key, defaultValue);
+    }
+
+    public static String getDefaultLogPath() {
+        return new File(DEFAULT_LOG_PATH).getAbsolutePath();
     }
 
     public static synchronized void setDefaultPreferences(String username) {

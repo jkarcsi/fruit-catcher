@@ -14,7 +14,7 @@
     <Label fx:id="textureLabel" text="Texture" styleClass="label"/>
     <ComboBox fx:id="textureComboBox" styleClass="combo-box"/>
     <Label fx:id="logFilePathLabel" text="Log File Path" styleClass="label"/>
-    <TextField fx:id="logFilePathTextField" editable="false" styleClass="text-field"/>
+    <TextField fx:id="logFilePathTextField" editable="false" styleClass="text-field-left"/>
     <Button fx:id="chooseDirectoryButton" text="Choose Directory" onAction="#handleChooseLogDirectoryButton" styleClass="button"/>
     <Label fx:id="languageLabel" text="Language" styleClass="label"/>
     <ComboBox fx:id="languageComboBox" styleClass="combo-box"/>

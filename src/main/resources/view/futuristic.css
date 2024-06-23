@@ -113,6 +113,11 @@
     -fx-background-radius: 5;
 }
 
+.text-field-left {
+    -text-field: text-field;
+    -fx-alignment: center-left;
+}
+
 .button:hover {
     -fx-background-color: #00bfff; /* Deep sky blue */
 }

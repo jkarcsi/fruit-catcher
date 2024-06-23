@@ -21,6 +21,7 @@ import utils.UserRole;
 import utils.UserSession;
 
 import static utils.FXMLPaths.REGISTER;
+import static utils.LoggerUtil.configureLogger;
 
 public class LoginController extends BaseController {
 
@@ -68,6 +69,7 @@ public class LoginController extends BaseController {
                 if (!user.getRole().equals(UserRole.ADMIN.value())) {
                     UserSession.getInstance().setUsername(username); // Set the username in UserSession
                     PreferencesUtil.setDefaultPreferences(username); // Set default settings for new users
+                    configureLogger();
                 }
                 navigateByRole(user, usernameField);
             }

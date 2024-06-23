@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import static utils.FXMLPaths.MAIN_MENU;
+import static utils.ResourcePaths.DEFAULT_LOG_PATH;
 import static utils.SceneConstants.*;
 
 public class SettingsController extends BaseController implements Initializable {
@@ -121,7 +122,9 @@ public class SettingsController extends BaseController implements Initializable 
         languageComboBox.setValue(capitalize(bundle.getString(LANGUAGE + DOT + PreferencesUtil.getPreference(LANGUAGE,
                 ENGLISH).toLowerCase())));
 
-        logFilePathTextField.setText(PreferencesUtil.getPreference(LOG_FILE_PATH, ""));
+        String logPath = PreferencesUtil.getPreference(LOG_FILE_PATH, DEFAULT_LOG_PATH);
+        logFilePathTextField.setText("".equals(logPath) ? PreferencesUtil.getDefaultLogPath() : logPath);
+
         leftKeyComboBox.setValue(PreferencesUtil.getPreference(LEFT_KEY, LEFT_ARROW));
         rightKeyComboBox.setValue(PreferencesUtil.getPreference(RIGHT_KEY, RIGHT_ARROW));
     }

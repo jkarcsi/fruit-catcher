@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
 
+import static utils.ResourcePaths.DEFAULT_LOG_PATH;
 import static utils.SceneConstants.LOG_FILE_PATH;
 
 public class LoggerUtil {
@@ -22,10 +23,6 @@ public class LoggerUtil {
     private static final Logger logger = Logger.getLogger(LoggerUtil.class.getName());
     private static TextArea logTextArea;
     private static FileHandler fileHandler;
-
-    static {
-        configureLogger();
-    }
 
     public static void setLogTextArea(TextArea textArea) {
         logTextArea = textArea;
@@ -105,7 +102,7 @@ public class LoggerUtil {
     }
 
     public static String getLogDirectory() {
-        return PreferencesUtil.getPreference(LOG_FILE_PATH, "log");
+        return PreferencesUtil.getPreference(LOG_FILE_PATH, DEFAULT_LOG_PATH);
     }
 
     public static void logInfo(String message) {
