@@ -12,13 +12,13 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import model.ranking.Ranking;
+import model.score.Ranking;
 import model.user.UserDAO;
-import utils.SceneConstants;
+import util.SceneConstants;
 
-import static utils.FXMLPaths.MAIN_MENU;
-import static utils.SceneConstants.SCORE;
-import static utils.SceneConstants.USERNAME;
+import static util.FXMLPaths.MAIN_MENU;
+import static util.SceneConstants.SCORE;
+import static util.SceneConstants.USERNAME;
 
 public class PlayerRankingsController extends BaseController implements Initializable {
 

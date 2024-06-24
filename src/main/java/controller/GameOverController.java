@@ -4,8 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-import static utils.FXMLPaths.GAME;
-import static utils.FXMLPaths.MAIN_MENU;
+import static util.FXMLPaths.GAME;
+import static util.FXMLPaths.MAIN_MENU;
 
 public class GameOverController extends BaseController {
 

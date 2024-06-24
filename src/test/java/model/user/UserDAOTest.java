@@ -1,13 +1,13 @@
 package model.user;
 
-import model.Score;
+import model.score.Score;
 import model.database.Database;
 import model.database.DatabaseInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.sqlite.SQLiteException;
-import utils.ConfigUtil;
+import util.ConfigUtil;
 
 import java.sql.Connection;
 import java.sql.SQLSyntaxErrorException;

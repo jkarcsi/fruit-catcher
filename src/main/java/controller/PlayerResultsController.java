@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import model.database.Database;
-import model.Score;
-import utils.SceneConstants;
+import model.score.Score;
+import util.SceneConstants;
 
-import static utils.FXMLPaths.MAIN_MENU;
-import static utils.SceneConstants.SCORE;
-import static utils.SceneConstants.TIMER;
-import static utils.SceneConstants.TIMESTAMP;
+import static util.FXMLPaths.MAIN_MENU;
+import static util.SceneConstants.SCORE;
+import static util.SceneConstants.TIMER;
+import static util.SceneConstants.TIMESTAMP;
 
 public class PlayerResultsController extends BaseController implements Initializable {
 

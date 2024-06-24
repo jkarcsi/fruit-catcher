@@ -1,7 +1,7 @@
 package controller;
 
-import exceptions.HashException;
-import exceptions.ResourceNotFoundException;
+import exception.HashException;
+import exception.ResourceNotFoundException;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -19,11 +19,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.user.User;
-import utils.LoggerUtil;
-import utils.PreferencesUtil;
-import utils.Texture;
-import utils.UserRole;
-import utils.UserSession;
+import util.LoggerUtil;
+import util.PreferencesUtil;
+import util.Texture;
+import util.UserRole;
+import util.UserSession;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,13 +33,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static utils.FXMLPaths.ADMIN;
-import static utils.FXMLPaths.GAME_OVER;
-import static utils.FXMLPaths.MAIN_MENU;
-import static utils.ResourcePaths.IMAGE_ICON_PNG;
-import static utils.SceneConstants.ENGLISH;
-import static utils.SceneConstants.LANGUAGE;
-import static utils.SceneConstants.MESSAGES;
+import static util.FXMLPaths.ADMIN;
+import static util.FXMLPaths.GAME_OVER;
+import static util.FXMLPaths.MAIN_MENU;
+import static util.ResourcePaths.BASE_STYLE_FOLDER;
+import static util.ResourcePaths.IMAGE_ICON_PNG;
+import static util.SceneConstants.ENGLISH;
+import static util.SceneConstants.LANGUAGE;
+import static util.SceneConstants.MESSAGES;
 
 public abstract class BaseController implements Initializable {
 
@@ -72,7 +73,7 @@ public abstract class BaseController implements Initializable {
     private void applyUserStylesheet(Scene scene, Texture texture) {
         LoggerUtil.logDebug("Clearing current stylesheets");
         scene.getStylesheets().clear();
-        URL cssFile = getClass().getResource("/view/" + texture.getCssFile());
+        URL cssFile = getClass().getResource(BASE_STYLE_FOLDER + texture.getCssFile());
         if (cssFile != null) {
             LoggerUtil.logDebug("Found CSS file: " + cssFile.toExternalForm());
             scene.getStylesheets().add(cssFile.toExternalForm());

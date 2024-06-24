@@ -10,9 +10,9 @@ import model.database.DatabaseInitializer;
 import java.sql.SQLException;
 import java.util.Objects;
 
-import static utils.FXMLPaths.START;
-import static utils.ResourcePaths.IMAGE_ICON_PNG;
-import static utils.SceneConstants.FRUIT_CATCHER;
+import static util.FXMLPaths.START;
+import static util.ResourcePaths.IMAGE_ICON_PNG;
+import static util.SceneConstants.FRUIT_CATCHER;
 
 public class Main extends Application {
         @Override

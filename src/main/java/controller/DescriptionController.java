@@ -9,11 +9,11 @@ import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static utils.FXMLPaths.MAIN_MENU;
-import static utils.SceneConstants.BACK_TO_MAIN_MENU;
-import static utils.SceneConstants.DESC_FIRST;
-import static utils.SceneConstants.DESC_SECOND;
-import static utils.SceneConstants.DESC_THIRD;
+import static util.FXMLPaths.MAIN_MENU;
+import static util.SceneConstants.BACK_TO_MAIN_MENU;
+import static util.SceneConstants.DESC_FIRST;
+import static util.SceneConstants.DESC_SECOND;
+import static util.SceneConstants.DESC_THIRD;
 
 public class DescriptionController extends BaseController implements Initializable {
 

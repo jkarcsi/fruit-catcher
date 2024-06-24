@@ -9,13 +9,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.user.User;
 import model.user.UserDAO;
-import utils.LoggerUtil;
+import util.LoggerUtil;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static utils.FXMLPaths.LOGIN;
+import static util.FXMLPaths.LOGIN;
 
 public class AdminController extends BaseController {
 

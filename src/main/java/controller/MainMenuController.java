@@ -8,28 +8,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.user.UserDAO;
-import utils.FXMLPaths;
-import utils.LoggerUtil;
-import utils.UserSession;
+import util.FXMLPaths;
+import util.LoggerUtil;
+import util.UserSession;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import static utils.SceneConstants.CHANGE_PASSWORD;
-import static utils.FXMLPaths.DELETE_ACCOUNT_CONFIRMATION;
-import static utils.FXMLPaths.GAME;
-import static utils.FXMLPaths.LOGIN;
-import static utils.SceneConstants.SETTINGS;
-import static utils.SceneConstants.DELETE_ACCOUNT;
-import static utils.SceneConstants.DESCRIPTION;
-import static utils.SceneConstants.LOGGED_IN_AS;
-import static utils.SceneConstants.LOGOUT;
-import static utils.SceneConstants.PLAYER_RANKINGS;
-import static utils.SceneConstants.PLAYER_RESULTS;
-import static utils.SceneConstants.QUIT;
-import static utils.SceneConstants.START_GAME;
+import static util.SceneConstants.CHANGE_PASSWORD;
+import static util.FXMLPaths.DELETE_ACCOUNT_CONFIRMATION;
+import static util.FXMLPaths.GAME;
+import static util.FXMLPaths.LOGIN;
+import static util.SceneConstants.SETTINGS;
+import static util.SceneConstants.DELETE_ACCOUNT;
+import static util.SceneConstants.DESCRIPTION;
+import static util.SceneConstants.LOGGED_IN_AS;
+import static util.SceneConstants.LOGOUT;
+import static util.SceneConstants.PLAYER_RANKINGS;
+import static util.SceneConstants.PLAYER_RESULTS;
+import static util.SceneConstants.QUIT;
+import static util.SceneConstants.START_GAME;
 
 public class MainMenuController extends BaseController implements Initializable {
 

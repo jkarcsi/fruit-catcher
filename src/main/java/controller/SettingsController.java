@@ -9,12 +9,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import utils.Difficulty;
-import utils.GameMode;
-import utils.Language;
-import utils.Localizable;
-import utils.PreferencesUtil;
-import utils.Texture;
+import util.Difficulty;
+import util.GameMode;
+import util.Language;
+import util.Localizable;
+import util.PreferencesUtil;
+import util.Texture;
 
 import java.io.File;
 import java.net.URL;
@@ -24,9 +24,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import static utils.FXMLPaths.MAIN_MENU;
-import static utils.ResourcePaths.DEFAULT_LOG_PATH;
-import static utils.SceneConstants.*;
+import static util.FXMLPaths.MAIN_MENU;
+import static util.ResourcePaths.DEFAULT_LOG_DIRECTORY;
+import static util.SceneConstants.*;
 
 public class SettingsController extends BaseController implements Initializable {
 
@@ -122,8 +122,8 @@ public class SettingsController extends BaseController implements Initializable 
         languageComboBox.setValue(capitalize(bundle.getString(LANGUAGE + DOT + PreferencesUtil.getPreference(LANGUAGE,
                 ENGLISH).toLowerCase())));
 
-        String logPath = PreferencesUtil.getPreference(LOG_FILE_PATH, DEFAULT_LOG_PATH);
-        logFilePathTextField.setText("".equals(logPath) ? PreferencesUtil.getDefaultLogPath() : logPath);
+        String logPath = PreferencesUtil.getPreference(LOG_FILE_PATH, DEFAULT_LOG_DIRECTORY);
+        logFilePathTextField.setText(("".equals(logPath) || DEFAULT_LOG_DIRECTORY.equals(logPath)) ? PreferencesUtil.getDefaultLogPath() : logPath);
 
         leftKeyComboBox.setValue(PreferencesUtil.getPreference(LEFT_KEY, LEFT_ARROW));
         rightKeyComboBox.setValue(PreferencesUtil.getPreference(RIGHT_KEY, RIGHT_ARROW));
@@ -189,7 +189,8 @@ public class SettingsController extends BaseController implements Initializable 
         // First, it looks at the localized value in the current language resource file and looks for the corresponding key
         for (T value : values) {
             String localizedKey = value.getKey();
-            if (currentBundle.containsKey(localizedKey) && capitalize(currentBundle.getString(localizedKey)).equals(localizedValue)) {
+            if (currentBundle.containsKey(localizedKey) && capitalize(currentBundle.getString(localizedKey)).equals(
+                    localizedValue)) {
                 // Use this key in the English resource file to return the English value
                 return englishBundle.getString(localizedKey);
             }
@@ -198,7 +199,8 @@ public class SettingsController extends BaseController implements Initializable 
         // If this is not found in the current language resource file, look for it in the English resource file
         for (T value : values) {
             String localizedKey = value.getKey();
-            if (englishBundle.containsKey(localizedKey) && capitalize(englishBundle.getString(localizedKey)).equals(localizedValue)) {
+            if (englishBundle.containsKey(localizedKey) && capitalize(englishBundle.getString(localizedKey)).equals(
+                    localizedValue)) {
                 return englishBundle.getString(localizedKey);
             }
         }
@@ -265,37 +267,38 @@ public class SettingsController extends BaseController implements Initializable 
         gameModeComboBox.getItems().clear();
         gameModeComboBox.getItems()
                 .addAll(Arrays.stream(GameMode.values())
-                        .map(mode -> capitalize(bundle.getString("gameMode." + mode.getValue().toLowerCase())))
+                        .map(mode -> capitalize(bundle.getString(GAME_MODE + DOT + mode.getValue().toLowerCase())))
                         .toList());
         String gameModePreference = PreferencesUtil.getPreference(GAME_MODE, GameMode.NORMAL.getValue().toLowerCase())
                 .toLowerCase();
-        gameModeComboBox.setValue(capitalize(bundle.getString("gameMode." + gameModePreference)));
+        gameModeComboBox.setValue(capitalize(bundle.getString(GAME_MODE + DOT + gameModePreference)));
 
         difficultyComboBox.getItems().clear();
         difficultyComboBox.getItems()
                 .addAll(Arrays.stream(Difficulty.values())
-                        .map(difficulty -> capitalize(bundle.getString("difficulty." + difficulty.getValue()
+                        .map(difficulty -> capitalize(bundle.getString(DIFFICULTY + DOT + difficulty.getValue()
                                 .toLowerCase())))
                         .toList());
         String difficultyPreference = PreferencesUtil.getPreference(DIFFICULTY,
                 Difficulty.EASY.getValue().toLowerCase()).toLowerCase();
-        difficultyComboBox.setValue(capitalize(bundle.getString("difficulty." + difficultyPreference)));
+        difficultyComboBox.setValue(capitalize(bundle.getString(DIFFICULTY + DOT + difficultyPreference)));
 
         textureComboBox.getItems().clear();
         textureComboBox.getItems()
                 .addAll(Arrays.stream(Texture.values())
-                        .map(texture -> capitalize(bundle.getString("texture." + texture.getValue().toLowerCase())))
+                        .map(texture -> capitalize(bundle.getString(TEXTURE + DOT + texture.getValue().toLowerCase())))
                         .toList());
         String texturePreference = PreferencesUtil.getTexture().getValue().toLowerCase();
-        textureComboBox.setValue(capitalize(bundle.getString("texture." + texturePreference)));
+        textureComboBox.setValue(capitalize(bundle.getString(TEXTURE + DOT + texturePreference)));
 
         languageComboBox.getItems().clear();
         languageComboBox.getItems()
                 .addAll(Arrays.stream(Language.values())
-                        .map(language -> capitalize(bundle.getString("language." + language.getValue().toLowerCase())))
+                        .map(language -> capitalize(bundle.getString(LANGUAGE + DOT + language.getValue()
+                                .toLowerCase())))
                         .toList());
         String languagePreference = PreferencesUtil.getPreference(LANGUAGE, ENGLISH.toLowerCase()).toLowerCase();
-        languageComboBox.setValue(capitalize(bundle.getString("language." + languagePreference)));
+        languageComboBox.setValue(capitalize(bundle.getString(LANGUAGE + DOT + languagePreference)));
     }
 
     private String capitalize(String str) {

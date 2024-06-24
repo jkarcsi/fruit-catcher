@@ -1,6 +1,6 @@
 package controller;
 
-import exceptions.HashException;
+import exception.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,13 +15,13 @@ import java.util.ResourceBundle;
 
 import model.user.User;
 import model.user.UserDAO;
-import utils.LoggerUtil;
-import utils.PreferencesUtil;
-import utils.UserRole;
-import utils.UserSession;
+import util.LoggerUtil;
+import util.PreferencesUtil;
+import util.UserRole;
+import util.UserSession;
 
-import static utils.FXMLPaths.REGISTER;
-import static utils.LoggerUtil.configureLogger;
+import static util.FXMLPaths.REGISTER;
+import static util.LoggerUtil.configureLogger;
 
 public class LoginController extends BaseController {
 

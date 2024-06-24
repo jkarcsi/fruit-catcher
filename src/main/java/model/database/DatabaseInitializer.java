@@ -1,6 +1,6 @@
 package model.database;
 
-import utils.ConfigUtil;
+import util.ConfigUtil;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

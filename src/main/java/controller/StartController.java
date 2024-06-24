@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static utils.FXMLPaths.LOGIN;
+import static util.FXMLPaths.LOGIN;
 
 public class StartController extends BaseController implements Initializable {
 

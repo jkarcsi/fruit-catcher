@@ -1,6 +1,6 @@
 package controller;
 
-import exceptions.HashException;
+import exception.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,16 +14,16 @@ import java.util.ResourceBundle;
 
 import model.user.User;
 import model.user.UserDAO;
-import utils.LoggerUtil;
+import util.LoggerUtil;
 
-import static utils.FXMLPaths.MAIN_MENU;
-import static utils.SceneConstants.BACK_TO_MAIN_MENU;
-import static utils.SceneConstants.CHANGE_PASSWORD;
-import static utils.SceneConstants.CURRENT_PASSWORD;
-import static utils.SceneConstants.CURRENT_PASSWORD_IS_INCORRECT;
-import static utils.SceneConstants.NEW_PASSWORD;
-import static utils.SceneConstants.CONFIRM_NEW_PASSWORD;
-import static utils.SceneConstants.PASSWORDS_DO_NOT_MATCH;
+import static util.FXMLPaths.MAIN_MENU;
+import static util.SceneConstants.BACK_TO_MAIN_MENU;
+import static util.SceneConstants.CHANGE_PASSWORD;
+import static util.SceneConstants.CURRENT_PASSWORD;
+import static util.SceneConstants.CURRENT_PASSWORD_IS_INCORRECT;
+import static util.SceneConstants.NEW_PASSWORD;
+import static util.SceneConstants.CONFIRM_NEW_PASSWORD;
+import static util.SceneConstants.PASSWORDS_DO_NOT_MATCH;
 
 public class ChangePasswordController extends BaseController implements Initializable {
 

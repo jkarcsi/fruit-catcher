@@ -1,6 +1,6 @@
 package controller;
 
-import exceptions.HashException;
+import exception.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,21 +15,21 @@ import java.util.ResourceBundle;
 
 import model.user.User;
 import model.user.UserDAO;
-import utils.LoggerUtil;
-import utils.PasswordStrength;
-import utils.UserRole;
+import util.LoggerUtil;
+import util.PasswordStrength;
+import util.UserRole;
 
-import static utils.FXMLPaths.LOGIN;
-import static utils.SceneConstants.AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN;
-import static utils.SceneConstants.BACK_TO_LOGIN;
-import static utils.SceneConstants.CONFIRM_PASSWORD;
-import static utils.SceneConstants.PASSWORD;
-import static utils.SceneConstants.PASSWORDS_DO_NOT_MATCH;
-import static utils.SceneConstants.PASSWORD_IS_NOT_STRONG_ENOUGH;
-import static utils.SceneConstants.PASSWORD_STRENGTH;
-import static utils.SceneConstants.REGISTER;
-import static utils.SceneConstants.USERNAME_ALREADY_EXISTS;
-import static utils.SceneConstants.USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY;
+import static util.FXMLPaths.LOGIN;
+import static util.SceneConstants.AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN;
+import static util.SceneConstants.BACK_TO_LOGIN;
+import static util.SceneConstants.CONFIRM_PASSWORD;
+import static util.SceneConstants.PASSWORD;
+import static util.SceneConstants.PASSWORDS_DO_NOT_MATCH;
+import static util.SceneConstants.PASSWORD_IS_NOT_STRONG_ENOUGH;
+import static util.SceneConstants.PASSWORD_STRENGTH;
+import static util.SceneConstants.REGISTER;
+import static util.SceneConstants.USERNAME_ALREADY_EXISTS;
+import static util.SceneConstants.USERNAME_PASSWORD_AND_PASSWORD_REMINDER_CANNOT_BE_EMPTY;
 
 public class RegisterController extends BaseController implements Initializable {
     @FXML

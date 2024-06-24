@@ -2,10 +2,10 @@ package model.user;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Score;
+import model.score.Score;
 import model.database.Database;
-import model.ranking.Ranking;
-import utils.LoggerUtil;
+import model.score.Ranking;
+import util.LoggerUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
