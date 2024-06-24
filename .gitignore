@@ -52,3 +52,4 @@ build/
 
 ### Internal DB ###
 fcg.db
+fcg_test.db
