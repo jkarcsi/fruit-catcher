@@ -1,9 +1,0 @@
-
-@
-java:S1696"$Avoid catching NullPointerException.(‚¿ëX8íºÑÔ‚2
-@
-java:S16962"$Avoid catching NullPointerException.(‚¿ëX8íºÑÔ‚2
-U
-java:S25896"8Remove this expression which always evaluates to "false"(æà×Ð8÷àÒäƒ2
-U
-java:S2589 "8Remove this expression which always evaluates to "false"(æà×Ð8÷àÒäƒ2
