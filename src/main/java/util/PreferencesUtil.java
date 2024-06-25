@@ -1,11 +1,14 @@
 package util;
 
+import model.user.User;
+
 import java.io.*;
 import java.util.Properties;
 
 import static util.ResourcePaths.DEFAULT_LOG_DIRECTORY;
 import static util.SceneConstants.*;
 import static util.UserRole.ADMIN;
+import static util.UserRole.USER;
 
 public class PreferencesUtil {
 
@@ -56,9 +59,9 @@ public class PreferencesUtil {
         return new File(DEFAULT_LOG_DIRECTORY).getAbsolutePath();
     }
 
-    public static synchronized void setDefaultPreferences(String username) {
+    public static synchronized void setDefaultPreferences(User user) {
         loadProperties();
-        if (!properties.containsKey(username + DOT + GAME_MODE)) {
+        if (user.getRole().equals(USER.value()) && !properties.containsKey(user.getUsername() + DOT + GAME_MODE)) {
             setPreference(GAME_MODE, GameMode.NORMAL.getValue());
             setPreference(DIFFICULTY, Difficulty.EASY.getValue());
             setPreference(LOG_FILE_PATH, "");
@@ -67,16 +70,13 @@ public class PreferencesUtil {
             setPreference(LEFT_KEY, LEFT_ARROW);
             setPreference(RIGHT_KEY, RIGHT_ARROW);
         }
-    }
-
-    public static synchronized void setDefaultAdminPreferences() {
-        loadProperties();
-        if (!properties.containsKey(ADMIN + DOT + GAME_MODE)) {
+        if (user.getRole().equals(ADMIN.value()) && !properties.containsKey(ADMIN + DOT + GAME_MODE)) {
             setPreference(LANGUAGE, ENGLISH);
         }
+        setLoginLanguagePreference();
     }
 
-    public static synchronized void setDefaultLanguagePreference() {
+    public static synchronized void setLoginLanguagePreference() {
         String preference = getPreference(LANGUAGE, ENGLISH);
         properties.setProperty("null" + DOT + LANGUAGE, preference);
         saveProperties();

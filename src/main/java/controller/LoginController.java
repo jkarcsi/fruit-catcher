@@ -18,9 +18,9 @@ import model.user.User;
 import model.user.UserDAO;
 import util.LoggerUtil;
 import util.PreferencesUtil;
-import util.UserRole;
 import util.UserSession;
 
+import static util.FXMLPaths.REGISTRATION;
 import static util.LoggerUtil.configureLogger;
 import static util.SceneConstants.FORGOT_PASSWORD;
 import static util.SceneConstants.LOGIN;
@@ -83,10 +83,7 @@ public class LoginController extends BaseController {
             } else {
                 UserSession.getInstance().setUsername(username); // Set the username in UserSession
                 configureLogger(); // Set logger settings to user
-                if (!user.getRole().equals(UserRole.ADMIN.value())) {
-                    PreferencesUtil.setDefaultAdminPreferences(); // Set default setting for admin
-                }
-                PreferencesUtil.setDefaultLanguagePreference();
+                PreferencesUtil.setDefaultPreferences(user); // Set default settings for user
                 navigateByRole(user, usernameField);
             }
         } catch (SQLException | IOException | HashException e) {
@@ -98,7 +95,7 @@ public class LoginController extends BaseController {
 
     @FXML
     private void handleRegisterButton(ActionEvent event) {
-        navigateTo(REGISTER, event);
+        navigateTo(REGISTRATION, event);
     }
 
     @FXML

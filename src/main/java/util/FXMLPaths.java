@@ -5,7 +5,7 @@ public class FXMLPaths {
     public static final String MAIN_MENU = "/view/scene/mainMenu.fxml";
     public static final String LOGIN = "/view/scene/login.fxml";
     public static final String START = "/view/scene/start.fxml";
-    public static final String REGISTER = "/view/scene/register.fxml";
+    public static final String REGISTRATION = "/view/scene/register.fxml";
     public static final String GAME = "/view/scene/game.fxml";
     public static final String GAME_OVER = "/view/scene/gameOver.fxml";
     public static final String DESCRIPTION = "/view/scene/description.fxml";

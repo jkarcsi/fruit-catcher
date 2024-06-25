@@ -118,7 +118,7 @@ public class AdminController extends BaseController implements Initializable {
     }
 
     @FXML
-    private void handleChangeLanguageButton(ActionEvent event) {
+    private void handleChangeLanguageButton() {
         String currentLanguage = PreferencesUtil.getPreference(LANGUAGE, ENGLISH);
         String newLanguage = currentLanguage.equals(ENGLISH) ? Language.HUNGARIAN.getValue() : Language.ENGLISH.getValue();
         PreferencesUtil.setPreference(LANGUAGE, newLanguage);
