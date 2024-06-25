@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,6 +25,7 @@ import model.score.Score;
 import util.SceneConstants;
 
 import static util.FXMLPaths.MAIN_MENU;
+import static util.SceneConstants.BACK_TO_MAIN_MENU;
 import static util.SceneConstants.SCORE;
 import static util.SceneConstants.TIMER;
 import static util.SceneConstants.TIMESTAMP;
@@ -42,7 +44,11 @@ public class PlayerResultsController extends BaseController implements Initializ
     private TableColumn<Score, String> dateColumn;
 
     @FXML
+    private Button backToMainMenuButton;
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setMultilingualElement(backToMainMenuButton, BACK_TO_MAIN_MENU);
         setMultilingualElement(topScores, SceneConstants.TOP_SCORES);
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>(SCORE));
         setMultilingualElement(scoreColumn, SCORE);

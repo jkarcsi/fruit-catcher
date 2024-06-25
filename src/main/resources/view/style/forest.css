@@ -9,13 +9,19 @@
 }
 
 .button {
-    -fx-pref-width: 150; /* Set preferred width */
+    -fx-min-width: 210; /* Set preferred width */
+    -fx-padding: 5 10 5 10;
     -fx-background-color: #6b8e23; /* Olive green button background */
     -fx-text-fill: #fff; /* White text color */
     -fx-font-size: 14px;
     -fx-background-radius: 5; /* Rounded corners */
     -fx-border-radius: 5; /* Rounded border */
     -fx-border-color: #556b2f; /* Dark olive green border */
+}
+
+.button:default {
+    -fx-pref-width: auto; /* Allow button to grow based on content */
+
 }
 
 .game-button {

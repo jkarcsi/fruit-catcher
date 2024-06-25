@@ -17,7 +17,8 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
         </columnResizePolicy>
     </TableView>
-    <Button text="Ban User" onAction="#handleBanUserButton" styleClass="button"/>
-    <Button text="Unban User" onAction="#handleUnbanUserButton" styleClass="button"/>
-    <Button text="Logout" onAction="#handleLogoutButton" styleClass="button"/>
+    <Button fx:id="banUserButton" onAction="#handleBanUserButton" styleClass="button"/>
+    <Button fx:id="unbanUserButton" onAction="#handleUnbanUserButton" styleClass="button"/>
+    <Button fx:id="changeLanguageButton" onAction="#handleChangeLanguageButton" styleClass="button"/>
+    <Button fx:id="logoutButton" onAction="#handleLogoutButton" styleClass="button"/>
 </VBox>

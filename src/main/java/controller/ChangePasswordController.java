@@ -24,6 +24,8 @@ import static util.SceneConstants.CURRENT_PASSWORD_IS_INCORRECT;
 import static util.SceneConstants.NEW_PASSWORD;
 import static util.SceneConstants.CONFIRM_NEW_PASSWORD;
 import static util.SceneConstants.PASSWORDS_DO_NOT_MATCH;
+import static util.SceneConstants.PASSWORD_IS_NOT_STRONG_ENOUGH;
+import static util.SceneConstants.PASSWORD_STRENGTH;
 
 public class ChangePasswordController extends BaseController implements Initializable {
 
@@ -38,6 +40,9 @@ public class ChangePasswordController extends BaseController implements Initiali
 
     @FXML
     private PasswordField newPasswordField;
+
+    @FXML
+    private Label newPasswordStrengthLabel;
 
     @FXML
     private PasswordField confirmPasswordField;
@@ -55,6 +60,14 @@ public class ChangePasswordController extends BaseController implements Initiali
     }
 
     @FXML
+    private void checkPasswordStrength() {
+        String password = newPasswordField.getText();
+        String strength = getMultilingualText(getPasswordStrength(password));
+        setMultilingualElement(newPasswordStrengthLabel, PASSWORD_STRENGTH);
+        newPasswordStrengthLabel.setText(newPasswordStrengthLabel.getText() + ": " + strength);
+    }
+
+    @FXML
     private void handleChangePasswordButton(ActionEvent event) {
         String oldPassword = oldPasswordField.getText();
         String newPassword = newPasswordField.getText();
@@ -62,6 +75,11 @@ public class ChangePasswordController extends BaseController implements Initiali
 
         if (!newPassword.equals(confirmPassword)) {
             setMultilingualElement(errorMessage, PASSWORDS_DO_NOT_MATCH);
+            return;
+        }
+
+        if (!isPasswordStrong(newPassword)) {
+            setMultilingualElement(errorMessage, PASSWORD_IS_NOT_STRONG_ENOUGH);
             return;
         }
 

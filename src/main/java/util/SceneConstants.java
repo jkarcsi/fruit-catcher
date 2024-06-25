@@ -28,6 +28,8 @@ public class SceneConstants {
     public static final String RIGHT_KEY = "rightKey";
     public static final String SAVE = "save";
     public static final String BACK_TO_MAIN_MENU = "backToMainMenu";
+    public static final String YOUR_SCORE = "yourScore";
+    public static final String NEW_GAME = "newGame";
     public static final String CHOOSE_DIRECTORY = "chooseDirectory";
     public static final String LEFT_ARROW = "<";
     public static final String RIGHT_ARROW = ">";
@@ -42,6 +44,9 @@ public class SceneConstants {
     public static final String SETTINGS = "settings";
     public static final String CHANGE_PASSWORD = "changePassword";
     public static final String LOGOUT = "logout";
+    public static final String CHANGE_LANGUAGE = "changeLanguage";
+    public static final String UNBAN = "unban";
+    public static final String BAN = "ban";
     public static final String DELETE_ACCOUNT = "deleteAccount";
     public static final String TIMESTAMP = "timestamp";
     public static final String YES = "yes";
@@ -64,5 +69,10 @@ public class SceneConstants {
     public static final String ENABLE_BACKGROUND = "enableBackground";
     public static final String PLAY_MUSIC = "playMusic";
     public static final String PAUSE_MUSIC = "pauseMusic";
+    public static final String LOGIN = "login";
+    public static final String FORGOT_PASSWORD = "forgotPassword";
+    public static final String STATUS = "status";
+    public static final String ACTIVE = "active";
+    public static final String BANNED = "banned";
 
 }

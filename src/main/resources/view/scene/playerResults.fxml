@@ -15,5 +15,5 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
         </columnResizePolicy>
     </TableView>
-    <Button text="Back to Main Menu" onAction="#handleBackToMainMenuButton" styleClass="button"/>
+    <Button fx:id="backToMainMenuButton" onAction="#handleBackToMainMenuButton" styleClass="button"/>
 </VBox>

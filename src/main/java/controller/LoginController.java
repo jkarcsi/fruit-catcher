@@ -3,6 +3,7 @@ package controller;
 import exception.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -20,8 +21,10 @@ import util.PreferencesUtil;
 import util.UserRole;
 import util.UserSession;
 
-import static util.FXMLPaths.REGISTER;
 import static util.LoggerUtil.configureLogger;
+import static util.SceneConstants.FORGOT_PASSWORD;
+import static util.SceneConstants.LOGIN;
+import static util.SceneConstants.REGISTER;
 
 public class LoginController extends BaseController {
 
@@ -35,10 +38,22 @@ public class LoginController extends BaseController {
     private Label passwordReminderLabel;
 
     @FXML
+    private Button loginButton;
+
+    @FXML
+    private Button registerButton;
+
+    @FXML
+    private Button forgotPasswordButton;
+
+    @FXML
     private Label errorMessage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setMultilingualElement(loginButton, LOGIN);
+        setMultilingualElement(registerButton, REGISTER);
+        setMultilingualElement(forgotPasswordButton, FORGOT_PASSWORD);
         super.initialize(url, resourceBundle);
         passwordField.setOnKeyPressed(this::handleKeyPressed);
     }
@@ -66,11 +81,12 @@ public class LoginController extends BaseController {
                 errorMessage.setText("User is banned.");
                 LoggerUtil.logWarning("Banned user login attempt: " + username);
             } else {
+                UserSession.getInstance().setUsername(username); // Set the username in UserSession
+                configureLogger(); // Set logger settings to user
                 if (!user.getRole().equals(UserRole.ADMIN.value())) {
-                    UserSession.getInstance().setUsername(username); // Set the username in UserSession
-                    PreferencesUtil.setDefaultPreferences(username); // Set default settings for new users
-                    configureLogger(); // Set logger settings to user
+                    PreferencesUtil.setDefaultAdminPreferences(); // Set default setting for admin
                 }
+                PreferencesUtil.setDefaultLanguagePreference();
                 navigateByRole(user, usernameField);
             }
         } catch (SQLException | IOException | HashException e) {

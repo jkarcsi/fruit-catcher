@@ -9,6 +9,7 @@ target/
 .idea/compiler.xml
 .idea/sqldialects.xml
 .idea/workspace.xml
+.idea/vcs.xml
 .idea/libraries/
 .idea/sonarlint/
 *.iws

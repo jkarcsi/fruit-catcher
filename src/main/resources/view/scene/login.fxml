@@ -17,9 +17,9 @@
     <VBox spacing="10" alignment="TOP_CENTER" styleClass="vbox-center">
         <TextField fx:id="usernameField" promptText="Username" styleClass="text-field" />
         <PasswordField fx:id="passwordField" promptText="Password" styleClass="text-field" />
-        <Button text="Login" onAction="#handleLoginButton" styleClass="button"/>
-        <Button text="Register" onAction="#handleRegisterButton" styleClass="button"/>
-        <Button text="Forgot Password" onAction="#handleForgotPasswordButton" styleClass="button"/>
+        <Button fx:id="loginButton" onAction="#handleLoginButton" styleClass="button"/>
+        <Button fx:id="registerButton" onAction="#handleRegisterButton" styleClass="button"/>
+        <Button fx:id="forgotPasswordButton" onAction="#handleForgotPasswordButton" styleClass="button"/>
         <Label fx:id="errorMessage" styleClass="error"/>
         <Label fx:id="passwordReminderLabel" styleClass="reminder"/>
     </VBox>

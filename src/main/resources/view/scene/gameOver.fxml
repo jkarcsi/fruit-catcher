@@ -4,6 +4,6 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.GameOverController" spacing="10" alignment="CENTER" styleClass="vbox-center">
     <Label fx:id="scoreLabel" text="Your Score: 0" styleClass="label"/>
-    <Button text="New Game" onAction="#handleNewGameButton" styleClass="button"/>
-    <Button text="Main Menu" onAction="#handleMainMenuButton" styleClass="button"/>
+    <Button fx:id="newGameButton" onAction="#handleNewGameButton" styleClass="button"/>
+    <Button fx:id="backToMainMenuButton" onAction="#handleMainMenuButton" styleClass="button"/>
 </VBox>

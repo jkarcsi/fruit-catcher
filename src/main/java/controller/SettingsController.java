@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import static util.FXMLPaths.MAIN_MENU;
+import static util.PreferencesUtil.setDefaultLanguagePreference;
 import static util.ResourcePaths.DEFAULT_LOG_DIRECTORY;
 import static util.SceneConstants.*;
 
@@ -178,6 +179,7 @@ public class SettingsController extends BaseController implements Initializable 
         PreferencesUtil.setPreference(RIGHT_KEY, rightKeyComboBox.getValue());
 
         applyTexture();
+        setDefaultLanguagePreference();
 
         handleBackToMainMenuButton(event);
     }

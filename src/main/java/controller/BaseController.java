@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.user.User;
 import util.LoggerUtil;
+import util.PasswordStrength;
 import util.PreferencesUtil;
 import util.Texture;
 import util.UserRole;
@@ -216,6 +217,10 @@ public abstract class BaseController implements Initializable {
         directoryChooser.setTitle(getBundle().getString(text));
     }
 
+    protected String getMultilingualText(String text) {
+        return getBundle().getString(text.toLowerCase());
+    }
+
     ResourceBundle getBundle() {
             String language = PreferencesUtil.getPreference(LANGUAGE, ENGLISH);
             String languageCode = getLanguageCode(language);
@@ -228,5 +233,19 @@ public abstract class BaseController implements Initializable {
             case "hungarian", "magyar" -> "hu";
             default -> "en";
         };
+    }
+
+    protected boolean isPasswordStrong(String password) {
+        return password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*");
+    }
+
+    protected String getPasswordStrength(String password) {
+        if (password.length() < 8) {
+            return PasswordStrength.WEAK.value();
+        } else if (password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*")) {
+            return PasswordStrength.STRONG.value();
+        } else {
+            return PasswordStrength.MEDIUM.value();
+        }
     }
 }

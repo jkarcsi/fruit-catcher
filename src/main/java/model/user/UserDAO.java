@@ -135,18 +135,11 @@ public class UserDAO {
     }
 
     public void saveScore(String username, int score, boolean isTest) throws SQLException {
-        List<Score> userTopScores = getTopScores(username, 10, isTest);
-        List<Score> overallTopScores = getTopScores(null, 10, isTest);
-        if ((userTopScores.size() < 10 || score > userTopScores.get(userTopScores.size() - 1)
-                .getScore()) || (overallTopScores.size() < 10 || score > overallTopScores.get(overallTopScores.size() - 1)
-                .getScore())) {
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String timestamp = LocalDateTime.now().format(formatter);
-
-            insertScore(username, score, timestamp, isTest);
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String timestamp = LocalDateTime.now().format(formatter);
+        insertScore(username, score, timestamp, isTest);
     }
+
 
     private void insertScore(String username, int score, String timestamp, boolean isTest) throws SQLException {
         LoggerUtil.logDebug(username);

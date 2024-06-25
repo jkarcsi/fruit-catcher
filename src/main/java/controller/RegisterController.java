@@ -16,7 +16,6 @@ import java.util.ResourceBundle;
 import model.user.User;
 import model.user.UserDAO;
 import util.LoggerUtil;
-import util.PasswordStrength;
 import util.UserRole;
 
 import static util.FXMLPaths.LOGIN;
@@ -124,17 +123,4 @@ public class RegisterController extends BaseController implements Initializable 
         passwordStrengthLabel.setText("Password strength: " + strength);
     }
 
-    private boolean isPasswordStrong(String password) {
-        return password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*");
-    }
-
-    private String getPasswordStrength(String password) {
-        if (password.length() < 8) {
-            return PasswordStrength.WEAK.value();
-        } else if (password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*")) {
-            return PasswordStrength.STRONG.value();
-        } else {
-            return PasswordStrength.MEDIUM.value();
-        }
-    }
 }

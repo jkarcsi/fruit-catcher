@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import static util.ResourcePaths.DEFAULT_LOG_DIRECTORY;
 import static util.SceneConstants.*;
+import static util.UserRole.ADMIN;
 
 public class PreferencesUtil {
 
@@ -66,6 +67,19 @@ public class PreferencesUtil {
             setPreference(LEFT_KEY, LEFT_ARROW);
             setPreference(RIGHT_KEY, RIGHT_ARROW);
         }
+    }
+
+    public static synchronized void setDefaultAdminPreferences() {
+        loadProperties();
+        if (!properties.containsKey(ADMIN + DOT + GAME_MODE)) {
+            setPreference(LANGUAGE, ENGLISH);
+        }
+    }
+
+    public static synchronized void setDefaultLanguagePreference() {
+        String preference = getPreference(LANGUAGE, ENGLISH);
+        properties.setProperty("null" + DOT + LANGUAGE, preference);
+        saveProperties();
     }
 
     public static synchronized void setTexture(Texture texture) {
