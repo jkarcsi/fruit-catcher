@@ -1,5 +1,6 @@
 package model.user;
 
+import exception.ConfigException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.score.Score;
@@ -81,7 +82,7 @@ public class UserDAO {
             statement.setString(5, user.getStatus());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while saving user.", e);
         }
     }
 
@@ -94,7 +95,7 @@ public class UserDAO {
             statement.setString(3, user.getUsername());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while updating user.", e);
         }
     }
 
@@ -119,8 +120,7 @@ public class UserDAO {
             // Commit transaction
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
+            throw new ConfigException("Error while deleting user.", e);
         }
     }
 

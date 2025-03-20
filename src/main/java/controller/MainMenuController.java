@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -133,7 +134,7 @@ public class MainMenuController extends BaseController implements Initializable 
                 deleteUserAccount(event);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerUtil.logSevere("Error deleting account for user: " + getUsername());
         }
     }
 
@@ -148,7 +149,7 @@ public class MainMenuController extends BaseController implements Initializable 
             navigateTo(LOGIN, event);
         } catch (SQLException e) {
             LoggerUtil.logSevere("Error deleting account for user: " + getUsername());
-            e.printStackTrace();
+            throw new ConfigException("Error while deleting user account: ", e);
         }
     }
 

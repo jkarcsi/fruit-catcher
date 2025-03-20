@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -52,7 +53,7 @@ public class PlayerRankingsController extends BaseController implements Initiali
         try {
             rankingsTable.setItems(userDAO.getTopPlayers());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while initializing user rankings.", e);
         }
     }
 

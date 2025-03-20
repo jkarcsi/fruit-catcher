@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import exception.HashException;
 import exception.ResourceNotFoundException;
 import javafx.event.ActionEvent;
@@ -107,7 +108,7 @@ public abstract class BaseController implements Initializable {
             applyUserStylesheet(scene, PreferencesUtil.getTexture()); // Apply styles on navigation
         } catch (IOException e) {
             LoggerUtil.logSevere("Failed to navigate to: " + fxmlFile);
-            e.printStackTrace();
+            throw new ConfigException("Error while navigating to a scene.", e);
         }
     }
 
@@ -122,7 +123,7 @@ public abstract class BaseController implements Initializable {
             applyUserStylesheet(scene, PreferencesUtil.getTexture()); // Apply styles on navigation
         } catch (IOException e) {
             LoggerUtil.logSevere("Failed to navigate to: " + fxmlFile);
-            e.printStackTrace();
+            throw new ConfigException("Error while navigating to a scene.", e);
         }
     }
 
@@ -166,7 +167,7 @@ public abstract class BaseController implements Initializable {
             stage.setResizable(false);
             applyUserStylesheet(scene, PreferencesUtil.getTexture()); // Apply styles on navigation
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while showing game over screen.", e);
         }
     }
 
@@ -235,9 +236,10 @@ public abstract class BaseController implements Initializable {
         };
     }
 
-    protected boolean isPasswordStrong(String password) {
-        return password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*");
+    protected boolean isWeakPassword(String password) {
+        return password.length() < 8 || !password.matches(".*\\d.*") || !password.matches(".*[a-zA-Z].*");
     }
+
 
     protected String getPasswordStrength(String password) {
         if (password.length() < 8) {

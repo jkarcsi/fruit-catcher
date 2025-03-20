@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import exception.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -88,7 +89,7 @@ public class LoginController extends BaseController {
             }
         } catch (SQLException | IOException | HashException e) {
             LoggerUtil.logSevere("Error during login attempt for user: " + username);
-            e.printStackTrace();
+            throw new ConfigException("Error while login user.", e);
         }
     }
 

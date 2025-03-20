@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import util.Difficulty;
 import util.GameMode;
 import util.Language;
 import util.Localizable;
+import util.LoggerUtil;
 import util.PreferencesUtil;
 import util.Texture;
 
@@ -220,7 +222,8 @@ public class SettingsController extends BaseController implements Initializable 
                 PreferencesUtil.setTexture(texture);
                 applyUserStylesheet();
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                LoggerUtil.logDebug("Failed to apply texture: " + selectedTexture);
+                throw new ConfigException("Exception thrown while applying texture: ", e);
             }
         }
     }

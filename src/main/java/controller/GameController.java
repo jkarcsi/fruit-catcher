@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -503,7 +504,7 @@ public class GameController extends BaseController implements Initializable {
             LoggerUtil.logInfo("Score saved for user: " + getUsername() + ", score: " + score);
         } catch (SQLException e) {
             LoggerUtil.logSevere("Error saving score for user: " + getUsername());
-            e.printStackTrace();
+            throw new ConfigException("Error while saving user score.", e);
         }
     }
 

@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import javafx.animation.Animation;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
@@ -148,7 +149,7 @@ class GameControllerTest extends ApplicationTest {
             // Wait for the runLater to finish
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while using runLater.", e);
         }
     }
 
@@ -299,7 +300,7 @@ class GameControllerTest extends ApplicationTest {
         try {
             latch.await(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while using countdown latch.", e);
         }
 
         // Retry mechanism to ensure the MediaPlayer reaches the PAUSED state
@@ -312,7 +313,7 @@ class GameControllerTest extends ApplicationTest {
             try {
                 Thread.sleep(200); // Wait 200 milliseconds before retrying
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new ConfigException("Error while testing music.", e);
             }
         }
 

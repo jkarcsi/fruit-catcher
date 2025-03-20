@@ -1,5 +1,6 @@
 package util;
 
+import exception.ConfigException;
 import model.user.User;
 
 import java.io.*;
@@ -28,13 +29,13 @@ public class PreferencesUtil {
                     LoggerUtil.logDebug("New user preferences file created.");
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new ConfigException("Error while creating user properties.", e);
             }
         }
         try (InputStream input = new FileInputStream(PREFERENCES_FILE)) {
             properties.load(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while loading user properties.", e);
         }
     }
 
@@ -42,7 +43,7 @@ public class PreferencesUtil {
         try (OutputStream output = new FileOutputStream(PREFERENCES_FILE)) {
             properties.store(output, null);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while saving user properties.", e);
         }
     }
 

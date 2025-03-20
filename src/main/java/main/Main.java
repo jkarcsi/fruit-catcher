@@ -1,5 +1,6 @@
 package main;
 
+import exception.ConfigException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -31,7 +32,7 @@ public class Main extends Application {
         try {
             DatabaseInitializer.initializeDatabase();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while reaching database.", e);
         }
         launch(args);
     }

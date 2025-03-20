@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import exception.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -78,7 +79,7 @@ public class ChangePasswordController extends BaseController implements Initiali
             return;
         }
 
-        if (!isPasswordStrong(newPassword)) {
+        if (isWeakPassword(newPassword)) {
             setMultilingualElement(errorMessage, PASSWORD_IS_NOT_STRONG_ENOUGH);
             return;
         }
@@ -106,7 +107,7 @@ public class ChangePasswordController extends BaseController implements Initiali
                 setMultilingualElement(errorMessage,  CURRENT_PASSWORD_IS_INCORRECT);
             }
         } catch (SQLException | HashException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while changing password.", e);
         }
     }
 

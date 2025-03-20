@@ -45,7 +45,6 @@ public class User {
         return role;
     }
 
-
     public String getStatus() {
         return status;
     }

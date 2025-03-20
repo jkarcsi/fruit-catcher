@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import exception.HashException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,7 +82,7 @@ public class RegisterController extends BaseController implements Initializable 
             return;
         }
 
-        if (!isPasswordStrong(password)) {
+        if (isWeakPassword(password)) {
             setMultilingualElement(errorLabel, PASSWORD_IS_NOT_STRONG_ENOUGH);
             return;
         }
@@ -106,8 +107,8 @@ public class RegisterController extends BaseController implements Initializable 
             navigateTo(LOGIN, event);
 
         } catch (SQLException | HashException e) {
-            e.printStackTrace();
             setMultilingualElement(errorLabel, AN_ERROR_OCCURRED_PLEASE_TRY_AGAIN);
+            throw new ConfigException("Error while saving user.", e);
         }
     }
 

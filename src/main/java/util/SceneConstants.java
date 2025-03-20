@@ -74,5 +74,4 @@ public class SceneConstants {
     public static final String STATUS = "status";
     public static final String ACTIVE = "active";
     public static final String BANNED = "banned";
-
 }

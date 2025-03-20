@@ -1,5 +1,6 @@
 package model.user;
 
+import exception.ConfigException;
 import model.score.Score;
 import model.database.Database;
 import model.database.DatabaseInitializer;
@@ -34,7 +35,7 @@ class UserDAOTest {
                 statement.executeUpdate(DatabaseInitializer.CREATE_INTERNAL_USERS_TABLE);
                 statement.executeUpdate(DatabaseInitializer.CREATE_INTERNAL_SCORES_TABLE);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                throw new ConfigException("Error while setting up User DAO Test.", e);
             }
         }
     }

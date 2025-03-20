@@ -13,7 +13,7 @@ public class Basket {
     private double velocityX;
     private Image basketImage;
 
-    // Eredeti konstruktor, amely képet tölt be
+    // Original constructor loads picture
     public Basket(double x, double y, double width, double height) {
         this(x, y, width, height, true);
     }
@@ -25,7 +25,7 @@ public class Basket {
         this.height = height;
         this.velocityX = 0;
         if (loadImage) {
-            this.basketImage = new Image(IMAGE_BASKET_PNG); // Kép betöltése, ha szükséges
+            this.basketImage = new Image(IMAGE_BASKET_PNG); // Loading picture if needed
         }
     }
 

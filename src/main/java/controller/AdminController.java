@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -75,7 +76,7 @@ public class AdminController extends BaseController implements Initializable {
             usersList.setAll(userDAO.getAllUsers(false));
             usersTable.setItems(usersList);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while loading users.", e);
         }
     }
 
@@ -89,7 +90,7 @@ public class AdminController extends BaseController implements Initializable {
                 loadUsers(); // Refresh the users list
                 usersTable.getSelectionModel().select(selectedUser); // Retain the selection
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new ConfigException("Error while banning user.", e);
             }
         } else {
             // Show error message if the admin tries to ban themselves
@@ -107,7 +108,7 @@ public class AdminController extends BaseController implements Initializable {
                 loadUsers(); // Refresh the users list
                 usersTable.getSelectionModel().select(selectedUser); // Retain the selection
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new ConfigException("Error while unban user.", e);
             }
         }
     }

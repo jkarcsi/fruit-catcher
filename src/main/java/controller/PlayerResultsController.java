@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ConfigException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,7 +62,7 @@ public class PlayerResultsController extends BaseController implements Initializ
         try {
             resultsTable.setItems(getTopScores(getUsername()));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ConfigException("Error while loading user scores.", e);
         }
     }
 
